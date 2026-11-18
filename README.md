@@ -1,4 +1,4 @@
-# Weerstation Jubbega v7
+# Weerstation Jubbega v8
 
 Cloudflare Pages-website voor Weather Underground PWS-station `IJUBBE7`.
 
@@ -13,16 +13,18 @@ Cloudflare Pages-website voor Weather Underground PWS-station `IJUBBE7`.
 - Knoppen naar Buienradar en regionale regenradar.
 - Windroos, regen vandaag, historische neerslag per dag of 7 dagen. De API levert dagelijkse cumulatieve neerslag; in het weekoverzicht worden de dagtotalen opgeteld.
 
-## Nieuw in versie 7: 5-daagse weersverwachting ECMWF vs GFS
+## Nieuw in versie 8: 14-daagse weersverwachting ECMWF vs GFS
 
-- Modelpunt Jubbega (53,005° N, 6,130° O), als indicatie voor Noordoost-Nederland.
-- Twee expliciete modellen: ECMWF IFS 0,25° (`ecmwf_ifs025`) en NOAA GFS 0,25° (`gfs025`), geleverd via Open-Meteo.
-- Verwachting voor 5 dagen, met maximum- en minimumtemperatuur, mm neerslag, windsnelheid, windstoten en weersymbolen.
-- Schakel tussen beide modellen, ECMWF alleen en GFS alleen. Bekijk grafieken met temperatuur en neerslag en het verschil tussen de modellen.
-- De serverfunctie `functions/api/forecast.js` haalt de voorspellingen op en cachet de gecombineerde gegevens 30 minuten, zonder een extra API-sleutel.
-- PWS-metingen en historie blijven apart en onveranderd via `functions/api/weather.js`.
-- Weermodel- en locatiegegevens zijn prognoses, geen exacte lokale meting. Toont een waarschuwing als een van de modellen uitvalt.
-- Open-Meteo vereist bronvermelding en biedt gratis API-gebruik alleen voor **niet-commerciële toepassingen**; bij advertenties of commerciële exploitatie is een passend API-plan nodig (zie https://open-meteo.com/en/terms).
+- Voorspelling voor **14 dagen inclusief vandaag**, dus vandaag + 13 dagen.
+- Regionaal modelpunt Jubbega (53,005° N; 6,130° O) voor een **indicatie** voor Noordoost-Nederland.
+- ECMWF IFS 0,25° (`ecmwf_ifs025`, via de ECMWF-modelroute) en NOAA GFS Global (`gfs_global`, via de GFS-modelroute), beide expliciet gekozen.
+- Vergelijk maximumtemperatuur, minimumtemperatuur, regen per dag, wind en windstoten.
+- Kijk naar zowel de dagkaarten als de grafieken en gebruik **Dag 1–7** / **Dag 8–14** om te springen.
+- De bronkoppeling `functions/api/forecast.js` probeert bij een fout de alternatieve Open-Meteo-modelroute en toont waarschuwingen als een model tijdelijk niet beschikbaar is.
+- De Cloudflare-cache bewaart uitsluitend volledige antwoorden met beide modellen, maximaal 15 minuten. Oude versie-7-cache wordt omzeild.
+- Dagen 8–14 zijn duidelijk minder betrouwbaar dan de korte termijn; modelspreiding is **geen** onzekerheidspercentage.
+- De bestaande API voor eigen metingen (`functions/api/weather.js`) blijft **ongewijzigd**.
+- Open-Meteo vereist bronvermelding; gratis API-gebruik is voor niet-commerciële toepassingen (zie https://open-meteo.com/en/terms).
 
 ## Cloudflare Pages publiceren
 
@@ -66,8 +68,30 @@ Als het regionale weerbeeld niet laadt, blijft de eigen Weather Underground-data
 ## Modelkoppeling testen
 
 - Open `https://www.weerstationjubbega.nl/api/forecast` voor de JSON-response met velden `models.ecmwf.days` en `models.gfs.days`.
-- Controleer dat het dashboard 5 dagkaarten toont en dat de drie modelkeuzes werken.
+- Controleer dat het dashboard 14 dagkaarten toont en dat de drie modelkeuzes werken.
 - Als een model een storing heeft, toont de site de andere voorspelling en een waarschuwing.
 - Test op mobiel of de dagkaarten horizontaal te scrollen zijn.
 
 Let op: de voorspelling wordt extern aangeleverd. Bij het ontwikkelen is getest met representatieve JSON-responses, niet met een echte live productierun.
+
+## Versie 8 update (alleen 3 bestanden)
+
+Update de bestaande installatie met `index.html`, `forecast.js`, `functions/api/forecast.js`. Laat `extras.js`, `logo.svg`, `functions/api/weather.js` en alle favicon-bestanden staan. Op de API-test `/api/forecast` moet `forecastDays: 14` te zien zijn en, bij volledige bronbeschikbaarheid, 14 dagen onder beide modellen.
+
+
+## Versie 9 – compact menu, zon/maan, Beaufort en sneeuwindicaties
+
+- **Weergave:** rechtsboven via ⚙️ Weergave; seizoen en dag/nacht zijn onthouden in deze browser.
+- **Zon en maan:** zonsondergang/zonsopkomst, maanopkomst/maanondergang, astronomische boven/onder-horizonstatus in Jubbega; maanberekening is een benadering en zegt niets over bewolking.
+- **Windroos:** windkracht nu, daggemiddelde uit beschikbare historische PWS-meetpunten, en gemiddelde windkracht; Beaufort is een omzetting van windsnelheid en geen aparte meting.
+- **Dagoverzicht:** gemiddelde en hoogste windkracht van de geselecteerde historische periode.
+- **14-daagse verwachting:** naast temperatuur, wind, windstoten en neerslag ook gemiddeld dauwpunt, voorspelde sneeuwhoeveelheid en een kwalitatief sneeuwsignaal. Aangezien deze twee deterministische modellen geen officiële gekalibreerde sneeuwkans in procenten opleveren, geven we geen fictieve sneeuwkans. Waar aanwezig staat de model-neerslagkans tijdens mogelijke sneeuwuren apart en duidelijk aangeduid.
+- **Forecast-API:** `hourly` neerslag/temperatuur/dauwpunt/sneeuw en extra `daily.snowfall_sum` van Open-Meteo, cache key v9. De Weather Underground `WU_API_KEY` blijft ongewijzigd.
+
+### Installatie bij v8
+
+Vervang `index.html`, `extras.js`, `forecast.js` en `functions/api/forecast.js` op GitHub (zelfde paden). Laat de overige bestanden staan. Controleer Cloudflare Pages Success en daarna `/api/forecast`. Bij `models.ecmwf.days[0]` en `models.gfs.days[0]` horen ook `dewPoint`, `snowfall` en `snowSignal` te staan.
+
+### Opmerking over sneeuw
+
+Dauwpunt lager dan -5 °C is **geen** voldoende voorwaarde voor sneeuw: er moet ook neerslag zijn, en het temperatuurprofiel moet sneeuw ondersteunen. Het sneeuwsignaal gebruikt model-sneeuwval en thermische randvoorwaarden. Een door Open-Meteo aangeleverde neerslagkans tijdens een mogelijk sneeuwuur is niet gelijk aan de sneeuwkans.

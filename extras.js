@@ -15,6 +15,8 @@
   let regional = null;
   let lastLocalDate = '';
   let lastSeason = '';
+  let cachedMoonDate = '';
+  let cachedMoonTimes = null;
   const formatter = new Intl.DateTimeFormat('en-CA', {
     timeZone: ZONE, year: 'numeric', month: '2-digit', day: '2-digit'
   });
@@ -76,6 +78,56 @@
     return { symbol: symbols[index], name: names[index], illuminated };
   }
 
+
+  // Moon ephemerides and horizon-crossing approximation using the SunCalc approach
+  // (astronomical formulae; no external service or API key required).
+  const RAD = Math.PI / 180;
+  const ECLIPTIC = RAD * 23.4397;
+  const moonDays = date => (date.getTime() - Date.UTC(2000,0,1,12)) / oneDayMs;
+  const moonRightAscension = (l,b) => Math.atan2(Math.sin(l)*Math.cos(ECLIPTIC)-Math.tan(b)*Math.sin(ECLIPTIC),Math.cos(l));
+  const moonDeclination = (l,b) => Math.asin(Math.sin(b)*Math.cos(ECLIPTIC)+Math.cos(b)*Math.sin(ECLIPTIC)*Math.sin(l));
+  function moonAltitude(date) {
+    const d = moonDays(date);
+    const L = RAD * (218.316 + 13.176396*d);
+    const M = RAD * (134.963 + 13.064993*d);
+    const F = RAD * (93.272 + 13.229350*d);
+    const longitude = L + RAD * 6.289 * Math.sin(M);
+    const latitude = RAD * 5.128 * Math.sin(F);
+    const ra = moonRightAscension(longitude, latitude);
+    const dec = moonDeclination(longitude, latitude);
+    const phi = LAT*RAD;
+    const sidereal = RAD*(280.16 + 360.9856235*d) + LON*RAD;
+    const h = Math.asin(Math.sin(phi)*Math.sin(dec)+Math.cos(phi)*Math.cos(dec)*Math.cos(sidereal-ra));
+    const refraction = 0.0002967 / Math.tan(Math.max(h,0) + 0.00312536/(Math.max(h,0) + 0.08901179));
+    // Lunar apparent altitude, includes approximate atmospheric refraction.
+    return h + refraction;
+  }
+  const localDate = date => {
+    const p = formatter.formatToParts(date).reduce((a,x)=>(a[x.type]=x.value,a),{});
+    return `${p.year}-${p.month}-${p.day}`;
+  };
+  function moonHorizonTimes(dateISO) {
+    // Scan the surrounding two UTC days. Retain only rise/set events falling
+    // on the requested Europe/Amsterdam calendar date (including DST).
+    const baseline = Date.parse(`${dateISO}T00:00:00Z`) - 5*3600000;
+    const step = 15*60000;
+    let rise = null, set = null;
+    let t0 = baseline, a0 = moonAltitude(new Date(t0));
+    for(let i=1;i<=140;i++) {
+      const t1=baseline+i*step, a1=moonAltitude(new Date(t1));
+      if ((a0<=0&&a1>0)||(a0>=0&&a1<0)) {
+        const interpolated=t0+(t1-t0)*Math.abs(a0)/(Math.abs(a0)+Math.abs(a1));
+        const event=new Date(interpolated);
+        if (localDate(event)===dateISO) {
+          if(a0<=0&&a1>0&&!rise)rise=event;
+          if(a0>=0&&a1<0&&!set)set=event;
+        }
+      }
+      t0=t1;a0=a1;
+    }
+    return {rise,set};
+  }
+
   function timeTheme() {
     const chosen = localStorage.getItem(MODE_KEY) || 'auto';
     const date = todayNL();
@@ -92,6 +144,12 @@
     $('moonGlyph').textContent = moon.symbol;
     $('moonName').textContent = moon.name;
     $('moonIllumination').textContent = `Ongeveer ${moon.illuminated}% verlicht`;
+    $('sunVisible').textContent = isDay ? '☀️ Zon staat boven de horizon' : '🌙 Zon staat onder de horizon';
+    if (cachedMoonDate !== date) { cachedMoonDate = date; cachedMoonTimes = moonHorizonTimes(date); }
+    const moonTimes = cachedMoonTimes;
+    $('moonrise').textContent = moonTimes.rise ? fmtTime(moonTimes.rise) : 'Geen opkomst vandaag';
+    $('moonset').textContent = moonTimes.set ? fmtTime(moonTimes.set) : 'Geen ondergang vandaag';
+    $('moonVisible').textContent = moonAltitude(new Date()) > 0 ? '🌙 Maan staat boven de horizon' : '🌘 Maan staat onder de horizon';
 
     // Open-Meteo can provide refined calculated sunrise/sunset for the location.
     if (regional && regional.date === date && regional.sunrise && regional.sunset) {
@@ -185,7 +243,7 @@
       const condition = regionalCondition(code, isDay);
       $('weatherGlyph').textContent = condition.icon;
       $('conditionName').textContent = condition.label;
-      $('conditionDetail').textContent = `Regionale modelindicatie · ${String(data.current.time || '').slice(11,16)} uur · niet gemeten door IJUBBE7`;
+      $('conditionDetail').textContent = `Regionale modelindicatie · ${String(data.current.time || '').slice(11,16)} uur`;
       regional = {
         date: todayNL(),
         sunrise: data?.daily?.sunrise?.[0] || null,
