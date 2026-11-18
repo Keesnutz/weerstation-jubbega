@@ -7,6 +7,8 @@
   <meta name="description" content="Weerstation Jubbega | Lokale weersmetingen, grafieken en historie">
   <title>Weerstation Jubbega — Live weer & historie</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" id="faviconLink">
+  <link rel="apple-touch-icon" href="/icon-180.png">
+  <meta name="color-scheme" content="dark light">
   <style>
     :root{
       color-scheme:dark;
@@ -32,234 +34,189 @@
       --notice-bg:#382e1b;
       --notice-border:#635536;
       --notice-text:#f8d9a6;
-      --hero-badge-bg:rgba(255,255,255,.08);
-      --hero-badge-border:rgba(255,255,255,.12);
     }
     :root[data-theme="winter"]{
-      --bg:#081320;
-      --bg-accent:#46739f;
-      --panel:#11253a;
-      --panel2:#17314c;
-      --line:#315473;
-      --text:#f4f9ff;
-      --muted:#a7bdd2;
-      --teal:#93f0ff;
-      --theme-1:#8ad8ff;
-      --theme-2:#d8efff;
-      --theme-3:#1e4362;
-      --theme-glow:rgba(151,218,255,.22);
-      --chip-bg:#12304b;
-      --chip-border:#446a88;
-      --btn-bg:#1d425d;
-      --btn-border:#416a8a;
-      --notice-bg:#233347;
-      --notice-border:#51759a;
-      --notice-text:#dceeff;
+      --bg:#081320;--bg-accent:#46739f;--panel:#11253a;--panel2:#17314c;--line:#315473;--text:#f4f9ff;--muted:#a7bdd2;--teal:#93f0ff;--theme-1:#8ad8ff;--theme-2:#d8efff;--theme-3:#1e4362;--theme-glow:rgba(151,218,255,.22);--chip-bg:#12304b;--chip-border:#446a88;--btn-bg:#1d425d;--btn-border:#416a8a;--notice-bg:#233347;--notice-border:#51759a;--notice-text:#dceeff;
     }
     :root[data-theme="spring"]{
-      --bg:#0f1f1a;
-      --bg-accent:#6fb48b;
-      --panel:#173126;
-      --panel2:#1f4132;
-      --line:#396953;
-      --text:#f3fff8;
-      --muted:#aec8ba;
-      --teal:#7ee6b4;
-      --theme-1:#86e694;
-      --theme-2:#f3c8da;
-      --theme-3:#345f46;
-      --theme-glow:rgba(126,230,180,.18);
-      --chip-bg:#1c3a2d;
-      --chip-border:#49715c;
-      --btn-bg:#214535;
-      --btn-border:#4f7c64;
-      --notice-bg:#2e3421;
-      --notice-border:#6d7c4a;
-      --notice-text:#edf3c4;
+      --bg:#0f1f1a;--bg-accent:#6fb48b;--panel:#173126;--panel2:#1f4132;--line:#396953;--text:#f3fff8;--muted:#aec8ba;--teal:#7ee6b4;--theme-1:#86e694;--theme-2:#f3c8da;--theme-3:#345f46;--theme-glow:rgba(126,230,180,.18);--chip-bg:#1c3a2d;--chip-border:#49715c;--btn-bg:#214535;--btn-border:#4f7c64;--notice-bg:#2e3421;--notice-border:#6d7c4a;--notice-text:#edf3c4;
     }
     :root[data-theme="summer"]{
-      --bg:#0c1d2f;
-      --bg-accent:#f4a340;
-      --panel:#17314a;
-      --panel2:#1f425f;
-      --line:#416684;
-      --text:#f8fcff;
-      --muted:#adc4d6;
-      --teal:#7ddfff;
-      --theme-1:#ffd467;
-      --theme-2:#6fdfff;
-      --theme-3:#3e6788;
-      --theme-glow:rgba(255,212,103,.18);
-      --chip-bg:#1b3752;
-      --chip-border:#537793;
-      --btn-bg:#244663;
-      --btn-border:#5e84a4;
-      --notice-bg:#433219;
-      --notice-border:#7f6131;
-      --notice-text:#ffe4b2;
+      --bg:#0c1d2f;--bg-accent:#f4a340;--panel:#17314a;--panel2:#1f425f;--line:#416684;--text:#f8fcff;--muted:#adc4d6;--teal:#7ddfff;--theme-1:#ffd467;--theme-2:#6fdfff;--theme-3:#3e6788;--theme-glow:rgba(255,212,103,.18);--chip-bg:#1b3752;--chip-border:#537793;--btn-bg:#244663;--btn-border:#5e84a4;--notice-bg:#433219;--notice-border:#7f6131;--notice-text:#ffe4b2;
     }
     :root[data-theme="autumn"]{
-      --bg:#1a130f;
-      --bg-accent:#c7692d;
-      --panel:#302018;
-      --panel2:#3c2a20;
-      --line:#73533e;
-      --text:#fff6ef;
-      --muted:#d1b5a4;
-      --teal:#ffb769;
-      --theme-1:#ff9f5d;
-      --theme-2:#e4c07d;
-      --theme-3:#6c4531;
-      --theme-glow:rgba(255,159,93,.16);
-      --chip-bg:#402c21;
-      --chip-border:#7c5844;
-      --btn-bg:#493327;
-      --btn-border:#845f48;
-      --notice-bg:#3c261d;
-      --notice-border:#785042;
-      --notice-text:#ffd9bd;
+      --bg:#1a130f;--bg-accent:#c7692d;--panel:#302018;--panel2:#3c2a20;--line:#73533e;--text:#fff6ef;--muted:#d1b5a4;--teal:#ffb769;--theme-1:#ff9f5d;--theme-2:#e4c07d;--theme-3:#6c4531;--theme-glow:rgba(255,159,93,.16);--chip-bg:#402c21;--chip-border:#7c5844;--btn-bg:#493327;--btn-border:#845f48;--notice-bg:#3c261d;--notice-border:#785042;--notice-text:#ffd9bd;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      color:var(--text);
-      font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;
-      background:
-        radial-gradient(circle at 15% 15%, var(--theme-glow), transparent 24%),
-        radial-gradient(circle at 85% 5%, color-mix(in srgb, var(--bg-accent) 45%, transparent), transparent 35%),
-        linear-gradient(180deg, color-mix(in srgb, var(--bg-accent) 14%, transparent), transparent 280px),
-        var(--bg);
-      transition:background .35s ease,color .35s ease;
-    }
+    body{margin:0;color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 15% 15%, var(--theme-glow), transparent 24%),radial-gradient(circle at 85% 5%, color-mix(in srgb, var(--bg-accent) 45%, transparent), transparent 35%),linear-gradient(180deg, color-mix(in srgb, var(--bg-accent) 14%, transparent), transparent 280px),var(--bg);transition:background .35s ease,color .35s ease}
     a{color:inherit}
     .wrap{max-width:1220px;padding:0 23px;margin:auto}
     header{border-bottom:1px solid rgba(255,255,255,.09);backdrop-filter:blur(10px);position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--bg) 86%, transparent)}
     .head{display:flex;align-items:center;justify-content:space-between;min-height:80px;gap:15px}
     .brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:inherit}
     .logo{display:grid;place-items:center;width:50px;height:50px;border-radius:15px;background:linear-gradient(160deg,var(--theme-3),color-mix(in srgb, var(--theme-1) 32%, var(--theme-3)));box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 24px rgba(0,0,0,.18);font-size:27px;transition:.25s ease}
-    .brand b{font-size:19px;letter-spacing:-.5px}
-    .brand small{display:block;color:var(--muted);font-size:12px}
-    .nav{display:flex;gap:24px}
-    .nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:13px}
-    .nav a:hover{color:#fff}
+    .brand b{font-size:19px;letter-spacing:-.5px}.brand small{display:block;color:var(--muted);font-size:12px}
+    .nav{display:flex;gap:24px}.nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:13px}.nav a:hover{color:#fff}
     .headright{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
     .tag,.seasonpill{border:1px solid color-mix(in srgb, var(--theme-1) 35%, rgba(255,255,255,.18));padding:6px 12px;border-radius:30px;font-size:12px;color:#eaf6ff;background:rgba(255,255,255,.03)}
     .tag:before{content:'●';color:var(--theme-1);margin-right:7px}
     .seasonpill{display:flex;align-items:center;gap:8px}
-    .hero{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:43px 0 26px}
-    .heroaside{display:flex;flex-direction:column;align-items:flex-end;gap:12px;min-width:280px}
+    .hero{display:flex;align-items:flex-start;justify-content:space-between;gap:25px;padding:43px 0 26px}
+    .heroaside{display:flex;flex-direction:column;align-items:flex-end;gap:12px;min-width:340px}
     .eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800;color:var(--teal)}
     h1{font-size:clamp(33px,5vw,58px);line-height:1.1;letter-spacing:-2.1px;margin:10px 0}
     h1 span{color:var(--theme-1)}
-    .sub{color:var(--muted);max-width:600px;margin:0}
-    .stamp{color:var(--muted);font-size:12px;text-align:right}
-    .stamp strong{color:#fff;display:block;font-size:15px}
-    .seasonbox{width:100%;max-width:330px;padding:16px 16px 14px;border-radius:18px;background:linear-gradient(160deg,color-mix(in srgb, var(--theme-3) 72%, rgba(255,255,255,.02)),color-mix(in srgb, var(--panel) 85%, rgba(255,255,255,.02)));border:1px solid rgba(255,255,255,.09);box-shadow:0 10px 30px rgba(0,0,0,.14)}
+    .sub{color:var(--muted);max-width:610px;margin:0}
+    .stamp{color:var(--muted);font-size:12px;text-align:right}.stamp strong{color:#fff;display:block;font-size:15px}
+    .seasonbox{width:100%;max-width:360px;padding:16px 16px 14px;border-radius:18px;background:linear-gradient(160deg,color-mix(in srgb, var(--theme-3) 72%, rgba(255,255,255,.02)),color-mix(in srgb, var(--panel) 85%, rgba(255,255,255,.02)));border:1px solid rgba(255,255,255,.09);box-shadow:0 10px 30px rgba(0,0,0,.14)}
     .seasonboxhead{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
-    .seasonboxhead strong{font-size:14px}
-    .seasonboxhead span{font-size:12px;color:var(--muted)}
-    .themerow{display:grid;grid-template-columns:1fr;gap:8px}
-    .themelabel{font-size:12px;color:var(--muted)}
+    .seasonboxhead strong{font-size:14px}.seasonboxhead span{font-size:12px;color:var(--muted)}
+    .themerow{display:grid;grid-template-columns:1fr;gap:8px}.themelabel{font-size:12px;color:var(--muted)}
     .select{border:1px solid var(--btn-border);background:var(--btn-bg);color:var(--text);border-radius:11px;padding:11px 13px;font:inherit}
-    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
-    .panel,.tile{background:linear-gradient(150deg,color-mix(in srgb, var(--panel) 90%, rgba(255,255,255,.03)),color-mix(in srgb, var(--panel2) 86%, rgba(0,0,0,.03)));border:1px solid rgba(255,255,255,.09);border-radius:20px;box-shadow:0 9px 30px rgba(0,0,0,.12);transition:background .3s ease,border-color .3s ease}
-    .tile{padding:22px;min-height:141px}
-    .tile .topline{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:13px}
-    .tile .ico{font-size:23px}
-    .tile .value{font-size:clamp(25px,3vw,37px);font-weight:750;letter-spacing:-1.5px;margin:13px 0 3px;font-variant-numeric:tabular-nums}
-    .tile .note{font-size:12px;color:var(--muted)}
-    .section{margin:32px 0}
-    .sectiontitle{display:flex;justify-content:space-between;gap:15px;align-items:end;margin:0 0 15px}
-    h2{font-size:24px;margin:0;letter-spacing:-.6px}
-    h3{font-size:16px;margin:0}
-    .hint{color:var(--muted);font-size:13px}
-    .panel{padding:25px}
-    .historybar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-    .dategroup{display:flex;gap:8px;align-items:center}
-    .btn,.dateinput{border:1px solid var(--btn-border);background:var(--btn-bg);color:var(--text);border-radius:11px;padding:11px 13px;font:inherit}
-    .btn{cursor:pointer;font-weight:650}
-    .btn:hover{filter:brightness(1.06)}
-    .btn.active{background:color-mix(in srgb, var(--theme-3) 55%, var(--theme-1));border-color:color-mix(in srgb, var(--theme-1) 70%, white 10%);color:#fff}
-    .dateinput{max-width:165px;color-scheme:dark}
-    .quick{display:flex;gap:8px;flex-wrap:wrap}
-    .chartheader{display:flex;gap:16px;justify-content:space-between;align-items:start;flex-wrap:wrap;margin-top:25px}
-    .chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
-    .chip{border:1px solid var(--chip-border);color:#d7e7f5;background:var(--chip-bg);border-radius:25px;padding:8px 12px;cursor:pointer;font-size:13px}
-    .chip.on{border-color:var(--color);color:#fff;background:color-mix(in srgb, var(--panel2) 70%, var(--color) 18%)}
-    .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--color);margin-right:7px}
-    .chartbox{position:relative;min-height:310px;background:color-mix(in srgb, var(--bg) 70%, #081320);border:1px solid color-mix(in srgb, var(--line) 70%, rgba(255,255,255,.05));border-radius:15px;overflow:hidden}
-    .chartbox canvas{display:block;width:100%;height:310px}
-    .charttip{position:absolute;display:none;z-index:2;pointer-events:none;background:#071522ef;border:1px solid #4a718c;padding:10px;border-radius:9px;color:#fff;font-size:12px;white-space:pre;box-shadow:0 10px 26px rgba(0,0,0,.5)}
-    .legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:13px}
-    .legend span:before{content:'—';font-weight:900;font-size:18px;color:var(--color);margin-right:7px}
-    .twocol{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
-    .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}
-    .fact{padding:15px;border-radius:13px;background:color-mix(in srgb, var(--panel2) 55%, transparent)}
-    .fact small{color:var(--muted);display:block}
-    .fact strong{font-size:23px}
-    .notice{border:1px solid var(--notice-border);background:var(--notice-bg);padding:12px 15px;border-radius:12px;color:var(--notice-text);font-size:13px;margin-top:14px}
-    .footer{border-top:1px solid rgba(255,255,255,.09);margin-top:40px;padding:23px 0 40px;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:var(--muted);font-size:12px}
-    .footer a{color:var(--theme-1)}
-    .empty{color:var(--muted);padding:28px 14px;text-align:center}
-    [hidden]{display:none!important}
-    .btn:disabled{opacity:.4;cursor:not-allowed}
-    .source{text-decoration:none;color:var(--theme-1)}
     .themehint{font-size:12px;color:var(--muted);margin-top:8px}
-    @media(max-width:900px){
-      .grid{grid-template-columns:repeat(2,1fr)}
-      .twocol{grid-template-columns:1fr}
-      .nav{display:none}
-      .hero{padding-top:32px;flex-direction:column;align-items:flex-start}
-      .heroaside{align-items:stretch;width:100%;min-width:0}
-      .stamp{text-align:left}
-      .seasonbox{max-width:none}
-    }
-    @media(max-width:620px){
-      .head{align-items:flex-start;padding:12px 0;min-height:auto}
-      .headright{width:100%;justify-content:flex-start}
-    }
-    @media(max-width:520px){
-      .wrap{padding:0 15px}
-      .brand b{font-size:16px}
-      .brand small{font-size:11px}
-      .tag,.seasonpill{font-size:10px}
-      .grid{gap:9px}
-      .tile{padding:15px;min-height:128px}
-      .tile .value{font-size:27px}
-      .panel{padding:16px}
-      .dateinput{max-width:155px}
-      .chartbox,.chartbox canvas{height:265px;min-height:265px}
-      .section{margin:25px 0}
-      .sectiontitle{display:block}
-      .facts{grid-template-columns:1fr 1fr}
-    }
+    .seasonart{margin-top:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:14px;padding:14px 14px 12px;overflow:hidden;position:relative}
+    .seasonart::before{content:'';position:absolute;inset:auto -20px -20px auto;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle, color-mix(in srgb, var(--theme-1) 28%, transparent), transparent 70%);pointer-events:none}
+    .seasonarttitle{font-size:13px;font-weight:700;margin-bottom:4px}
+    .seasonartdesc{font-size:12px;color:var(--muted);max-width:250px}
+    .seasonicons{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}.seasonicons span{font-size:27px;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.panel,.tile{background:linear-gradient(150deg,color-mix(in srgb, var(--panel) 90%, rgba(255,255,255,.03)),color-mix(in srgb, var(--panel2) 86%, rgba(0,0,0,.03)));border:1px solid rgba(255,255,255,.09);border-radius:20px;box-shadow:0 9px 30px rgba(0,0,0,.12);transition:background .3s ease,border-color .3s ease}.tile{padding:22px;min-height:141px}.tile .topline{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:13px}.tile .ico{font-size:23px}.tile .value{font-size:clamp(25px,3vw,37px);font-weight:750;letter-spacing:-1.5px;margin:13px 0 3px;font-variant-numeric:tabular-nums}.tile .note{font-size:12px;color:var(--muted)}
+    .section{margin:32px 0}.sectiontitle{display:flex;justify-content:space-between;gap:15px;align-items:end;margin:0 0 15px}h2{font-size:24px;margin:0;letter-spacing:-.6px}h3{font-size:16px;margin:0}.hint{color:var(--muted);font-size:13px}.panel{padding:25px}
+    .twocol{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.stack{display:grid;gap:16px}
+    .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}.fact{padding:15px;border-radius:13px;background:color-mix(in srgb, var(--panel2) 55%, transparent)}.fact small{color:var(--muted);display:block}.fact strong{font-size:23px}
+    .miniFacts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}.miniFact{padding:14px;border-radius:13px;background:color-mix(in srgb, var(--panel2) 55%, transparent)}.miniFact span{display:block;color:var(--muted);font-size:12px}.miniFact strong{display:block;margin-top:4px;font-size:22px}
+    .historybar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.dategroup{display:flex;gap:8px;align-items:center}
+    .btn,.dateinput{border:1px solid var(--btn-border);background:var(--btn-bg);color:var(--text);border-radius:11px;padding:11px 13px;font:inherit}.btn{cursor:pointer;font-weight:650}.btn:hover{filter:brightness(1.06)}.btn.active{background:color-mix(in srgb, var(--theme-3) 55%, var(--theme-1));border-color:color-mix(in srgb, var(--theme-1) 70%, white 10%);color:#fff}.dateinput{max-width:165px;color-scheme:dark}.quick{display:flex;gap:8px;flex-wrap:wrap}
+    .chartheader{display:flex;gap:16px;justify-content:space-between;align-items:start;flex-wrap:wrap;margin-top:25px}.chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.chip{border:1px solid var(--chip-border);color:#d7e7f5;background:var(--chip-bg);border-radius:25px;padding:8px 12px;cursor:pointer;font-size:13px}.chip.on{border-color:var(--color);color:#fff;background:color-mix(in srgb, var(--panel2) 70%, var(--color) 18%)}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--color);margin-right:7px}
+    .chartbox{position:relative;min-height:310px;background:color-mix(in srgb, var(--bg) 70%, #081320);border:1px solid color-mix(in srgb, var(--line) 70%, rgba(255,255,255,.05));border-radius:15px;overflow:hidden}.chartbox canvas{display:block;width:100%;height:310px}.charttip{position:absolute;display:none;z-index:2;pointer-events:none;background:#071522ef;border:1px solid #4a718c;padding:10px;border-radius:9px;color:#fff;font-size:12px;white-space:pre;box-shadow:0 10px 26px rgba(0,0,0,.5)}.legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:13px}.legend span:before{content:'—';font-weight:900;font-size:18px;color:var(--color);margin-right:7px}
+    .notice{border:1px solid var(--notice-border);background:var(--notice-bg);padding:12px 15px;border-radius:12px;color:var(--notice-text);font-size:13px;margin-top:14px}[hidden]{display:none!important}
+    .windroseWrap{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:16px}
+    .windrose{position:relative;width:180px;height:180px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:radial-gradient(circle at 50% 50%, rgba(255,255,255,.06), rgba(255,255,255,.02) 55%, transparent 56%),linear-gradient(180deg, rgba(255,255,255,.04), transparent)}
+    .windrose::before,.windrose::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(255,255,255,.16)}
+    .windrose::before{width:1px;height:146px}.windrose::after{width:146px;height:1px}
+    .windrose .diag1,.windrose .diag2{position:absolute;left:50%;top:50%;width:1px;height:146px;background:rgba(255,255,255,.08);transform-origin:center center}
+    .windrose .diag1{transform:translate(-50%,-50%) rotate(45deg)}.windrose .diag2{transform:translate(-50%,-50%) rotate(-45deg)}
+    .dir{position:absolute;font-size:12px;color:var(--muted);font-weight:700}
+    .dir.n{left:50%;top:10px;transform:translateX(-50%)}.dir.o{right:12px;top:50%;transform:translateY(-50%)}.dir.z{left:50%;bottom:10px;transform:translateX(-50%)}.dir.w{left:12px;top:50%;transform:translateY(-50%)}
+    .needle{position:absolute;left:50%;top:50%;width:0;height:0;transform:translate(-50%,-50%) rotate(0deg);transition:transform .4s ease}
+    .needle::before{content:'';position:absolute;left:-8px;top:-66px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:72px solid var(--theme-1);filter:drop-shadow(0 0 8px color-mix(in srgb, var(--theme-1) 35%, transparent))}
+    .needle::after{content:'';position:absolute;left:-5px;top:-4px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:34px solid rgba(255,255,255,.24)}
+    .windrose .centerDot{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 0 0 5px color-mix(in srgb, var(--theme-1) 25%, transparent)}
+    .winddata{flex:1;min-width:220px}.windbig{font-size:32px;font-weight:750;letter-spacing:-1px}.windsub{color:var(--muted);font-size:13px}
+    .rainbar{height:12px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:10px}.rainbar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg, var(--theme-2), var(--theme-1));width:0;transition:width .35s ease}
+    .footer{border-top:1px solid rgba(255,255,255,.09);margin-top:40px;padding:23px 0 40px;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:var(--muted);font-size:12px}.footer a{color:var(--theme-1)}.source{text-decoration:none;color:var(--theme-1)}
+    @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}.nav{display:none}.hero{padding-top:32px;flex-direction:column;align-items:flex-start}.heroaside{align-items:stretch;width:100%;min-width:0}.stamp{text-align:left}.seasonbox{max-width:none}}
+    @media(max-width:620px){.head{align-items:flex-start;padding:12px 0;min-height:auto}.headright{width:100%;justify-content:flex-start}}
+    @media(max-width:520px){.wrap{padding:0 15px}.brand b{font-size:16px}.brand small{font-size:11px}.tag,.seasonpill{font-size:10px}.grid{gap:9px}.tile{padding:15px;min-height:128px}.tile .value{font-size:27px}.panel{padding:16px}.dateinput{max-width:155px}.chartbox,.chartbox canvas{height:265px;min-height:265px}.section{margin:25px 0}.sectiontitle{display:block}.facts,.miniFacts{grid-template-columns:1fr 1fr}.windroseWrap{justify-content:center}.windrose{width:160px;height:160px}}
+
+    /* Weerstation Jubbega v6: logotype, seasonal atmosphere, day/night, sunrise/moon and radar. */
+    .logoBadge{position:relative;overflow:visible;flex-shrink:0;padding:1px}
+    .brandLogo{width:48px;height:48px;object-fit:contain;border-radius:14px}
+    .brandSeasonIcon{position:absolute;right:-6px;bottom:-4px;font-size:14px;line-height:1;background:var(--panel);border-radius:999px;padding:3px;box-shadow:0 3px 7px rgba(0,0,0,.18)}
+    .hero{position:relative;isolation:isolate;overflow:hidden;border-radius:0 0 26px 26px}
+    .hero> :not(.seasonParticles){position:relative;z-index:1}
+    .seasonParticles{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+    .particle{position:absolute;left:var(--left);top:-15%;font-size:var(--size);opacity:var(--opacity);text-shadow:0 2px 12px rgba(0,0,0,.16);animation:seasonfall var(--duration) linear infinite;animation-delay:var(--delay);will-change:transform}
+    @keyframes seasonfall{0%{transform:translate3d(0,-10px,0) rotate(0)}50%{transform:translate3d(var(--drift),150px,0) rotate(110deg)}100%{transform:translate3d(calc(var(--drift) * -1),390px,0) rotate(280deg)}}
+    [data-theme="summer"] .particle{animation-name:summerGlow}
+    @keyframes summerGlow{0%,100%{transform:translateY(20px) scale(.75);opacity:.15}50%{transform:translateY(-20px) scale(1.28);opacity:.6}}
+    .atmosphereGrid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+    .conditionPanelHead{display:flex;align-items:start;justify-content:space-between;gap:12px}
+    .conditionPanelHead .hint,.sunMoonPanel .hint{margin:4px 0 0}
+    .timePill{font-weight:650;border:1px solid var(--line);border-radius:30px;padding:5px 11px;background:var(--panel2);white-space:nowrap;font-size:12px}
+    .conditionBody{display:flex;align-items:center;gap:22px;margin:23px 0}
+    .weatherGlyph{width:102px;height:102px;display:grid;place-items:center;font-size:67px;border-radius:25px;flex-shrink:0;background:radial-gradient(circle at 35% 25%,var(--theme-glow),var(--panel2));border:1px solid rgba(255,255,255,.1)}
+    .conditionName{font-size:clamp(21px,2.8vw,31px);line-height:1.1;font-weight:750;letter-spacing:-.6px;margin-bottom:8px}
+    .conditionFooter{border-top:1px solid var(--line);display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;padding-top:13px;color:var(--muted);font-size:11px}
+    .conditionFooter a{color:var(--theme-1);text-decoration:none}
+    .sunTimes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0 12px}
+    .sunTime{padding:14px;border-radius:14px;background:var(--panel2)}
+    .sunTime span{display:block;color:var(--muted);font-size:12px}
+    .sunTime strong{display:block;font-size:27px;margin-top:5px;font-variant-numeric:tabular-nums}
+    .dayLength{font-size:12px;color:var(--muted)}
+    .moonRow{display:flex;align-items:center;gap:17px;border-top:1px solid var(--line);padding-top:15px;margin-top:16px}
+    .moonGlyph{font-size:45px;line-height:1}
+    .moonRow strong{display:block;font-size:16px}.moonRow span:not(.moonGlyph){display:block;color:var(--muted);font-size:13px;margin-top:2px}
+    .moonNote{font-size:11px;color:var(--muted);margin:13px 0 0}
+    .radarActions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:17px}
+    .radarButton{display:inline-flex;gap:10px;align-items:center;justify-content:center;background:var(--theme-1);color:var(--bg)!important;text-decoration:none;border-radius:12px;padding:11px 16px;font-weight:780;font-size:13px}
+    .radarSecondary{color:var(--theme-1);text-decoration:none;font-size:13px}
+    .rainNote{font-size:11px;margin:7px 0 0}
+    :root[data-time="day"]{color-scheme:light;--bg:#eaf2f8;--bg-accent:#86b1d5;--panel:#fff;--panel2:#e3edf5;--line:#b5ccdc;--text:#15293b;--muted:#536c80;--chip-bg:#e9f2f8;--chip-border:#afc7d6;--btn-bg:#e8f1f8;--btn-border:#afc8d9;--notice-bg:#fff5e4;--notice-border:#edc98e;--notice-text:#684115}
+    :root[data-time="day"][data-theme="spring"]{--bg:#edf9ed;--bg-accent:#b5d9ba;--panel:#fff;--panel2:#e2f2e5;--line:#b4cfb7;--text:#1a3926;--muted:#54745d;--chip-bg:#e2f2e5;--btn-bg:#e2f2e5;--chip-border:#adcbb4;--btn-border:#abcbb1}
+    :root[data-time="day"][data-theme="summer"]{--bg:#ecf8ff;--bg-accent:#9cddf7;--panel:#fff;--panel2:#e1f3fd;--line:#b9d9e9;--text:#173a4e;--muted:#587b90;--chip-bg:#e1f3fd;--btn-bg:#e1f3fd;--chip-border:#b2d5e7;--btn-border:#b2d5e7}
+    :root[data-time="day"][data-theme="autumn"]{--bg:#fcf1e7;--bg-accent:#edbd90;--panel:#fffaf4;--panel2:#f7e6d6;--line:#dfbea7;--text:#462b1f;--muted:#80614d;--chip-bg:#f7e6d6;--btn-bg:#f7e6d6;--chip-border:#dfbea7;--btn-border:#dfbea7}
+    :root[data-time="day"][data-theme="winter"]{--bg:#eff8fc;--bg-accent:#b4d6eb;--panel:#fff;--panel2:#e5f4fb;--line:#b6d5e9;--text:#17374c;--muted:#577c94;--chip-bg:#e5f4fb;--btn-bg:#e5f4fb;--chip-border:#abcce0;--btn-border:#abcce0}
+    :root[data-time="day"] .tag,:root[data-time="day"] .seasonpill{color:var(--text);border-color:var(--line)}
+    :root[data-time="day"] .stamp strong{color:var(--text)}
+    :root[data-time="day"] .chip{color:var(--text)}
+    :root[data-time="day"] .chip.on{color:var(--text);background:var(--panel2)}
+    :root[data-time="day"] .btn.active{color:#132c3d;background:var(--theme-1)}
+    :root[data-time="day"] .panel,:root[data-time="day"] .tile{border-color:rgba(30,60,85,.13)}
+    :root[data-time="day"] .chartbox{background:#f5fbff}
+    :root[data-time="day"] .seasonbox{background:linear-gradient(160deg,var(--panel2),var(--panel));border-color:var(--line)}
+    :root[data-time="day"] .seasonart{background:rgba(255,255,255,.4);border-color:var(--line)}
+    :root[data-time="day"] .brandSeasonIcon{background:var(--panel)}
+    :root[data-time="day"] .radarButton{color:#173148!important}
+    :root[data-time="day"] .windrose{border-color:var(--line)}
+    :root[data-time="day"] .windrose::before,:root[data-time="day"] .windrose::after{background:var(--line)}
+    @media(max-width:850px){.atmosphereGrid{grid-template-columns:1fr}}
+    @media(max-width:540px){.conditionBody{gap:15px}.weatherGlyph{width:75px;height:75px;font-size:49px;border-radius:18px}.conditionPanelHead{flex-wrap:wrap}.sunTimes{gap:8px}.sunTime{padding:10px}.sunTime strong{font-size:23px}.seasonParticles .particle:nth-child(n+11){display:none}}
+    @media(prefers-reduced-motion:reduce){.particle{animation:none!important;display:none!important}.needle{transition:none!important}}
+
+    /* V7 | ECMWF / GFS voorspellingen */
+    .forecastIntro{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+    .forecastTitle{display:flex;align-items:center;gap:12px}
+    .forecastTitle .forecastEmblem{font-size:28px;width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:color-mix(in srgb,var(--theme-3) 80%,var(--theme-1) 20%);border:1px solid rgba(255,255,255,.08)}
+    .forecastToolbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+    .forecastFilter{display:flex;gap:5px;padding:4px;border-radius:13px;background:color-mix(in srgb,var(--panel2) 75%,transparent);border:1px solid rgba(255,255,255,.1)}
+    .forecastFilter button{border:0;border-radius:9px;background:transparent;color:var(--muted);font:inherit;font-weight:700;font-size:12px;padding:9px 13px;cursor:pointer}
+    .forecastFilter button[aria-pressed="true"]{background:color-mix(in srgb,var(--theme-3) 50%,var(--theme-1) 18%);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.11)}
+    .forecastFilter button:focus-visible{outline:2px solid var(--theme-1);outline-offset:2px}
+    .forecastStatus{font-size:12px;color:var(--muted)}
+    .forecastCards{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(190px,1fr);gap:12px;overflow-x:auto;scroll-snap-type:x proximity;padding:4px 2px 14px;max-width:100%;scrollbar-width:thin}
+    .forecastDay{scroll-snap-align:start;min-width:0;padding:17px 15px;border-radius:18px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,color-mix(in srgb,var(--panel2) 75%,transparent),color-mix(in srgb,var(--panel) 95%,transparent));box-shadow:0 6px 15px rgba(0,0,0,.10)}
+    .forecastDayHeader{display:flex;justify-content:space-between;align-items:start;gap:8px;margin-bottom:10px}
+    .forecastDayTitle{font-weight:800;font-size:15px;line-height:1.25}
+    .forecastDate{font-size:11px;color:var(--muted)}
+    .forecastIcon{font-size:30px;line-height:1.2}
+    .forecastCondition{font-size:12px;color:var(--muted);margin-bottom:13px;min-height:36px}
+    .forecastModel{border-top:1px solid rgba(255,255,255,.09);padding-top:11px;margin-top:10px}
+    .forecastModelHead{display:flex;justify-content:space-between;align-items:center;gap:7px;font-size:11px;margin-bottom:5px}
+    .forecastModelTag{font-weight:750;letter-spacing:.01em}
+    .forecastModelTag.ecmwf{color:#69c7ff}.forecastModelTag.gfs{color:#ffcb84}
+    .forecastModelTemp{font-size:23px;font-weight:800;letter-spacing:-.6px;line-height:1.2;font-variant-numeric:tabular-nums}
+    .forecastModelTemp small{font-size:13px;color:var(--muted);font-weight:600}
+    .forecastMeta{margin-top:5px;color:var(--muted);font-size:12px;line-height:1.45}
+    .forecastDifference{font-size:11px;margin-top:12px;border-radius:9px;padding:7px 8px;color:var(--text);background:color-mix(in srgb,var(--theme-3) 75%,transparent)}
+    .forecastDetails{display:grid;grid-template-columns:1.6fr .7fr;gap:16px;margin-top:18px}
+    .forecastChartShell{background:color-mix(in srgb,var(--bg) 70%,#081320);border-radius:15px;border:1px solid rgba(255,255,255,.08);padding:12px 8px 2px;min-width:0;overflow:hidden}
+    .forecastChartShell svg{display:block;width:100%;height:220px}
+    .forecastMetricBar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+    .forecastLegend{display:flex;flex-wrap:wrap;gap:14px;color:var(--muted);font-size:12px;margin-top:7px}
+    .forecastLegend b{display:inline-block;width:11px;height:11px;border-radius:99px;margin-right:6px}
+    .forecastSummary{display:flex;flex-direction:column;gap:12px;justify-content:center}
+    .forecastSummaryUnit{border-radius:13px;background:color-mix(in srgb,var(--panel2) 58%,transparent);padding:13px}
+    .forecastSummaryLabel{font-size:12px;color:var(--muted)}
+    .forecastSummaryValue{font-size:20px;line-height:1.4;font-weight:800;font-variant-numeric:tabular-nums}
+    .forecastSource{font-size:12px;color:var(--muted);margin-top:15px;line-height:1.55}
+    .forecastSource a{color:var(--theme-1);text-decoration:underline;text-underline-offset:2px}
+    .forecastError{background:var(--notice-bg);color:var(--notice-text);border:1px solid var(--notice-border);padding:14px;border-radius:11px;font-size:13px}
+    @media(max-width:1000px){.forecastDetails{grid-template-columns:1fr}.forecastSummary{flex-direction:row}.forecastSummaryUnit{flex:1}}
+    @media(max-width:620px){.forecastCards{grid-auto-columns:minmax(205px,79%)}.forecastFilter button{padding:9px 10px;font-size:12px}.forecastSummary{flex-direction:column}.forecastDay{padding:15px}.forecastTitle .forecastEmblem{width:43px;height:43px}}
   </style>
 </head>
 <body>
 <header>
   <div class="wrap head">
-    <a class="brand" href="#top">
-      <span class="logo" id="brandIcon">🌦️</span>
-      <span>
-        <b>Weerstation Jubbega</b>
-        <small>Actueel lokaal weer · Friesland</small>
-      </span>
-    </a>
-    <nav class="nav">
-      <a href="#actueel">Actueel</a>
-      <a href="#historie">Historie</a>
-      <a href="#over">Over station</a>
-    </nav>
-    <div class="headright">
-      <span class="seasonpill" id="seasonpill">🌦️ Thema: automatisch</span>
-      <span class="tag" id="status">Verbinding maken…</span>
-    </div>
+    <a class="brand" href="#top"><span class="logo logoBadge"><img src="/logo.svg" width="48" height="48" alt="" class="brandLogo"><span id="brandSeasonIcon" class="brandSeasonIcon" aria-hidden="true">🌦️</span></span><span><b>Weerstation Jubbega</b><small>Actueel lokaal weer · Friesland</small></span></a>
+    <nav class="nav"><a href="#actueel">Actueel</a><a href="#forecast">Verwachting</a><a href="#historie">Historie</a><a href="#over">Over station</a></nav>
+    <div class="headright"><span class="seasonpill" id="seasonpill">🌦️ Thema: automatisch</span><span class="tag" id="status">Verbinding maken…</span></div>
   </div>
 </header>
-
 <main id="top" class="wrap">
   <section class="hero">
+    <div class="seasonParticles" id="seasonParticles" aria-hidden="true"></div>
     <div>
       <div class="eyebrow">Persoonlijk weerstation · IJUBBE7</div>
       <h1>Het weer in <span>Jubbega.</span></h1>
@@ -268,13 +225,7 @@
     <div class="heroaside">
       <div class="stamp">Laatst gemeten<strong id="lastupdate">Nog niet geladen</strong><span id="mode">Station IJUBBE7</span></div>
       <div class="seasonbox">
-        <div class="seasonboxhead">
-          <div>
-            <strong>Seizoenthema</strong><br>
-            <span id="seasonText">Automatisch thema op basis van de maand</span>
-          </div>
-          <span id="seasonEmoji" aria-hidden="true">🌦️</span>
-        </div>
+        <div class="seasonboxhead"><div><strong>Seizoenthema</strong><br><span id="seasonText">Automatisch thema op basis van de maand</span></div><span id="seasonEmoji" aria-hidden="true">🌦️</span></div>
         <div class="themerow">
           <label class="themelabel" for="themeSelect">Kies een thema</label>
           <select class="select" id="themeSelect" aria-label="Kies een seizoenthema">
@@ -285,615 +236,187 @@
             <option value="autumn">Herfst</option>
           </select>
           <div class="themehint">Automatisch gebruikt: winter (dec-feb), lente (mrt-jun), zomer (jul-sep) en herfst (okt-nov).</div>
+          <label class="themelabel" for="dayNightSelect">Dag- en nachtweergave</label>
+          <select class="select" id="dayNightSelect" aria-label="Kies dag- of nachtweergave">
+            <option value="auto">Automatisch met de zon</option>
+            <option value="day">Altijd dagweergave</option>
+            <option value="night">Altijd nachtweergave</option>
+          </select>
+        </div>
+        <div class="seasonart">
+          <div class="seasonarttitle" id="seasonArtTitle">Seizoensdetails</div>
+          <div class="seasonartdesc" id="seasonArtDesc">Decoratieve elementen veranderen mee met het seizoen.</div>
+          <div class="seasonicons" id="seasonIcons"></div>
         </div>
       </div>
     </div>
   </section>
-
   <section id="actueel">
     <div class="grid" id="tiles"></div>
     <div class="notice" id="demowarning" hidden role="status"></div>
   </section>
-
-  <section id="historie" class="section">
-    <div class="sectiontitle">
-      <div>
-        <h2>📈 Historische meetgegevens</h2>
-        <div class="hint">Kies een dag en selecteer de lijnen die je wilt vergelijken. Actuele metingen blijven bovenaan staan.</div>
-      </div>
-      <span class="hint" id="daylabel"></span>
+  <section class="section atmosphereGrid" aria-label="Weersituatie en zon en maan">
+    <div class="panel conditionPanel">
+      <div class="conditionPanelHead"><div><h2>🌤️ Weerbeeld in Jubbega</h2><p class="hint">Regionale omstandigheden naast de metingen van je eigen station</p></div><span class="timePill" id="dayNightTag">◷ Laden…</span></div>
+      <div class="conditionBody"><span class="weatherGlyph" id="weatherGlyph" aria-hidden="true">🌤️</span><div><div class="conditionName" id="conditionName">Weerbeeld ophalen…</div><div class="hint" id="conditionDetail">Regionaal weerbeeld wordt geladen</div></div></div>
+      <div class="conditionFooter"><span>Live metingen: Weather Underground IJUBBE7</span><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Weerbeeld: Open-Meteo ↗</a></div>
     </div>
+    <div class="panel sunMoonPanel">
+      <h2>🌅 Zon en maan</h2>
+      <p class="hint">Tijden in Jubbega (Nederlandse tijd)</p>
+      <div class="sunTimes"><div class="sunTime"><span>🌅 Zonsopkomst</span><strong id="sunrise">—</strong></div><div class="sunTime"><span>🌇 Zonsondergang</span><strong id="sunset">—</strong></div></div>
+      <div class="dayLength" id="dayLength">Daglengte wordt berekend…</div>
+      <div class="moonRow"><span class="moonGlyph" id="moonGlyph" aria-hidden="true">🌙</span><div><strong id="moonName">Maanfase berekenen…</strong><span id="moonIllumination">—</span></div></div>
+      <p class="moonNote">Maanfase en tijden zijn astronomische benaderingen.</p>
+    </div>
+  </section>
+  <section class="section twocol">
     <div class="panel">
-      <div class="historybar">
-        <div class="dategroup">
-          <button class="btn" id="prev" title="Vorige dag">❮</button>
-          <input class="dateinput" type="date" id="date">
-          <button class="btn" id="next" title="Volgende dag">❯</button>
+      <h2>🧭 Windroos</h2>
+      <div class="hint">Actuele windrichting en windsnelheid van het station</div>
+      <div class="windroseWrap">
+        <div class="windrose" aria-label="Windroos actuele windrichting">
+          <div class="diag1"></div><div class="diag2"></div>
+          <span class="dir n">N</span><span class="dir o">O</span><span class="dir z">Z</span><span class="dir w">W</span>
+          <div class="needle" id="needle"></div>
+          <div class="centerDot"></div>
         </div>
-        <div class="quick">
-          <button class="btn" id="today">Vandaag</button>
-          <button class="btn" id="yesterday">Gisteren</button>
-          <button class="btn" id="week">7 dagen</button>
+        <div class="winddata">
+          <div class="windbig" id="windDirectionLabel">—</div>
+          <div class="windsub" id="windDirectionText">Windrichting nog niet geladen</div>
+          <div class="miniFacts">
+            <div class="miniFact"><span>Windsnelheid</span><strong id="windSpeedCard">—</strong></div>
+            <div class="miniFact"><span>Windstoten</span><strong id="windGustCard">—</strong></div>
+            <div class="miniFact"><span>Richting in graden</span><strong id="windDegreesCard">—</strong></div>
+            <div class="miniFact"><span>Laatste status</span><strong id="windLiveCard" style="font-size:18px">—</strong></div>
+          </div>
         </div>
       </div>
-      <div class="chartheader">
+    </div>
+    <div class="stack">
+      <div class="panel">
+        <h2>🌧️ Regenoverzicht</h2>
+        <div class="hint">Vandaag en in de gekozen historische periode</div>
+        <div class="miniFacts">
+          <div class="miniFact"><span>Regen vandaag</span><strong id="rainToday">—</strong></div>
+          <div class="miniFact"><span>Neerslag nu</span><strong id="rainNow">—</strong></div>
+          <div class="miniFact"><span>Totaal geselecteerde periode</span><strong id="rainPeriod">—</strong></div>
+          <div class="miniFact"><span>Hoogste neerslagintensiteit</span><strong id="rainPeak">—</strong></div>
+        </div>
+        <div class="rainbar" aria-hidden="true"><span id="rainFill"></span></div>
+        <p class="hint rainNote">De balk toont neerslag tot 10 mm (en meer); de waarden hierboven zijn gemeten door IJUBBE7.</p>
+        <div class="radarActions"><a class="radarButton" href="https://www.buienradar.nl/nederland/neerslag/buienradar/" target="_blank" rel="noopener noreferrer">🌧️ Open Buienradar <span aria-hidden="true">↗</span></a><a class="radarSecondary" href="https://www.weeronline.nl/regenradar/Jubbega/4056828" target="_blank" rel="noopener noreferrer">Regenradar Jubbega ↗</a></div>
+      </div>
+      <div class="panel" id="over">
+        <h2>📡 Over dit weerstation</h2>
+        <p class="hint">Dit dashboard is gemaakt voor het persoonlijke weerstation in Jubbega.</p>
+        <div class="facts"><div class="fact"><small>Station ID</small><strong>IJUBBE7</strong></div><div class="fact"><small>Stationtype</small><strong>WS-5200</strong></div><div class="fact"><small>Locatie</small><strong>Jubbega</strong></div><div class="fact"><small>Databron</small><strong style="font-size:16px">Weather Underground</strong></div></div>
+        <p style="margin-bottom:0"><a class="source" href="https://www.wunderground.com/dashboard/pws/IJUBBE7" target="_blank" rel="noopener">Bekijk bronstation ↗</a></p>
+      </div>
+    </div>
+  </section>
+  <section id="forecast" class="section" aria-label="Vijfdaagse weersverwachting">
+    <div class="forecastIntro">
+      <div class="forecastTitle">
+        <span class="forecastEmblem" aria-hidden="true">🗓️</span>
+        <div><h2>5-daagse weersverwachting</h2><div class="hint">Noordoost-Nederland · modelpunt Jubbega · ECMWF IFS en GFS</div></div>
+      </div>
+      <div class="forecastToolbar">
+        <div class="forecastFilter" role="group" aria-label="Weermodel selecteren">
+          <button type="button" id="forecastBoth" aria-pressed="true">Beide</button>
+          <button type="button" id="forecastECMWF" aria-pressed="false">ECMWF</button>
+          <button type="button" id="forecastGFS" aria-pressed="false">GFS</button>
+        </div>
+        <button type="button" class="btn" id="forecastRefresh" title="Voorspelling opnieuw ophalen">↻ Verversen</button>
+      </div>
+    </div>
+    <div class="panel" aria-live="off">
+      <p id="forecastStatus" class="forecastStatus" role="status">De vijfdaagse verwachting wordt opgehaald…</p>
+      <div id="forecastError" class="forecastError" role="alert" hidden></div>
+      <div class="forecastCards" id="forecastCards" aria-label="Voorspelling per dag en weermodel"></div>
+      <div class="forecastDetails" id="forecastDetails" hidden>
         <div>
-          <h3 id="charttitle">Temperatuur</h3>
-          <div class="hint" id="chartdesc">Temperatuur, gevoelstemperatuur en dauwpunt</div>
+          <div class="forecastMetricBar">
+            <h3 id="forecastChartTitle">Maximumtemperatuur per model</h3>
+            <select id="forecastMetric" class="select" aria-label="Selecteer voorspellingsgrafiek">
+              <option value="temp">🌡️ Maximumtemperatuur</option>
+              <option value="rain">🌧️ Neerslag per dag</option>
+            </select>
+          </div>
+          <div class="forecastChartShell"><svg id="forecastChart" viewBox="0 0 650 220" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Grafiek van de voorspelde waarden per model"></svg></div>
+          <div class="forecastLegend" id="forecastLegend"></div>
         </div>
-        <select class="select" id="category" aria-label="Kies grafiektype">
-          <option value="temp">🌡 Temperatuur</option>
-          <option value="wind">💨 Wind</option>
-          <option value="rain">💧 Neerslag</option>
-          <option value="pressure">📊 Luchtdruk</option>
-          <option value="humidity">☁ Vochtigheid</option>
-        </select>
+        <div class="forecastSummary" id="forecastSummary"></div>
       </div>
+      <div class="forecastSource">Modelverwachtingen zijn <strong>voorspellingen</strong>, geen metingen van IJUBBE7. Verschillen tussen ECMWF en GFS tonen modelspreiding, geen exacte foutmarge. Bron: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a> · <a href="https://www.ecmwf.int/" target="_blank" rel="noopener noreferrer">ECMWF</a> en <a href="https://www.ncei.noaa.gov/products/weather-climate-models/global-forecast" target="_blank" rel="noopener noreferrer">NOAA GFS</a>. Gebruik voor belangrijke beslissingen ook officiële KNMI-waarschuwingen.</div>
+    </div>
+  </section>
+  <section id="historie" class="section">
+    <div class="sectiontitle"><div><h2>📈 Historische meetgegevens</h2><div class="hint">Kies een dag en selecteer de lijnen die je wilt vergelijken. Actuele metingen blijven bovenaan staan.</div></div><span class="hint" id="daylabel"></span></div>
+    <div class="panel">
+      <div class="historybar"><div class="dategroup"><button class="btn" id="prev" title="Vorige dag">❮</button><input class="dateinput" type="date" id="date"><button class="btn" id="next" title="Volgende dag">❯</button></div><div class="quick"><button class="btn" id="today">Vandaag</button><button class="btn" id="yesterday">Gisteren</button><button class="btn" id="week">7 dagen</button></div></div>
+      <div class="chartheader"><div><h3 id="charttitle">Temperatuur</h3><div class="hint" id="chartdesc">Temperatuur, gevoelstemperatuur en dauwpunt</div></div><select class="select" id="category" aria-label="Kies grafiektype"><option value="temp">🌡 Temperatuur</option><option value="wind">💨 Wind</option><option value="rain">💧 Neerslag</option><option value="pressure">📊 Luchtdruk</option><option value="humidity">☁ Vochtigheid</option></select></div>
       <div class="chips" id="chips"></div>
-      <div class="chartbox">
-        <canvas id="chart" role="img" aria-label="Interactieve grafiek van de geselecteerde weergegevens"></canvas>
-        <div id="charttip" class="charttip"></div>
-      </div>
+      <div class="chartbox"><canvas id="chart" role="img" aria-label="Interactieve grafiek van de geselecteerde weergegevens"></canvas><div id="charttip" class="charttip"></div></div>
       <div class="legend" id="legend"></div>
       <p class="hint" id="chartmessage">Beweeg met je muis over de lijnen voor de exacte meetwaarden.</p>
     </div>
   </section>
-
-  <section class="section twocol">
-    <div class="panel">
-      <h2>Dagoverzicht</h2>
-      <div class="hint">Hoogste en laagste waarden van de geselecteerde periode</div>
-      <div class="facts" id="facts"></div>
-    </div>
-    <div class="panel" id="over">
-      <h2>📡 Over dit weerstation</h2>
-      <p class="hint">Dit dashboard is gemaakt voor het persoonlijke weerstation in Jubbega.</p>
-      <div class="facts">
-        <div class="fact"><small>Station ID</small><strong>IJUBBE7</strong></div>
-        <div class="fact"><small>Stationtype</small><strong>WS-5200</strong></div>
-        <div class="fact"><small>Locatie</small><strong>Jubbega</strong></div>
-        <div class="fact"><small>Databron</small><strong style="font-size:16px">Weather Underground</strong></div>
-      </div>
-      <p style="margin-bottom:0"><a class="source" href="https://www.wunderground.com/dashboard/pws/IJUBBE7" target="_blank" rel="noopener">Bekijk bronstation ↗</a></p>
-    </div>
-  </section>
+  <section class="section"><div class="panel"><h2>Dagoverzicht</h2><div class="hint">Hoogste en laagste waarden van de geselecteerde periode</div><div class="facts" id="facts"></div></div></section>
 </main>
-
-<footer class="wrap footer">
-  <span>© <span id="year"></span> Weerstation Jubbega · Eigen lokale metingen</span>
-  <span>Ontworpen voor weerstationjubbega.nl · Data via Weather Underground</span>
-</footer>
-
+<footer class="wrap footer"><span>© <span id="year"></span> Weerstation Jubbega · Eigen lokale metingen</span><span>Metingen via Weather Underground · regionaal weerbeeld via <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></span></footer>
 <script>
-(() => {
-  'use strict';
-
-  const $ = id => document.getElementById(id);
-
-  const groups = {
-    temp: {
-      title: 'Temperatuur',
-      desc: 'Vergelijk temperatuur, gevoelstemperatuur en dauwpunt',
-      unit: '°C',
-      lines: [
-        ['temp', 'Temperatuur', '#ffbe6e'],
-        ['feels', 'Gevoelstemperatuur', '#79b6ff'],
-        ['dew', 'Dauwpunt', '#64dfb7']
-      ]
-    },
-    wind: {
-      title: 'Wind',
-      desc: 'Gemiddelde wind en maximale windstoten',
-      unit: 'km/u',
-      lines: [
-        ['wind', 'Windsnelheid', '#70c8fb'],
-        ['gust', 'Windstoten', '#ffc37d']
-      ]
-    },
-    rain: {
-      title: 'Neerslag',
-      desc: 'Neerslagintensiteit per meetmoment',
-      unit: 'mm/u',
-      lines: [
-        ['rain', 'Neerslag', '#72caff']
-      ]
-    },
-    pressure: {
-      title: 'Luchtdruk',
-      desc: 'Barometrische luchtdruk',
-      unit: 'hPa',
-      lines: [
-        ['pressure', 'Luchtdruk', '#a7a1fb']
-      ]
-    },
-    humidity: {
-      title: 'Luchtvochtigheid',
-      desc: 'Relatieve luchtvochtigheid',
-      unit: '%',
-      lines: [
-        ['humidity', 'Vochtigheid', '#7de0e6']
-      ]
-    }
-  };
-
-  const themes = {
-    winter: {
-      label: 'Winter',
-      emoji: '❄️',
-      themeColor: '#081320',
-      iconBg: '#1d4f78',
-      iconAccent: '#d9f1ff',
-      iconSun: '#8bd8ff',
-      iconCloud: '#eff8ff'
-    },
-    spring: {
-      label: 'Lente',
-      emoji: '🌸',
-      themeColor: '#13271f',
-      iconBg: '#356649',
-      iconAccent: '#f6c8da',
-      iconSun: '#8de7a1',
-      iconCloud: '#fff5fb'
-    },
-    summer: {
-      label: 'Zomer',
-      emoji: '☀️',
-      themeColor: '#0d2340',
-      iconBg: '#315e86',
-      iconAccent: '#ffd466',
-      iconSun: '#ffd466',
-      iconCloud: '#fefefe'
-    },
-    autumn: {
-      label: 'Herfst',
-      emoji: '🍂',
-      themeColor: '#261710',
-      iconBg: '#6f452e',
-      iconAccent: '#ffae69',
-      iconSun: '#f0c07d',
-      iconCloud: '#fff4eb'
-    }
-  };
-
-  const SEASON_STORAGE_KEY = 'weerstation-theme';
-
-  function nowInNL() {
-    const p = new Intl.DateTimeFormat('en-CA', {
-      timeZone: 'Europe/Amsterdam',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    }).formatToParts(new Date()).reduce((acc, part) => {
-      acc[part.type] = part.value;
-      return acc;
-    }, {});
-    return `${p.year}-${p.month}-${p.day}`;
+(()=>{'use strict';
+const groups={temp:{title:'Temperatuur',desc:'Vergelijk temperatuur, gevoelstemperatuur en dauwpunt',unit:'°C',lines:[['temp','Temperatuur','#ffbe6e'],['feels','Gevoelstemperatuur','#79b6ff'],['dew','Dauwpunt','#64dfb7']]},wind:{title:'Wind',desc:'Gemiddelde wind en maximale windstoten',unit:'km/u',lines:[['wind','Windsnelheid','#70c8fb'],['gust','Windstoten','#ffc37d']]},rain:{title:'Neerslag',desc:'Neerslagintensiteit per meetmoment',unit:'mm/u',lines:[['rain','Neerslag','#72caff']]},pressure:{title:'Luchtdruk',desc:'Barometrische luchtdruk',unit:'hPa',lines:[['pressure','Luchtdruk','#a7a1fb']]},humidity:{title:'Luchtvochtigheid',desc:'Relatieve luchtvochtigheid',unit:'%',lines:[['humidity','Vochtigheid','#7de0e6']]}};
+const themes={winter:{label:'Winter',emoji:'❄️',themeColor:'#081320',iconBg:'#1d4f78',iconAccent:'#d9f1ff',iconSun:'#8bd8ff',iconCloud:'#eff8ff',artTitle:'Winter in Jubbega',artDesc:'Koele tinten, sneeuwaccenten en winterse details geven het dashboard een frisse uitstraling.',artIcons:['❄️','☃️','🧊']},spring:{label:'Lente',emoji:'🌸',themeColor:'#13271f',iconBg:'#356649',iconAccent:'#f6c8da',iconSun:'#8de7a1',iconCloud:'#fff5fb',artTitle:'Lente in Jubbega',artDesc:'Frisse groentinten, bloesem en een luchtige voorjaarslook.',artIcons:['🌸','🌿','🐦']},summer:{label:'Zomer',emoji:'☀️',themeColor:'#0d2340',iconBg:'#315e86',iconAccent:'#ffd466',iconSun:'#ffd466',iconCloud:'#fefefe',artTitle:'Zomer in Jubbega',artDesc:'Warme zonaccenten, heldere kleuren en een zomers karakter.',artIcons:['☀️','🌤️','🌻']},autumn:{label:'Herfst',emoji:'🍂',themeColor:'#261710',iconBg:'#6f452e',iconAccent:'#ffae69',iconSun:'#f0c07d',iconCloud:'#fff4eb',artTitle:'Herfst in Jubbega',artDesc:'Warme aardetinten, vallende bladeren en een gezellige najaarssfeer.',artIcons:['🍂','🍁','🌫️']}};
+const STORE='weerstation-theme';
+const $=id=>document.getElementById(id);
+const partsDate=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Amsterdam',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).reduce((a,p)=>(a[p.type]=p.value,a),{});
+const nowInNL=()=>{const p=partsDate();return `${p.year}-${p.month}-${p.day}`};
+const monthInNL=()=>Number(new Intl.DateTimeFormat('nl-NL',{timeZone:'Europe/Amsterdam',month:'numeric'}).format(new Date()));
+const autoSeasonByMonth=m=>[12,1,2].includes(m)?'winter':[3,4,5,6].includes(m)?'spring':[7,8,9].includes(m)?'summer':'autumn';
+const chosenTheme=()=>localStorage.getItem(STORE)||'auto';
+const activeTheme=()=>chosenTheme()==='auto'?autoSeasonByMonth(monthInNL()):chosenTheme();
+const themeText=n=>({winter:'Winterthema actief · december t/m februari',spring:'Lentethema actief · maart t/m juni',summer:'Zomerthema actief · juli t/m september',autumn:'Herfstthema actief · oktober t/m november'})[n]||'Automatisch thema';
+function faviconData(themeName){const t=themes[themeName]||themes.winter;const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${t.iconBg}"/><stop offset="100%" stop-color="${t.iconAccent}"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#g)"/><circle cx="25" cy="25" r="10" fill="${t.iconSun}" opacity="0.95"/><path d="M41 43H23c-5 0-9-3.2-9-8 0-4.1 2.8-7.1 6.6-7.8 1.7-5.6 6.3-9.2 12.1-9.2 6.8 0 12.3 4.8 13.2 11.2 3.6.8 6.1 3.8 6.1 7.5 0 4.3-3.4 7.3-11 7.3Z" fill="${t.iconCloud}"/></svg>`;return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`}
+function applyTheme(){const mode=chosenTheme();const act=activeTheme();const info=themes[act];document.documentElement.setAttribute('data-theme',act);$('themeSelect').value=mode;$('seasonEmoji').textContent=info.emoji;$('brandSeasonIcon').textContent=info.emoji;$('seasonText').textContent=mode==='auto'?themeText(act):`${info.label} handmatig gekozen`;$('seasonpill').textContent=`${info.emoji} Thema: ${mode==='auto'?`${info.label} automatisch`:info.label}`;$('metaThemeColor').setAttribute('content',info.themeColor);$('faviconLink').setAttribute('href',`/favicon-${act}.svg`);$('seasonArtTitle').textContent=info.artTitle;$('seasonArtDesc').textContent=info.artDesc;$('seasonIcons').innerHTML=info.artIcons.map(x=>`<span>${x}</span>`).join('');document.dispatchEvent(new Event('weerstation-theme'))}
+const dateISO=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+const shift=(s,n)=>{const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return dateISO(d)};
+const number=(x,d=1)=>Number.isFinite(x)?x.toLocaleString('nl-NL',{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
+const val=(...candidates)=>candidates.find(x=>typeof x==='number'&&Number.isFinite(x))??null;
+const compassName=deg=>{if(!Number.isFinite(deg))return '—';const dirs=['N','NO','O','ZO','Z','ZW','W','NW'];return dirs[Math.round((((deg%360)+360)%360)/45)%8]};
+let selectedDate=nowInNL(),scope='day',category='temp',seriesVisible={temp:new Set(['temp','feels']),wind:new Set(['wind','gust']),rain:new Set(['rain']),pressure:new Set(['pressure']),humidity:new Set(['humidity'])},readings=[],current=null,hoverIndex=-1,loadingVersion=0;
+$('date').max=nowInNL();$('date').value=selectedDate;$('year').textContent=new Date().getFullYear();
+function normalize(obs){const m=obs.metric||{},t=obs.obsTimeLocal||obs.obsTimeUtc||'';const time=String(t).replace(' ','T');return {time,label:time.slice(11,16),temp:val(m.temp,m.tempAvg),feels:val(m.windchill,m.windchillAvg,m.heatIndex,m.heatindex,m.heatindexAvg),dew:val(m.dewpt,m.dewptAvg),wind:val(m.windSpeed,m.windspeed,m.windspeedAvg),gust:val(m.windGust,m.windgust,m.windgustHigh,m.windgustAvg),rain:val(m.precipRate),rainTotal:val(m.precipTotal),pressure:val(m.pressure,m.pressureMax,m.pressureMin),humidity:val(obs.humidity,obs.humidityAvg),winddir:val(obs.winddir,obs.winddirAvg,m.winddir,m.winddirAvg),tempHigh:val(m.tempHigh,m.temp),tempLow:val(m.tempLow,m.temp),pressureMin:val(m.pressureMin,m.pressure),windgustHigh:val(m.windgustHigh,m.windGust)}}
+function showMessage(message){const el=$('demowarning');el.hidden=!message;el.textContent=message||''}
+async function getData(params){const r=await fetch('/api/weather?'+new URLSearchParams(params),{cache:'no-store'});const data=await r.json();if(!r.ok)throw Error(data.error||'API onbereikbaar');if(!Array.isArray(data.observations))throw Error('Ongeldig API-antwoord');return data.observations}
+async function loadCurrent(){try{const arr=await getData({scope:'current'});if(!arr.length)throw Error('Geen recente meting beschikbaar');current=normalize(arr[0]);window.pwsCurrentObservation=arr[0];document.dispatchEvent(new CustomEvent('weerstation-current',{detail:arr[0]}));$('status').textContent='Live verbonden';$('status').style.borderColor='#408e85';$('lastupdate').textContent=current.time.replace('T',' ').slice(0,16);$('mode').textContent='IJUBBE7 · actuele meting';showMessage('')}catch(e){current=null;$('status').textContent='Live niet beschikbaar';$('status').style.borderColor='';$('lastupdate').textContent='Geen actuele meting';$('mode').textContent='Historie kan wel beschikbaar zijn';showMessage('Actuele metingen niet beschikbaar: '+e.message+'. Historische metingen kunnen wel worden bekeken.')}renderTiles();renderWind();renderRainPanel()}
+async function load(){const id=++loadingVersion;$('chartmessage').textContent='Historische metingen ophalen…';$('charttip').style.display='none';try{const arr=await getData(scope==='week'?{scope:'week'}:{scope:'day',date:selectedDate});if(id!==loadingVersion)return;readings=arr.map(normalize).filter(x=>x.time).sort((a,b)=>a.time.localeCompare(b.time));if(!readings.length)throw Error('Geen historische metingen gevonden voor deze periode');$('chartmessage').textContent=`${readings.length} echte meetmomenten van IJUBBE7 · beweeg over de grafiek voor de waarden.`;}catch(e){if(id!==loadingVersion)return;readings=[];$('chartmessage').textContent='Geen gegevens: '+e.message;}render()}
+function metricValue(k){return current?current[k]:null}
+function renderTiles(){const vals=[['🌡️','Temperatuur',number(metricValue('temp'))+' °C','Buitenlucht'],['💨','Windsnelheid',number(metricValue('wind'))+' km/u','Windstoten: '+number(metricValue('gust'))+' km/u'],['💧','Luchtvochtigheid',number(metricValue('humidity'),0)+' %','Relatieve luchtvochtigheid'],['🔽','Luchtdruk',number(metricValue('pressure'))+' hPa','Barometer'],['🌧️','Neerslag vandaag',number(metricValue('rainTotal'))+' mm','Totale regen van vandaag'],['🌡','Gevoelstemperatuur',number(metricValue('feels'))+' °C','Berekende / gerapporteerde waarde'],['🌫️','Dauwpunt',number(metricValue('dew'))+' °C','Waterdamp in de lucht'],['🧭','Windrichting',`${compassName(metricValue('winddir'))}${Number.isFinite(metricValue('winddir'))?` · ${number(metricValue('winddir'),0)}°`:''}`,'Actuele windrichting']];$('tiles').innerHTML=vals.map(v=>`<article class="tile"><div class="topline"><span>${v[1]}</span><span class="ico">${v[0]}</span></div><div class="value">${v[2]}</div><div class="note">${v[3]}</div></article>`).join('')}
+function totalRainForReadings(){
+  const byDay=new Map();
+  for(const row of readings){
+    if(!Number.isFinite(row.rainTotal))continue;
+    const date=row.time.slice(0,10);
+    byDay.set(date,Math.max(byDay.get(date)??0,row.rainTotal));
   }
-
-  function monthInNL() {
-    return Number(new Intl.DateTimeFormat('nl-NL', {
-      timeZone: 'Europe/Amsterdam',
-      month: 'numeric'
-    }).format(new Date()));
-  }
-
-  function autoSeasonByMonth(month) {
-    if ([12,1,2].includes(month)) return 'winter';
-    if ([3,4,5,6].includes(month)) return 'spring';
-    if ([7,8,9].includes(month)) return 'summer';
-    return 'autumn';
-  }
-
-  function selectedThemeMode() {
-    return localStorage.getItem(SEASON_STORAGE_KEY) || 'auto';
-  }
-
-  function activeThemeName() {
-    const mode = selectedThemeMode();
-    return mode === 'auto' ? autoSeasonByMonth(monthInNL()) : mode;
-  }
-
-  function themeDescription(name) {
-    const map = {
-      winter: 'Winterthema actief · december t/m februari',
-      spring: 'Lentethema actief · maart t/m juni',
-      summer: 'Zomerthema actief · juli t/m september',
-      autumn: 'Herfstthema actief · oktober t/m november'
-    };
-    return map[name] || 'Automatisch thema op basis van de maand';
-  }
-
-  function buildFaviconData(themeName) {
-    const t = themes[themeName] || themes.winter;
-    const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-        <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="${t.iconBg}"/>
-            <stop offset="100%" stop-color="${t.iconAccent}"/>
-          </linearGradient>
-        </defs>
-        <rect width="64" height="64" rx="16" fill="url(#g)"/>
-        <circle cx="25" cy="25" r="10" fill="${t.iconSun}" opacity="0.95"/>
-        <path d="M41 43H23c-5 0-9-3.2-9-8 0-4.1 2.8-7.1 6.6-7.8 1.7-5.6 6.3-9.2 12.1-9.2 6.8 0 12.3 4.8 13.2 11.2 3.6.8 6.1 3.8 6.1 7.5 0 4.3-3.4 7.3-11 7.3Z" fill="${t.iconCloud}"/>
-      </svg>`;
-    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-  }
-
-  function applyTheme() {
-    const mode = selectedThemeMode();
-    const active = activeThemeName();
-    const info = themes[active];
-    document.documentElement.setAttribute('data-theme', active);
-    $('themeSelect').value = mode;
-    $('seasonEmoji').textContent = info.emoji;
-    $('brandIcon').textContent = info.emoji;
-    $('seasonText').textContent = mode === 'auto' ? themeDescription(active) : `${info.label} handmatig gekozen`;
-    $('seasonpill').textContent = `${info.emoji} Thema: ${mode === 'auto' ? `${info.label} automatisch` : info.label}`;
-    $('metaThemeColor').setAttribute('content', info.themeColor);
-    $('faviconLink').setAttribute('href', buildFaviconData(active));
-  }
-
-  const dateISO = d => [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
-  const shift = (s, n) => {
-    const d = new Date(s + 'T12:00:00');
-    d.setDate(d.getDate() + n);
-    return dateISO(d);
-  };
-  const number = (x, d=1) => Number.isFinite(x) ? x.toLocaleString('nl-NL', {
-    maximumFractionDigits: d,
-    minimumFractionDigits: d
-  }) : '—';
-  const val = (...candidates) => candidates.find(x => typeof x === 'number' && Number.isFinite(x)) ?? null;
-
-  let selectedDate = nowInNL();
-  let scope = 'day';
-  let category = 'temp';
-  let seriesVisible = {
-    temp: new Set(['temp', 'feels']),
-    wind: new Set(['wind', 'gust']),
-    rain: new Set(['rain']),
-    pressure: new Set(['pressure']),
-    humidity: new Set(['humidity'])
-  };
-  let readings = [];
-  let current = null;
-  let hoverIndex = -1;
-  let loadingVersion = 0;
-
-  $('date').max = nowInNL();
-  $('date').value = selectedDate;
-  $('year').textContent = new Date().getFullYear();
-
-  function normalize(obs) {
-    const m = obs.metric || {};
-    const t = obs.obsTimeLocal || obs.obsTimeUtc || '';
-    const time = String(t).replace(' ', 'T');
-    return {
-      time,
-      label: time.slice(11,16),
-      temp: val(m.temp, m.tempAvg),
-      feels: val(m.windchill, m.windchillAvg, m.heatIndex, m.heatindex, m.heatindexAvg),
-      dew: val(m.dewpt, m.dewptAvg),
-      wind: val(m.windSpeed, m.windspeed, m.windspeedAvg),
-      gust: val(m.windGust, m.windgust, m.windgustHigh, m.windgustAvg),
-      rain: val(m.precipRate),
-      rainTotal: val(m.precipTotal),
-      pressure: val(m.pressure, m.pressureMax, m.pressureMin),
-      humidity: val(obs.humidity, obs.humidityAvg),
-      tempHigh: val(m.tempHigh, m.temp),
-      tempLow: val(m.tempLow, m.temp),
-      pressureMin: val(m.pressureMin, m.pressure),
-      windgustHigh: val(m.windgustHigh, m.windGust)
-    };
-  }
-
-  function showMessage(message) {
-    const el = $('demowarning');
-    el.hidden = !message;
-    el.textContent = message || '';
-  }
-
-  async function getData(params) {
-    const r = await fetch('/api/weather?' + new URLSearchParams(params), { cache: 'no-store' });
-    const data = await r.json();
-    if (!r.ok) throw Error(data.error || 'API onbereikbaar');
-    if (!Array.isArray(data.observations)) throw Error('Ongeldig API-antwoord');
-    return data.observations;
-  }
-
-  async function loadCurrent() {
-    try {
-      const arr = await getData({ scope: 'current' });
-      if (!arr.length) throw Error('Geen recente meting beschikbaar');
-      current = normalize(arr[0]);
-      $('status').textContent = 'Live verbonden';
-      $('status').style.borderColor = '#408e85';
-      $('lastupdate').textContent = current.time.replace('T', ' ').slice(0,16);
-      $('mode').textContent = 'IJUBBE7 · actuele meting';
-      showMessage('');
-    } catch (e) {
-      current = null;
-      $('status').textContent = 'Live niet beschikbaar';
-      $('status').style.borderColor = '';
-      $('lastupdate').textContent = 'Geen actuele meting';
-      $('mode').textContent = 'Historie kan wel beschikbaar zijn';
-      showMessage('Actuele metingen niet beschikbaar: ' + e.message + '. Historische metingen kunnen wel worden bekeken.');
-    }
-    renderTiles();
-  }
-
-  async function load() {
-    const id = ++loadingVersion;
-    $('chartmessage').textContent = 'Historische metingen ophalen…';
-    $('charttip').style.display = 'none';
-    try {
-      const arr = await getData(scope === 'week' ? { scope: 'week' } : { scope: 'day', date: selectedDate });
-      if (id !== loadingVersion) return;
-      readings = arr.map(normalize).filter(x => x.time).sort((a,b) => a.time.localeCompare(b.time));
-      if (!readings.length) throw Error('Geen historische metingen gevonden voor deze periode');
-      $('chartmessage').textContent = `${readings.length} echte meetmomenten van IJUBBE7 · beweeg over de grafiek voor de waarden.`;
-    } catch (e) {
-      if (id !== loadingVersion) return;
-      readings = [];
-      $('chartmessage').textContent = 'Geen gegevens: ' + e.message;
-    }
-    render();
-  }
-
-  function metricValue(k) {
-    return current ? current[k] : null;
-  }
-
-  function renderTiles() {
-    const vals = [
-      ['🌡️', 'Temperatuur', number(metricValue('temp')) + ' °C', 'Buitenlucht'],
-      ['💨', 'Windsnelheid', number(metricValue('wind')) + ' km/u', 'Windstoten: ' + number(metricValue('gust')) + ' km/u'],
-      ['💧', 'Luchtvochtigheid', number(metricValue('humidity'), 0) + ' %', 'Relatieve luchtvochtigheid'],
-      ['🔽', 'Luchtdruk', number(metricValue('pressure')) + ' hPa', 'Barometer'],
-      ['🌧️', 'Neerslagintensiteit', number(metricValue('rain')) + ' mm/u', 'Neerslag per uur'],
-      ['🌡', 'Gevoelstemperatuur', number(metricValue('feels')) + ' °C', 'Berekende / gerapporteerde waarde'],
-      ['🌫️', 'Dauwpunt', number(metricValue('dew')) + ' °C', 'Waterdamp in de lucht'],
-      ['🌬️', 'Windstoten', number(metricValue('gust')) + ' km/u', 'Actuele windstoot']
-    ];
-    $('tiles').innerHTML = vals.map(v => `
-      <article class="tile">
-        <div class="topline"><span>${v[1]}</span><span class="ico">${v[0]}</span></div>
-        <div class="value">${v[2]}</div>
-        <div class="note">${v[3]}</div>
-      </article>`).join('');
-  }
-
-  function renderFacts() {
-    const specs = [
-      ['Maximumtemperatuur', 'tempHigh', 'max', '°C'],
-      ['Minimumtemperatuur', 'tempLow', 'min', '°C'],
-      ['Hoogste windstoot', 'windgustHigh', 'max', 'km/u'],
-      ['Laagste luchtdruk', 'pressureMin', 'min', 'hPa']
-    ];
-    $('facts').innerHTML = specs.map(([name,key,op,unit]) => {
-      const nums = readings.map(r => r[key]).filter(Number.isFinite);
-      return `<div class="fact"><small>${name}</small><strong>${nums.length ? number(op === 'max' ? Math.max(...nums) : Math.min(...nums)) : '—'} ${unit}</strong></div>`;
-    }).join('');
-  }
-
-  function renderChips() {
-    const g = groups[category];
-    $('charttitle').textContent = g.title;
-    $('chartdesc').textContent = g.desc;
-    $('chips').innerHTML = g.lines.map(([k,l,c]) => `
-      <button class="chip ${seriesVisible[category].has(k) ? 'on' : ''}" style="--color:${c}" data-key="${k}" aria-pressed="${seriesVisible[category].has(k)}">
-        <span class="dot"></span>${l}
-      </button>`).join('');
-    $('chips').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
-      const s = seriesVisible[category];
-      const key = btn.dataset.key;
-      if (s.has(key)) s.delete(key); else s.add(key);
-      renderChips();
-      draw();
-    }));
-    $('legend').innerHTML = g.lines.filter(v => seriesVisible[category].has(v[0])).map(v => `<span style="--color:${v[2]}">${v[1]}</span>`).join('');
-  }
-
-  function draw() {
-    const c = $('chart');
-    const rect = c.getBoundingClientRect();
-    const w = Math.max(300, rect.width);
-    const h = rect.height || 310;
-    const ratio = window.devicePixelRatio || 1;
-    c.width = Math.floor(w * ratio);
-    c.height = Math.floor(h * ratio);
-    const ctx = c.getContext('2d');
-    ctx.scale(ratio, ratio);
-    ctx.clearRect(0,0,w,h);
-
-    const g = groups[category];
-    const lines = g.lines.filter(([key]) => seriesVisible[category].has(key));
-    const left = 49, right = 19, top = 22, bottom = 38;
-    const plotW = w - left - right;
-    const plotH = h - top - bottom;
-    const values = lines.flatMap(([k]) => readings.map(r => r[k]).filter(Number.isFinite));
-
-    ctx.font = '12px system-ui';
-    ctx.textBaseline = 'middle';
-
-    if (!values.length) {
-      ctx.fillStyle = '#a5bacf';
-      ctx.fillText(readings.length ? 'Geen meetwaarden voor deze selectie.' : 'Geen historische metingen beschikbaar.', left + 10, h / 2);
-      return;
-    }
-
-    let min = Math.min(...values), max = Math.max(...values);
-    const pad = Math.max((max - min) * .16, .8);
-    min -= pad; max += pad;
-    if (category === 'humidity') {
-      min = Math.max(0, min);
-      max = Math.min(100, max);
-    }
-    if (category === 'rain') min = 0;
-
-    const x = i => left + i * plotW / Math.max(readings.length - 1, 1);
-    const y = v => top + plotH - (v - min) / (max - min) * plotH;
-
-    for (let i = 0; i <= 4; i++) {
-      const yy = top + i * plotH / 4;
-      ctx.strokeStyle = 'rgba(160,185,208,.28)';
-      ctx.setLineDash([3,5]);
-      ctx.beginPath();
-      ctx.moveTo(left, yy);
-      ctx.lineTo(w - right, yy);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = '#8fa9c0';
-      ctx.textAlign = 'right';
-      ctx.fillText(number(max - (max - min) * i / 4, category === 'humidity' ? 0 : 1), left - 9, yy);
-    }
-
-    ctx.textAlign = 'center';
-    const ticks = Math.min(6, readings.length);
-    for (let i = 0; i < ticks; i++) {
-      const idx = Math.round(i * (readings.length - 1) / Math.max(ticks - 1, 1));
-      const r = readings[idx];
-      const lbl = scope === 'week' ? r.time.slice(5,10) : r.label;
-      ctx.fillStyle = '#8fa9c0';
-      ctx.fillText(lbl, x(idx), h - 17);
-    }
-
-    lines.forEach(([key, , color]) => {
-      ctx.beginPath();
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 2.6;
-      ctx.lineJoin = 'round';
-      let started = false;
-      readings.forEach((r, i) => {
-        const v = r[key];
-        if (!Number.isFinite(v)) {
-          started = false;
-          return;
-        }
-        if (!started) {
-          ctx.moveTo(x(i), y(v));
-          started = true;
-        } else {
-          ctx.lineTo(x(i), y(v));
-        }
-      });
-      ctx.stroke();
-    });
-
-    if (hoverIndex >= 0 && hoverIndex < readings.length) {
-      const xx = x(hoverIndex);
-      ctx.strokeStyle = 'rgba(255,255,255,.5)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(xx, top);
-      ctx.lineTo(xx, top + plotH);
-      ctx.stroke();
-      lines.forEach(([key, , color]) => {
-        const v = readings[hoverIndex][key];
-        if (!Number.isFinite(v)) return;
-        ctx.beginPath();
-        ctx.arc(xx, y(v), 4, 0, Math.PI * 2);
-        ctx.fillStyle = color;
-        ctx.fill();
-        ctx.strokeStyle = '#0d1e30';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      });
-    }
-
-    c._draw = { left, plotW };
-  }
-
-  function render() {
-    renderTiles();
-    renderFacts();
-    renderChips();
-    $('daylabel').textContent = scope === 'week' ? 'Afgelopen 7 dagen' : selectedDate;
-    $('date').value = selectedDate;
-    $('next').disabled = selectedDate >= nowInNL();
-    $('week').classList.toggle('active', scope === 'week');
-    hoverIndex = -1;
-    draw();
-  }
-
-  $('chart').addEventListener('mousemove', e => {
-    const canvas = $('chart');
-    const box = canvas.getBoundingClientRect();
-    const x = e.clientX - box.left;
-    const pos = canvas._draw;
-    if (!pos) return;
-    hoverIndex = Math.max(0, Math.min(readings.length - 1, Math.round((x - pos.left) / pos.plotW * (readings.length - 1))));
-    const r = readings[hoverIndex];
-    if (!r) return;
-    const g = groups[category];
-    const vals = g.lines.filter(v => seriesVisible[category].has(v[0])).map(([key, label]) => `${label}: ${Number.isFinite(r[key]) ? number(r[key]) : '—'} ${g.unit}`);
-    const tip = $('charttip');
-    tip.textContent = (scope === 'week' ? r.time.slice(0,10) + ' ' : '') + r.label + '\n' + vals.join('\n');
-    tip.style.display = 'block';
-    tip.style.left = Math.min(Math.max(5, x + 14), Math.max(5, box.width - 190)) + 'px';
-    tip.style.top = '15px';
-    draw();
-  });
-  $('chart').addEventListener('mouseleave', () => {
-    hoverIndex = -1;
-    $('charttip').style.display = 'none';
-    draw();
-  });
-  window.addEventListener('resize', draw);
-
-  $('category').addEventListener('change', e => {
-    category = e.target.value;
-    hoverIndex = -1;
-    $('charttip').style.display = 'none';
-    renderChips();
-    draw();
-  });
-  $('date').addEventListener('change', e => {
-    if (e.target.value) {
-      selectedDate = e.target.value;
-      scope = 'day';
-      load();
-    }
-  });
-  $('prev').addEventListener('click', () => {
-    selectedDate = shift(selectedDate, -1);
-    scope = 'day';
-    load();
-  });
-  $('next').addEventListener('click', () => {
-    if (selectedDate < nowInNL()) {
-      selectedDate = shift(selectedDate, 1);
-      scope = 'day';
-      load();
-    }
-  });
-  $('today').addEventListener('click', () => {
-    selectedDate = nowInNL();
-    scope = 'day';
-    load();
-  });
-  $('yesterday').addEventListener('click', () => {
-    selectedDate = shift(nowInNL(), -1);
-    scope = 'day';
-    load();
-  });
-  $('week').addEventListener('click', () => {
-    selectedDate = nowInNL();
-    scope = 'week';
-    load();
-  });
-
-  $('themeSelect').addEventListener('change', e => {
-    localStorage.setItem(SEASON_STORAGE_KEY, e.target.value);
-    applyTheme();
-  });
-
-  applyTheme();
-  loadCurrent();
-  load();
-  setInterval(loadCurrent, 5 * 60 * 1000);
+  if(!byDay.size)return null;
+  return scope==='week'?[...byDay.values()].reduce((sum,amount)=>sum+amount,0):Math.max(...byDay.values());
+}
+function peakRainRate(){const nums=readings.map(r=>r.rain).filter(Number.isFinite);return nums.length?Math.max(...nums):null}
+function renderFacts(){const specs=[['Maximumtemperatuur','tempHigh','max','°C'],['Minimumtemperatuur','tempLow','min','°C'],['Hoogste windstoot','windgustHigh','max','km/u'],['Laagste luchtdruk','pressureMin','min','hPa'],['Totale neerslag','rainTotalCalc','special','mm']];$('facts').innerHTML=specs.map(([name,key,op,unit])=>{let valNum=null;if(key==='rainTotalCalc'){valNum=totalRainForReadings()}else{const nums=readings.map(r=>r[key]).filter(Number.isFinite);valNum=nums.length?(op==='max'?Math.max(...nums):Math.min(...nums)):null}return `<div class="fact"><small>${name}</small><strong>${Number.isFinite(valNum)?number(valNum):'—'} ${unit}</strong></div>`}).join('')}
+function renderWind(){const deg=metricValue('winddir');const dir=compassName(deg);$('needle').style.transform=`translate(-50%,-50%) rotate(${Number.isFinite(deg)?deg:0}deg)`;$('windDirectionLabel').textContent=dir;$('windDirectionText').textContent=Number.isFinite(deg)?`Wind uit ${dir} (${number(deg,0)}°)`:'Windrichting niet beschikbaar';$('windSpeedCard').textContent=Number.isFinite(metricValue('wind'))?`${number(metricValue('wind'))} km/u`:'—';$('windGustCard').textContent=Number.isFinite(metricValue('gust'))?`${number(metricValue('gust'))} km/u`:'—';$('windDegreesCard').textContent=Number.isFinite(deg)?`${number(deg,0)}°`:'—';$('windLiveCard').textContent=current?'Live':'Geen live'}
+function renderRainPanel(){const today=metricValue('rainTotal');const now=metricValue('rain');const period=totalRainForReadings();const peak=peakRainRate();$('rainToday').textContent=Number.isFinite(today)?`${number(today)} mm`:'—';$('rainNow').textContent=Number.isFinite(now)?`${number(now)} mm/u`:'—';$('rainPeriod').textContent=Number.isFinite(period)?`${number(period)} mm`:'—';$('rainPeak').textContent=Number.isFinite(peak)?`${number(peak)} mm/u`:'—';const fill=Math.max(0,Math.min(100,(Number.isFinite(period)?period:0)*10));$('rainFill').style.width=fill+'%'}
+function renderChips(){const g=groups[category];$('charttitle').textContent=g.title;$('chartdesc').textContent=g.desc;$('chips').innerHTML=g.lines.map(([k,l,c])=>`<button class="chip ${seriesVisible[category].has(k)?'on':''}" style="--color:${c}" data-key="${k}" aria-pressed="${seriesVisible[category].has(k)}"><span class="dot"></span>${l}</button>`).join('');$('chips').querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{const s=seriesVisible[category],key=btn.dataset.key;if(s.has(key))s.delete(key);else s.add(key);renderChips();draw()}));$('legend').innerHTML=g.lines.filter(v=>seriesVisible[category].has(v[0])).map(v=>`<span style="--color:${v[2]}">${v[1]}</span>`).join('')}
+function draw(){const c=$('chart'),rect=c.getBoundingClientRect(),w=Math.max(300,rect.width),h=rect.height||310,ratio=window.devicePixelRatio||1;c.width=Math.floor(w*ratio);c.height=Math.floor(h*ratio);const ctx=c.getContext('2d');ctx.scale(ratio,ratio);ctx.clearRect(0,0,w,h);const g=groups[category],lines=g.lines.filter(([key])=>seriesVisible[category].has(key));const left=49,right=19,top=22,bottom=38,plotW=w-left-right,plotH=h-top-bottom;const values=lines.flatMap(([k])=>readings.map(r=>r[k]).filter(Number.isFinite));ctx.font='12px system-ui';ctx.textBaseline='middle';if(!values.length){ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--muted').trim()||'#a5bacf';ctx.fillText(readings.length?'Geen meetwaarden voor deze selectie.':'Geen historische metingen beschikbaar.',left+10,h/2);return}let min=Math.min(...values),max=Math.max(...values);let pad=Math.max((max-min)*.16,.8);min-=pad;max+=pad;if(category==='humidity'){min=Math.max(0,min);max=Math.min(100,max)}if(category==='rain')min=0;const x=i=>left+i*plotW/Math.max(readings.length-1,1),y=v=>top+plotH-(v-min)/(max-min)*plotH;for(let i=0;i<=4;i++){const yy=top+i*plotH/4;ctx.strokeStyle='rgba(160,185,208,.28)';ctx.setLineDash([3,5]);ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(w-right,yy);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--muted').trim()||'#8fa9c0';ctx.textAlign='right';ctx.fillText(number(max-(max-min)*i/4,category==='humidity'?0:1),left-9,yy)}ctx.textAlign='center';let ticks=Math.min(6,readings.length);for(let i=0;i<ticks;i++){const idx=Math.round(i*(readings.length-1)/Math.max(ticks-1,1));let r=readings[idx];let lbl=scope==='week'?r.time.slice(5,10):r.label;ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--muted').trim()||'#8fa9c0';ctx.fillText(lbl,x(idx),h-17)}lines.forEach(([key,,color])=>{ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2.6;ctx.lineJoin='round';let started=false;readings.forEach((r,i)=>{let v=r[key];if(!Number.isFinite(v)){started=false;return}if(!started){ctx.moveTo(x(i),y(v));started=true}else ctx.lineTo(x(i),y(v))});ctx.stroke()});if(hoverIndex>=0&&hoverIndex<readings.length){const xx=x(hoverIndex);ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(xx,top);ctx.lineTo(xx,top+plotH);ctx.stroke();lines.forEach(([key,,color])=>{const v=readings[hoverIndex][key];if(!Number.isFinite(v))return;ctx.beginPath();ctx.arc(xx,y(v),4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#0d1e30';ctx.lineWidth=2;ctx.stroke()})}c._draw={left,plotW}}
+function render(){renderTiles();renderFacts();renderWind();renderRainPanel();renderChips();$('daylabel').textContent=scope==='week'?'Afgelopen 7 dagen':selectedDate;$('date').value=selectedDate;$('next').disabled=selectedDate>=nowInNL();$('week').classList.toggle('active',scope==='week');hoverIndex=-1;draw()}
+$('chart').addEventListener('mousemove',e=>{const canvas=$('chart'),box=canvas.getBoundingClientRect(),x=e.clientX-box.left,pos=canvas._draw;if(!pos)return;hoverIndex=Math.max(0,Math.min(readings.length-1,Math.round((x-pos.left)/pos.plotW*(readings.length-1))));const r=readings[hoverIndex];if(!r)return;const g=groups[category],vals=g.lines.filter(v=>seriesVisible[category].has(v[0])).map(([key,label])=>`${label}: ${Number.isFinite(r[key])?number(r[key]):'—'} ${g.unit}`);const tip=$('charttip');tip.textContent=(scope==='week'?r.time.slice(0,10)+' ':'')+r.label+'\n'+vals.join('\n');tip.style.display='block';tip.style.left=Math.min(Math.max(5,x+14),Math.max(5,box.width-190))+'px';tip.style.top='15px';draw()});$('chart').addEventListener('mouseleave',()=>{hoverIndex=-1;$('charttip').style.display='none';draw()});window.addEventListener('resize',draw);
+$('category').addEventListener('change',e=>{category=e.target.value;hoverIndex=-1;$('charttip').style.display='none';renderChips();draw()});$('date').addEventListener('change',e=>{if(e.target.value){selectedDate=e.target.value;scope='day';load()}});$('prev').addEventListener('click',()=>{selectedDate=shift(selectedDate,-1);scope='day';load()});$('next').addEventListener('click',()=>{if(selectedDate<nowInNL()){selectedDate=shift(selectedDate,1);scope='day';load()}});$('today').addEventListener('click',()=>{selectedDate=nowInNL();scope='day';load()});$('yesterday').addEventListener('click',()=>{selectedDate=shift(nowInNL(),-1);scope='day';load()});$('week').addEventListener('click',()=>{selectedDate=nowInNL();scope='week';load()});$('themeSelect').addEventListener('change',e=>{localStorage.setItem(STORE,e.target.value);applyTheme()});
+applyTheme();loadCurrent();load();setInterval(loadCurrent,5*60*1000);
 })();
 </script>
+<script src="/extras.js" defer></script>
+<script src="/forecast.js" defer></script>
 </body>
 </html>
