@@ -297,7 +297,7 @@
     } else {
       lines.push('De regionale modelverwachting is tijdelijk niet beschikbaar. De actuele metingen blijven zichtbaar.');
     }
-    $('outlookNarrative').textContent = lines.join(' ');
+    if (!document.getElementById('outlookTextToday')) $('outlookNarrative').textContent = lines.join(' ');
   }
   function onCurrent(event) {
     stationObservation = event.detail;

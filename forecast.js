@@ -43,6 +43,21 @@
     return Number.isFinite(v) ? `${format(v,1)} ${unit}` : '—';
   }
 
+  // Blauw wanneer sneeuw mogelijk/voorspeld is; groen wanneer gegevens geen
+  // sneeuwsignaal aangeven; neutraal wanneer sneeuwgegevens ontbreken.
+  function snowStatusHtml(day) {
+    const signal=String(day.snowSignal || '').trim();
+    const modelSnow=Number.isFinite(day.snowfall) && day.snowfall>0.05;
+    const snowCode=[71,73,75,77,85,86].includes(day.weatherCode);
+    const alert=modelSnow || snowCode || /sneeuw mogelijk|sneeuw voorspeld/i.test(signal);
+    const unknown=!alert && (!signal || /niet beschikbaar/i.test(signal));
+    const state=alert?'snowAlert':unknown?'snowUnknown':'snowClear';
+    const label=alert ? (signal && !/geen sneeuw/i.test(signal) ? signal : 'Sneeuwsignaal') : unknown ? 'Sneeuwgegevens niet beschikbaar' : 'Geen sneeuwsignaal';
+    const icon=alert?'❄️':unknown?'○':'✅';
+    return `<div class="forecastSnow ${state}">${icon} <strong>${label}</strong>${Number.isFinite(day.snowfall)&&alert ? ` · ${format(day.snowfall,1)} cm model-sneeuw` : ''}
+    ${alert && Number.isFinite(day.snowPrecipChance) ? `<small>Neerslagkans tijdens mogelijke sneeuwuren: ${format(day.snowPrecipChance)}% (niet de sneeuwkans)</small>` : ''}</div>`;
+  }
+
   function createModelBlock(key, day) {
     return `<div class="forecastModel">
       <div class="forecastModelHead"><span class="forecastModelTag ${key}">● ${LABELS[key]}</span><span>max / min</span></div>
@@ -50,8 +65,7 @@
       <div class="forecastMeta">💧 Regen/neerslag: ${summaryValue(day.precipitation,'mm')}</div>
       <div class="forecastMeta">💨 Wind: ${summaryValue(day.wind,'km/u')} · stoten ${summaryValue(day.gust,'km/u')}</div>
       <div class="forecastMeta">🌫️ Gem. dauwpunt: ${summaryValue(day.dewPoint,'°C')}</div>
-      <div class="forecastSnow">❄️ <strong>${day.snowSignal || 'Geen sneeuwindicatie'}</strong>${Number.isFinite(day.snowfall)?` · ${format(day.snowfall,1)} cm model-sneeuw`:''}
-      ${Number.isFinite(day.snowPrecipChance)?`<small>Neerslagkans in mogelijke sneeuwuren: ${format(day.snowPrecipChance)}% (niet de sneeuwkans)</small>`:''}</div>
+      ${snowStatusHtml(day)}
     </div>`;
   }
 
