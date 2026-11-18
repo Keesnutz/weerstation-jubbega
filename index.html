@@ -1,55 +1,899 @@
 <!doctype html>
-<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#081523"><meta name="description" content="Weerstation Jubbega | Lokale weersmetingen, grafieken en historie"><title>Weerstation Jubbega — Live weer & historie</title>
-<style>
-:root{color-scheme:dark;--bg:#081320;--panel:#122439;--panel2:#182e46;--line:#2a425b;--text:#f0f7ff;--muted:#98afc6;--teal:#6ce4d8;--orange:#ffbf71;--blue:#80b6ff;--red:#fb818b}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse 100% 50% at 80% -10%,#1b3d5e,transparent 70%),var(--bg);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text)}.wrap{max-width:1220px;padding:0 23px;margin:auto}header{border-bottom:1px solid #ffffff15}.head{display:flex;align-items:center;justify-content:space-between;min-height:80px;gap:15px}.brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:inherit}.logo{display:grid;place-items:center;width:47px;height:47px;border-radius:14px;background:#1d4357;font-size:28px}.brand b{font-size:19px;letter-spacing:-.5px}.brand small{display:block;color:var(--muted);font-size:12px}.nav{display:flex;gap:24px}.nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:13px}.nav a:hover{color:#fff}.tag{border:1px solid #45627d;padding:6px 12px;border-radius:30px;font-size:12px;color:#d6e8ff}.tag:before{content:'●';color:#f9bf66;margin-right:7px}.hero{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:43px 0 26px}.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800;color:var(--teal)}h1{font-size:clamp(33px,5vw,58px);line-height:1.1;letter-spacing:-2.1px;margin:10px 0}h1 span{color:var(--teal)}.sub{color:var(--muted);max-width:540px;margin:0}.stamp{color:var(--muted);font-size:12px;text-align:right}.stamp strong{color:#fff;display:block;font-size:15px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.panel,.tile{background:linear-gradient(150deg,#172b40,#102135);border:1px solid #ffffff16;border-radius:20px;box-shadow:0 9px 30px #00000018}.tile{padding:22px;min-height:141px}.tile .topline{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:13px}.tile .ico{font-size:23px}.tile .value{font-size:clamp(25px,3vw,37px);font-weight:750;letter-spacing:-1.5px;margin:13px 0 3px;font-variant-numeric:tabular-nums}.tile .note{font-size:12px;color:var(--muted)}.section{margin:32px 0}.sectiontitle{display:flex;justify-content:space-between;gap:15px;align-items:end;margin:0 0 15px}h2{font-size:24px;margin:0;letter-spacing:-.6px}h3{font-size:16px;margin:0}.hint{color:var(--muted);font-size:13px}.panel{padding:25px}.historybar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.dategroup{display:flex;gap:8px;align-items:center}.btn,.dateinput,.select{border:1px solid #35526c;background:#203951;color:var(--text);border-radius:11px;padding:11px 13px;font:inherit}.btn{cursor:pointer;font-weight:650}.btn:hover{background:#2a4b65}.btn.active{background:#205b61;border-color:#3c9b9a;color:#defffb}.dateinput{max-width:165px;color-scheme:dark}.quick{display:flex;gap:8px;flex-wrap:wrap}.chartheader{display:flex;gap:16px;justify-content:space-between;align-items:start;flex-wrap:wrap;margin-top:25px}.chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.chip{border:1px solid #34516c;color:#acc1d5;background:#14293e;border-radius:25px;padding:8px 12px;cursor:pointer;font-size:13px}.chip.on{border-color:var(--color);color:#fff;background:#22364a}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--color);margin-right:7px}.chartbox{position:relative;min-height:310px;background:#0d1e30;border:1px solid #263f56;border-radius:15px;overflow:hidden}.chartbox canvas{display:block;width:100%;height:310px}.charttip{position:absolute;display:none;z-index:2;pointer-events:none;background:#071522ef;border:1px solid #4a718c;padding:10px;border-radius:9px;color:#fff;font-size:12px;white-space:pre;box-shadow:0 10px 26px #0008}.legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:13px}.legend span:before{content:'—';font-weight:900;font-size:18px;color:var(--color);margin-right:7px}.twocol{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}.fact{padding:15px;border-radius:13px;background:#0e2235}.fact small{color:var(--muted);display:block}.fact strong{font-size:23px}.notice{border:1px solid #635536;background:#382e1b;padding:12px 15px;border-radius:12px;color:#f8d9a6;font-size:13px;margin-top:14px}.footer{border-top:1px solid #ffffff17;margin-top:40px;padding:23px 0 40px;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:var(--muted);font-size:12px}.footer a{color:#a4d9f9}.empty{color:var(--muted);padding:28px 14px;text-align:center}[hidden]{display:none!important}.btn:disabled{opacity:.4;cursor:not-allowed}.source{text-decoration:none;color:var(--teal)}@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}.nav{display:none}.hero{padding-top:32px}}@media(max-width:520px){.wrap{padding:0 15px}.head{min-height:70px}.brand b{font-size:16px}.brand small{font-size:11px}.tag{font-size:10px}.hero{display:block}.stamp{text-align:left;margin-top:14px}.grid{gap:9px}.tile{padding:15px;min-height:128px}.tile .value{font-size:27px}.panel{padding:16px}.dateinput{max-width:155px}.chartbox,.chartbox canvas{height:265px;min-height:265px}.section{margin:25px 0}.sectiontitle{display:block}}
-</style></head><body>
-<header><div class="wrap head"><a class="brand" href="#top"><span class="logo">🌦️</span><span><b>Weerstation Jubbega</b><small>Actueel lokaal weer · Friesland</small></span></a><nav class="nav"><a href="#actueel">Actueel</a><a href="#historie">Historie</a><a href="#over">Over station</a></nav><span class="tag" id="status">Verbinding maken…</span></div></header>
-<main id="top" class="wrap"><section class="hero"><div><div class="eyebrow">Persoonlijk weerstation · IJUBBE7</div><h1>Het weer in <span>Jubbega.</span></h1><p class="sub">Het lokale weer, rechtstreeks van ons eigen weerstation. Ontdek de actuele omstandigheden en blader terug door de meetgeschiedenis.</p></div><div class="stamp">Laatst gemeten<strong id="lastupdate">Nog niet geladen</strong><span id="mode">Station IJUBBE7</span></div></section>
-<section id="actueel"><div class="grid" id="tiles"></div><div class="notice" id="demowarning" hidden role="status"></div></section>
-<section id="historie" class="section"><div class="sectiontitle"><div><h2>📈 Historische meetgegevens</h2><div class="hint">Kies een dag en selecteer de lijnen die je wilt vergelijken. Actuele metingen blijven bovenaan staan.</div></div><span class="hint" id="daylabel"></span></div><div class="panel"><div class="historybar"><div class="dategroup"><button class="btn" id="prev" title="Vorige dag">❮</button><input class="dateinput" type="date" id="date"><button class="btn" id="next" title="Volgende dag">❯</button></div><div class="quick"><button class="btn" id="today">Vandaag</button><button class="btn" id="yesterday">Gisteren</button><button class="btn" id="week">7 dagen</button></div></div><div class="chartheader"><div><h3 id="charttitle">Temperatuur</h3><div class="hint" id="chartdesc">Temperatuur, gevoelstemperatuur en dauwpunt</div></div><select class="select" id="category" aria-label="Kies grafiektype"><option value="temp">🌡 Temperatuur</option><option value="wind">💨 Wind</option><option value="rain">💧 Neerslag</option><option value="pressure">📊 Luchtdruk</option><option value="humidity">☁ Vochtigheid</option></select></div><div class="chips" id="chips"></div><div class="chartbox"><canvas id="chart" role="img" aria-label="Interactieve grafiek van de geselecteerde weergegevens"></canvas><div id="charttip" class="charttip"></div></div><div class="legend" id="legend"></div><p class="hint" id="chartmessage">Beweeg met je muis over de lijnen voor de exacte meetwaarden.</p></div></section>
-<section class="section twocol"><div class="panel"><h2>Dagoverzicht</h2><div class="hint">Hoogste en laagste waarden van de geselecteerde periode</div><div class="facts" id="facts"></div></div><div class="panel" id="over"><h2>📡 Over dit weerstation</h2><p class="hint">Dit dashboard is gemaakt voor het persoonlijke weerstation in Jubbega.</p><div class="facts"><div class="fact"><small>Station ID</small><strong>IJUBBE7</strong></div><div class="fact"><small>Stationtype</small><strong>WS-5200</strong></div><div class="fact"><small>Locatie</small><strong>Jubbega</strong></div><div class="fact"><small>Databron</small><strong style="font-size:16px">Weather Underground</strong></div></div><p style="margin-bottom:0"><a class="source" href="https://www.wunderground.com/dashboard/pws/IJUBBE7" target="_blank" rel="noopener">Bekijk bronstation ↗</a></p></div></section>
-</main><footer class="wrap footer"><span>© <span id="year"></span> Weerstation Jubbega · Eigen lokale metingen</span><span>Ontworpen voor weerstationjubbega.nl · Data via Weather Underground</span></footer>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#081523" id="metaThemeColor">
+  <meta name="description" content="Weerstation Jubbega | Lokale weersmetingen, grafieken en historie">
+  <title>Weerstation Jubbega — Live weer & historie</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" id="faviconLink">
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#081320;
+      --bg-accent:#1b3d5e;
+      --panel:#122439;
+      --panel2:#182e46;
+      --line:#2a425b;
+      --text:#f0f7ff;
+      --muted:#98afc6;
+      --teal:#6ce4d8;
+      --orange:#ffbf71;
+      --blue:#80b6ff;
+      --red:#fb818b;
+      --theme-1:#6ce4d8;
+      --theme-2:#88bfff;
+      --theme-3:#20344f;
+      --theme-glow:rgba(108,228,216,.2);
+      --chip-bg:#14293e;
+      --chip-border:#34516c;
+      --btn-bg:#203951;
+      --btn-border:#35526c;
+      --notice-bg:#382e1b;
+      --notice-border:#635536;
+      --notice-text:#f8d9a6;
+      --hero-badge-bg:rgba(255,255,255,.08);
+      --hero-badge-border:rgba(255,255,255,.12);
+    }
+    :root[data-theme="winter"]{
+      --bg:#081320;
+      --bg-accent:#46739f;
+      --panel:#11253a;
+      --panel2:#17314c;
+      --line:#315473;
+      --text:#f4f9ff;
+      --muted:#a7bdd2;
+      --teal:#93f0ff;
+      --theme-1:#8ad8ff;
+      --theme-2:#d8efff;
+      --theme-3:#1e4362;
+      --theme-glow:rgba(151,218,255,.22);
+      --chip-bg:#12304b;
+      --chip-border:#446a88;
+      --btn-bg:#1d425d;
+      --btn-border:#416a8a;
+      --notice-bg:#233347;
+      --notice-border:#51759a;
+      --notice-text:#dceeff;
+    }
+    :root[data-theme="spring"]{
+      --bg:#0f1f1a;
+      --bg-accent:#6fb48b;
+      --panel:#173126;
+      --panel2:#1f4132;
+      --line:#396953;
+      --text:#f3fff8;
+      --muted:#aec8ba;
+      --teal:#7ee6b4;
+      --theme-1:#86e694;
+      --theme-2:#f3c8da;
+      --theme-3:#345f46;
+      --theme-glow:rgba(126,230,180,.18);
+      --chip-bg:#1c3a2d;
+      --chip-border:#49715c;
+      --btn-bg:#214535;
+      --btn-border:#4f7c64;
+      --notice-bg:#2e3421;
+      --notice-border:#6d7c4a;
+      --notice-text:#edf3c4;
+    }
+    :root[data-theme="summer"]{
+      --bg:#0c1d2f;
+      --bg-accent:#f4a340;
+      --panel:#17314a;
+      --panel2:#1f425f;
+      --line:#416684;
+      --text:#f8fcff;
+      --muted:#adc4d6;
+      --teal:#7ddfff;
+      --theme-1:#ffd467;
+      --theme-2:#6fdfff;
+      --theme-3:#3e6788;
+      --theme-glow:rgba(255,212,103,.18);
+      --chip-bg:#1b3752;
+      --chip-border:#537793;
+      --btn-bg:#244663;
+      --btn-border:#5e84a4;
+      --notice-bg:#433219;
+      --notice-border:#7f6131;
+      --notice-text:#ffe4b2;
+    }
+    :root[data-theme="autumn"]{
+      --bg:#1a130f;
+      --bg-accent:#c7692d;
+      --panel:#302018;
+      --panel2:#3c2a20;
+      --line:#73533e;
+      --text:#fff6ef;
+      --muted:#d1b5a4;
+      --teal:#ffb769;
+      --theme-1:#ff9f5d;
+      --theme-2:#e4c07d;
+      --theme-3:#6c4531;
+      --theme-glow:rgba(255,159,93,.16);
+      --chip-bg:#402c21;
+      --chip-border:#7c5844;
+      --btn-bg:#493327;
+      --btn-border:#845f48;
+      --notice-bg:#3c261d;
+      --notice-border:#785042;
+      --notice-text:#ffd9bd;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--text);
+      font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;
+      background:
+        radial-gradient(circle at 15% 15%, var(--theme-glow), transparent 24%),
+        radial-gradient(circle at 85% 5%, color-mix(in srgb, var(--bg-accent) 45%, transparent), transparent 35%),
+        linear-gradient(180deg, color-mix(in srgb, var(--bg-accent) 14%, transparent), transparent 280px),
+        var(--bg);
+      transition:background .35s ease,color .35s ease;
+    }
+    a{color:inherit}
+    .wrap{max-width:1220px;padding:0 23px;margin:auto}
+    header{border-bottom:1px solid rgba(255,255,255,.09);backdrop-filter:blur(10px);position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--bg) 86%, transparent)}
+    .head{display:flex;align-items:center;justify-content:space-between;min-height:80px;gap:15px}
+    .brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:inherit}
+    .logo{display:grid;place-items:center;width:50px;height:50px;border-radius:15px;background:linear-gradient(160deg,var(--theme-3),color-mix(in srgb, var(--theme-1) 32%, var(--theme-3)));box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 24px rgba(0,0,0,.18);font-size:27px;transition:.25s ease}
+    .brand b{font-size:19px;letter-spacing:-.5px}
+    .brand small{display:block;color:var(--muted);font-size:12px}
+    .nav{display:flex;gap:24px}
+    .nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:13px}
+    .nav a:hover{color:#fff}
+    .headright{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .tag,.seasonpill{border:1px solid color-mix(in srgb, var(--theme-1) 35%, rgba(255,255,255,.18));padding:6px 12px;border-radius:30px;font-size:12px;color:#eaf6ff;background:rgba(255,255,255,.03)}
+    .tag:before{content:'●';color:var(--theme-1);margin-right:7px}
+    .seasonpill{display:flex;align-items:center;gap:8px}
+    .hero{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:43px 0 26px}
+    .heroaside{display:flex;flex-direction:column;align-items:flex-end;gap:12px;min-width:280px}
+    .eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800;color:var(--teal)}
+    h1{font-size:clamp(33px,5vw,58px);line-height:1.1;letter-spacing:-2.1px;margin:10px 0}
+    h1 span{color:var(--theme-1)}
+    .sub{color:var(--muted);max-width:600px;margin:0}
+    .stamp{color:var(--muted);font-size:12px;text-align:right}
+    .stamp strong{color:#fff;display:block;font-size:15px}
+    .seasonbox{width:100%;max-width:330px;padding:16px 16px 14px;border-radius:18px;background:linear-gradient(160deg,color-mix(in srgb, var(--theme-3) 72%, rgba(255,255,255,.02)),color-mix(in srgb, var(--panel) 85%, rgba(255,255,255,.02)));border:1px solid rgba(255,255,255,.09);box-shadow:0 10px 30px rgba(0,0,0,.14)}
+    .seasonboxhead{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+    .seasonboxhead strong{font-size:14px}
+    .seasonboxhead span{font-size:12px;color:var(--muted)}
+    .themerow{display:grid;grid-template-columns:1fr;gap:8px}
+    .themelabel{font-size:12px;color:var(--muted)}
+    .select{border:1px solid var(--btn-border);background:var(--btn-bg);color:var(--text);border-radius:11px;padding:11px 13px;font:inherit}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+    .panel,.tile{background:linear-gradient(150deg,color-mix(in srgb, var(--panel) 90%, rgba(255,255,255,.03)),color-mix(in srgb, var(--panel2) 86%, rgba(0,0,0,.03)));border:1px solid rgba(255,255,255,.09);border-radius:20px;box-shadow:0 9px 30px rgba(0,0,0,.12);transition:background .3s ease,border-color .3s ease}
+    .tile{padding:22px;min-height:141px}
+    .tile .topline{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:13px}
+    .tile .ico{font-size:23px}
+    .tile .value{font-size:clamp(25px,3vw,37px);font-weight:750;letter-spacing:-1.5px;margin:13px 0 3px;font-variant-numeric:tabular-nums}
+    .tile .note{font-size:12px;color:var(--muted)}
+    .section{margin:32px 0}
+    .sectiontitle{display:flex;justify-content:space-between;gap:15px;align-items:end;margin:0 0 15px}
+    h2{font-size:24px;margin:0;letter-spacing:-.6px}
+    h3{font-size:16px;margin:0}
+    .hint{color:var(--muted);font-size:13px}
+    .panel{padding:25px}
+    .historybar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .dategroup{display:flex;gap:8px;align-items:center}
+    .btn,.dateinput{border:1px solid var(--btn-border);background:var(--btn-bg);color:var(--text);border-radius:11px;padding:11px 13px;font:inherit}
+    .btn{cursor:pointer;font-weight:650}
+    .btn:hover{filter:brightness(1.06)}
+    .btn.active{background:color-mix(in srgb, var(--theme-3) 55%, var(--theme-1));border-color:color-mix(in srgb, var(--theme-1) 70%, white 10%);color:#fff}
+    .dateinput{max-width:165px;color-scheme:dark}
+    .quick{display:flex;gap:8px;flex-wrap:wrap}
+    .chartheader{display:flex;gap:16px;justify-content:space-between;align-items:start;flex-wrap:wrap;margin-top:25px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+    .chip{border:1px solid var(--chip-border);color:#d7e7f5;background:var(--chip-bg);border-radius:25px;padding:8px 12px;cursor:pointer;font-size:13px}
+    .chip.on{border-color:var(--color);color:#fff;background:color-mix(in srgb, var(--panel2) 70%, var(--color) 18%)}
+    .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--color);margin-right:7px}
+    .chartbox{position:relative;min-height:310px;background:color-mix(in srgb, var(--bg) 70%, #081320);border:1px solid color-mix(in srgb, var(--line) 70%, rgba(255,255,255,.05));border-radius:15px;overflow:hidden}
+    .chartbox canvas{display:block;width:100%;height:310px}
+    .charttip{position:absolute;display:none;z-index:2;pointer-events:none;background:#071522ef;border:1px solid #4a718c;padding:10px;border-radius:9px;color:#fff;font-size:12px;white-space:pre;box-shadow:0 10px 26px rgba(0,0,0,.5)}
+    .legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:13px}
+    .legend span:before{content:'—';font-weight:900;font-size:18px;color:var(--color);margin-right:7px}
+    .twocol{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+    .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}
+    .fact{padding:15px;border-radius:13px;background:color-mix(in srgb, var(--panel2) 55%, transparent)}
+    .fact small{color:var(--muted);display:block}
+    .fact strong{font-size:23px}
+    .notice{border:1px solid var(--notice-border);background:var(--notice-bg);padding:12px 15px;border-radius:12px;color:var(--notice-text);font-size:13px;margin-top:14px}
+    .footer{border-top:1px solid rgba(255,255,255,.09);margin-top:40px;padding:23px 0 40px;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+    .footer a{color:var(--theme-1)}
+    .empty{color:var(--muted);padding:28px 14px;text-align:center}
+    [hidden]{display:none!important}
+    .btn:disabled{opacity:.4;cursor:not-allowed}
+    .source{text-decoration:none;color:var(--theme-1)}
+    .themehint{font-size:12px;color:var(--muted);margin-top:8px}
+    @media(max-width:900px){
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .twocol{grid-template-columns:1fr}
+      .nav{display:none}
+      .hero{padding-top:32px;flex-direction:column;align-items:flex-start}
+      .heroaside{align-items:stretch;width:100%;min-width:0}
+      .stamp{text-align:left}
+      .seasonbox{max-width:none}
+    }
+    @media(max-width:620px){
+      .head{align-items:flex-start;padding:12px 0;min-height:auto}
+      .headright{width:100%;justify-content:flex-start}
+    }
+    @media(max-width:520px){
+      .wrap{padding:0 15px}
+      .brand b{font-size:16px}
+      .brand small{font-size:11px}
+      .tag,.seasonpill{font-size:10px}
+      .grid{gap:9px}
+      .tile{padding:15px;min-height:128px}
+      .tile .value{font-size:27px}
+      .panel{padding:16px}
+      .dateinput{max-width:155px}
+      .chartbox,.chartbox canvas{height:265px;min-height:265px}
+      .section{margin:25px 0}
+      .sectiontitle{display:block}
+      .facts{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap head">
+    <a class="brand" href="#top">
+      <span class="logo" id="brandIcon">🌦️</span>
+      <span>
+        <b>Weerstation Jubbega</b>
+        <small>Actueel lokaal weer · Friesland</small>
+      </span>
+    </a>
+    <nav class="nav">
+      <a href="#actueel">Actueel</a>
+      <a href="#historie">Historie</a>
+      <a href="#over">Over station</a>
+    </nav>
+    <div class="headright">
+      <span class="seasonpill" id="seasonpill">🌦️ Thema: automatisch</span>
+      <span class="tag" id="status">Verbinding maken…</span>
+    </div>
+  </div>
+</header>
+
+<main id="top" class="wrap">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Persoonlijk weerstation · IJUBBE7</div>
+      <h1>Het weer in <span>Jubbega.</span></h1>
+      <p class="sub">Het lokale weer, rechtstreeks van ons eigen weerstation. Ontdek de actuele omstandigheden, blader terug door de meetgeschiedenis en laat het ontwerp automatisch meebewegen met de seizoenen.</p>
+    </div>
+    <div class="heroaside">
+      <div class="stamp">Laatst gemeten<strong id="lastupdate">Nog niet geladen</strong><span id="mode">Station IJUBBE7</span></div>
+      <div class="seasonbox">
+        <div class="seasonboxhead">
+          <div>
+            <strong>Seizoenthema</strong><br>
+            <span id="seasonText">Automatisch thema op basis van de maand</span>
+          </div>
+          <span id="seasonEmoji" aria-hidden="true">🌦️</span>
+        </div>
+        <div class="themerow">
+          <label class="themelabel" for="themeSelect">Kies een thema</label>
+          <select class="select" id="themeSelect" aria-label="Kies een seizoenthema">
+            <option value="auto">Automatisch</option>
+            <option value="winter">Winter</option>
+            <option value="spring">Lente</option>
+            <option value="summer">Zomer</option>
+            <option value="autumn">Herfst</option>
+          </select>
+          <div class="themehint">Automatisch gebruikt: winter (dec-feb), lente (mrt-jun), zomer (jul-sep) en herfst (okt-nov).</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="actueel">
+    <div class="grid" id="tiles"></div>
+    <div class="notice" id="demowarning" hidden role="status"></div>
+  </section>
+
+  <section id="historie" class="section">
+    <div class="sectiontitle">
+      <div>
+        <h2>📈 Historische meetgegevens</h2>
+        <div class="hint">Kies een dag en selecteer de lijnen die je wilt vergelijken. Actuele metingen blijven bovenaan staan.</div>
+      </div>
+      <span class="hint" id="daylabel"></span>
+    </div>
+    <div class="panel">
+      <div class="historybar">
+        <div class="dategroup">
+          <button class="btn" id="prev" title="Vorige dag">❮</button>
+          <input class="dateinput" type="date" id="date">
+          <button class="btn" id="next" title="Volgende dag">❯</button>
+        </div>
+        <div class="quick">
+          <button class="btn" id="today">Vandaag</button>
+          <button class="btn" id="yesterday">Gisteren</button>
+          <button class="btn" id="week">7 dagen</button>
+        </div>
+      </div>
+      <div class="chartheader">
+        <div>
+          <h3 id="charttitle">Temperatuur</h3>
+          <div class="hint" id="chartdesc">Temperatuur, gevoelstemperatuur en dauwpunt</div>
+        </div>
+        <select class="select" id="category" aria-label="Kies grafiektype">
+          <option value="temp">🌡 Temperatuur</option>
+          <option value="wind">💨 Wind</option>
+          <option value="rain">💧 Neerslag</option>
+          <option value="pressure">📊 Luchtdruk</option>
+          <option value="humidity">☁ Vochtigheid</option>
+        </select>
+      </div>
+      <div class="chips" id="chips"></div>
+      <div class="chartbox">
+        <canvas id="chart" role="img" aria-label="Interactieve grafiek van de geselecteerde weergegevens"></canvas>
+        <div id="charttip" class="charttip"></div>
+      </div>
+      <div class="legend" id="legend"></div>
+      <p class="hint" id="chartmessage">Beweeg met je muis over de lijnen voor de exacte meetwaarden.</p>
+    </div>
+  </section>
+
+  <section class="section twocol">
+    <div class="panel">
+      <h2>Dagoverzicht</h2>
+      <div class="hint">Hoogste en laagste waarden van de geselecteerde periode</div>
+      <div class="facts" id="facts"></div>
+    </div>
+    <div class="panel" id="over">
+      <h2>📡 Over dit weerstation</h2>
+      <p class="hint">Dit dashboard is gemaakt voor het persoonlijke weerstation in Jubbega.</p>
+      <div class="facts">
+        <div class="fact"><small>Station ID</small><strong>IJUBBE7</strong></div>
+        <div class="fact"><small>Stationtype</small><strong>WS-5200</strong></div>
+        <div class="fact"><small>Locatie</small><strong>Jubbega</strong></div>
+        <div class="fact"><small>Databron</small><strong style="font-size:16px">Weather Underground</strong></div>
+      </div>
+      <p style="margin-bottom:0"><a class="source" href="https://www.wunderground.com/dashboard/pws/IJUBBE7" target="_blank" rel="noopener">Bekijk bronstation ↗</a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap footer">
+  <span>© <span id="year"></span> Weerstation Jubbega · Eigen lokale metingen</span>
+  <span>Ontworpen voor weerstationjubbega.nl · Data via Weather Underground</span>
+</footer>
+
 <script>
-(()=>{'use strict';
-const groups={temp:{title:'Temperatuur',desc:'Vergelijk temperatuur, gevoelstemperatuur en dauwpunt',unit:'°C',lines:[['temp','Temperatuur','#ffbe6e'],['feels','Gevoelstemperatuur','#79b6ff'],['dew','Dauwpunt','#64dfb7']]},wind:{title:'Wind',desc:'Gemiddelde wind en maximale windstoten',unit:'km/u',lines:[['wind','Windsnelheid','#70c8fb'],['gust','Windstoten','#ffc37d']]},rain:{title:'Neerslag',desc:'Neerslagintensiteit per meetmoment',unit:'mm/u',lines:[['rain','Neerslag','#72caff']]},pressure:{title:'Luchtdruk',desc:'Barometrische luchtdruk',unit:'hPa',lines:[['pressure','Luchtdruk','#a7a1fb']]},humidity:{title:'Luchtvochtigheid',desc:'Relatieve luchtvochtigheid',unit:'%',lines:[['humidity','Luchtvochtigheid','#76e0cd']]}};
-const $=id=>document.getElementById(id);
-const nowInNL=()=>{const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Amsterdam',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const get=k=>parts.find(p=>p.type===k).value;return `${get('year')}-${get('month')}-${get('day')}`};
-const dateISO=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
-const shift=(s,n)=>{const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return dateISO(d)};
-const number=(x,d=1)=>Number.isFinite(x)?x.toLocaleString('nl-NL',{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
-const val=(...candidates)=>candidates.find(x=>typeof x==='number'&&Number.isFinite(x))??null;
-let selectedDate=nowInNL(),scope='day',category='temp',seriesVisible={temp:new Set(['temp','feels']),wind:new Set(['wind','gust']),rain:new Set(['rain']),pressure:new Set(['pressure']),humidity:new Set(['humidity'])},readings=[],current=null,hoverIndex=-1,loadingVersion=0;
-$('date').max=nowInNL();$('date').value=selectedDate;$('year').textContent=new Date().getFullYear();
-function normalize(obs){const m=obs.metric||{},t=obs.obsTimeLocal||obs.obsTimeUtc||'';
- const time=String(t).replace(' ','T');
- const historical=('tempAvg' in m)||('windspeedAvg' in m);
- return {time,label:time.slice(11,16),
- temp:val(m.temp,m.tempAvg),
- feels:val(m.windchill,m.windchillAvg,m.heatIndex,m.heatindex,m.heatindexAvg),
- dew:val(m.dewpt,m.dewptAvg),wind:val(m.windSpeed,m.windspeed,m.windspeedAvg),
- gust:val(m.windGust,m.windgust,m.windgustHigh,m.windgustAvg),
- rain:val(m.precipRate),rainTotal:val(m.precipTotal),
- pressure:val(m.pressure,m.pressureMax,m.pressureMin),
- humidity:val(obs.humidity,obs.humidityAvg),
- tempHigh:val(m.tempHigh,m.temp),tempLow:val(m.tempLow,m.temp),
- pressureMin:val(m.pressureMin,m.pressure),windgustHigh:val(m.windgustHigh,m.windGust),
- historical};
-}
-function showMessage(message){const el=$('demowarning');el.hidden=!message;el.textContent=message||''}
-async function getData(params){const r=await fetch('/api/weather?'+new URLSearchParams(params),{cache:'no-store'});const data=await r.json();if(!r.ok)throw Error(data.error||'API onbereikbaar');if(!Array.isArray(data.observations))throw Error('Ongeldig API-antwoord');return data.observations}
-async function loadCurrent(){try{const arr=await getData({scope:'current'});if(!arr.length)throw Error('Geen recente meting beschikbaar');current=normalize(arr[0]);$('status').textContent='Live verbonden';$('status').style.borderColor='#408e85';$('lastupdate').textContent=current.time.replace('T',' ').slice(0,16);$('mode').textContent='IJUBBE7 · actuele meting';showMessage('');}catch(e){current=null;$('status').textContent='Live niet beschikbaar';$('status').style.borderColor='';$('lastupdate').textContent='Geen actuele meting';$('mode').textContent='Historie kan wel beschikbaar zijn';showMessage('Actuele metingen niet beschikbaar: '+e.message+'. Historische metingen kunnen wel worden bekeken.')}renderTiles()}
-async function load(){const id=++loadingVersion;$('chartmessage').textContent='Historische metingen ophalen…';$('charttip').style.display='none';
- try{const arr=await getData(scope==='week'?{scope:'week'}:{scope:'day',date:selectedDate});if(id!==loadingVersion)return;
- readings=arr.map(normalize).filter(x=>x.time).sort((a,b)=>a.time.localeCompare(b.time));
- if(!readings.length)throw Error('Geen historische metingen gevonden voor deze periode');
- $('chartmessage').textContent=`${readings.length} echte meetmomenten van IJUBBE7 · beweeg over de grafiek voor de waarden.`;
- }catch(e){if(id!==loadingVersion)return;readings=[];$('chartmessage').textContent='Geen gegevens: '+e.message;}render()}
-function metricValue(k){return current?current[k]:null}
-function renderTiles(){const vals=[['🌡️','Temperatuur',number(metricValue('temp'))+' °C','Buitenlucht'],['💨','Windsnelheid',number(metricValue('wind'))+' km/u','Windstoten: '+number(metricValue('gust'))+' km/u'],['💧','Luchtvochtigheid',number(metricValue('humidity'),0)+' %','Relatieve luchtvochtigheid'],['🔽','Luchtdruk',number(metricValue('pressure'))+' hPa','Barometer'],['🌧️','Neerslagintensiteit',number(metricValue('rain'))+' mm/u','Neerslag per uur'],['🌡','Gevoelstemperatuur',number(metricValue('feels'))+' °C','Berekende / gerapporteerde waarde'],['🌫️','Dauwpunt',number(metricValue('dew'))+' °C','Waterdamp in de lucht'],['🌬️','Windstoten',number(metricValue('gust'))+' km/u','Actuele windstoot']];$('tiles').innerHTML=vals.map(v=>`<article class="tile"><div class="topline"><span>${v[1]}</span><span class="ico">${v[0]}</span></div><div class="value">${v[2]}</div><div class="note">${v[3]}</div></article>`).join('')}
-function renderFacts(){let specs=[['Maximumtemperatuur','tempHigh','max','°C'],['Minimumtemperatuur','tempLow','min','°C'],['Hoogste windstoot','windgustHigh','max','km/u'],['Laagste luchtdruk','pressureMin','min','hPa']];$('facts').innerHTML=specs.map(([name,key,op,unit])=>{const nums=readings.map(r=>r[key]).filter(Number.isFinite);return `<div class="fact"><small>${name}</small><strong>${nums.length?number(op==='max'?Math.max(...nums):Math.min(...nums)):'—'} ${unit}</strong></div>`}).join('')}
-function renderChips(){const g=groups[category];$('charttitle').textContent=g.title;$('chartdesc').textContent=g.desc;$('chips').innerHTML=g.lines.map(([k,l,c])=>`<button class="chip ${seriesVisible[category].has(k)?'on':''}" style="--color:${c}" data-key="${k}" aria-pressed="${seriesVisible[category].has(k)}"><span class="dot"></span>${l}</button>`).join('');$('chips').querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{const s=seriesVisible[category],key=btn.dataset.key;if(s.has(key))s.delete(key);else s.add(key);renderChips();draw()}));$('legend').innerHTML=g.lines.filter(v=>seriesVisible[category].has(v[0])).map(v=>`<span style="--color:${v[2]}">${v[1]}</span>`).join('')}
-function draw(){const c=$('chart'),rect=c.getBoundingClientRect(),w=Math.max(300,rect.width),h=rect.height||310,ratio=window.devicePixelRatio||1;c.width=Math.floor(w*ratio);c.height=Math.floor(h*ratio);const ctx=c.getContext('2d');ctx.scale(ratio,ratio);ctx.clearRect(0,0,w,h);const g=groups[category],lines=g.lines.filter(([key])=>seriesVisible[category].has(key));const left=49,right=19,top=22,bottom=38,plotW=w-left-right,plotH=h-top-bottom;const values=lines.flatMap(([k])=>readings.map(r=>r[k]).filter(Number.isFinite));ctx.font='12px system-ui';ctx.textBaseline='middle';if(!values.length){ctx.fillStyle='#a5bacf';ctx.fillText(readings.length?'Geen meetwaarden voor deze selectie.':'Geen historische metingen beschikbaar.',left+10,h/2);return}let min=Math.min(...values),max=Math.max(...values);let pad=Math.max((max-min)*.16,.8);min-=pad;max+=pad;if(category==='humidity'){min=Math.max(0,min);max=Math.min(100,max)}if(category==='rain')min=0;const x=i=>left+i*plotW/Math.max(readings.length-1,1),y=v=>top+plotH-(v-min)/(max-min)*plotH;for(let i=0;i<=4;i++){const yy=top+i*plotH/4;ctx.strokeStyle='#33506a';ctx.setLineDash([3,5]);ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(w-right,yy);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#8fa9c0';ctx.textAlign='right';ctx.fillText(number(max-(max-min)*i/4,category==='humidity'?0:1),left-9,yy)}ctx.textAlign='center';let ticks=Math.min(6,readings.length);for(let i=0;i<ticks;i++){const idx=Math.round(i*(readings.length-1)/Math.max(ticks-1,1));let r=readings[idx];let lbl=scope==='week'?r.time.slice(5,10):r.label;ctx.fillStyle='#8fa9c0';ctx.fillText(lbl,x(idx),h-17)}lines.forEach(([key,,color])=>{ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2.6;ctx.lineJoin='round';let started=false;readings.forEach((r,i)=>{let v=r[key];if(!Number.isFinite(v)){started=false;return}if(!started){ctx.moveTo(x(i),y(v));started=true}else ctx.lineTo(x(i),y(v))});ctx.stroke()});if(hoverIndex>=0&&hoverIndex<readings.length){const xx=x(hoverIndex);ctx.strokeStyle='#ffffff70';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(xx,top);ctx.lineTo(xx,top+plotH);ctx.stroke();lines.forEach(([key,,color])=>{const v=readings[hoverIndex][key];if(!Number.isFinite(v))return;ctx.beginPath();ctx.arc(xx,y(v),4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#0d1e30';ctx.lineWidth=2;ctx.stroke()})}c._draw={left,plotW};}
-function render(){renderTiles();renderFacts();renderChips();$('daylabel').textContent=scope==='week'?'Afgelopen 7 dagen':selectedDate;$('date').value=selectedDate;$('next').disabled=selectedDate>=nowInNL();$('week').classList.toggle('active',scope==='week');hoverIndex=-1;draw()}
-$('chart').addEventListener('mousemove',e=>{const canvas=$('chart'),box=canvas.getBoundingClientRect(),x=e.clientX-box.left,pos=canvas._draw;if(!pos)return;hoverIndex=Math.max(0,Math.min(readings.length-1,Math.round((x-pos.left)/pos.plotW*(readings.length-1))));const r=readings[hoverIndex];if(!r)return;const g=groups[category],vals=g.lines.filter(v=>seriesVisible[category].has(v[0])).map(([key,label])=>`${label}: ${Number.isFinite(r[key])?number(r[key]):'—'} ${g.unit}`);const tip=$('charttip');tip.textContent=(scope==='week'?r.time.slice(0,10)+' ':'')+r.label+'\n'+vals.join('\n');tip.style.display='block';tip.style.left=Math.min(Math.max(5,x+14),Math.max(5,box.width-190))+'px';tip.style.top='15px';draw()});$('chart').addEventListener('mouseleave',()=>{hoverIndex=-1;$('charttip').style.display='none';draw()});window.addEventListener('resize',draw);
-$('category').addEventListener('change',e=>{category=e.target.value;hoverIndex=-1;$('charttip').style.display='none';renderChips();draw()});$('date').addEventListener('change',e=>{if(e.target.value){selectedDate=e.target.value;scope='day';load()}});$('prev').addEventListener('click',()=>{selectedDate=shift(selectedDate,-1);scope='day';load()});$('next').addEventListener('click',()=>{if(selectedDate<nowInNL()){selectedDate=shift(selectedDate,1);scope='day';load()}});$('today').addEventListener('click',()=>{selectedDate=nowInNL();scope='day';load()});$('yesterday').addEventListener('click',()=>{selectedDate=shift(nowInNL(),-1);scope='day';load()});$('week').addEventListener('click',()=>{selectedDate=nowInNL();scope='week';load()});loadCurrent();load();setInterval(loadCurrent,5*60*1000);})();
-</script></body></html>
+(() => {
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+
+  const groups = {
+    temp: {
+      title: 'Temperatuur',
+      desc: 'Vergelijk temperatuur, gevoelstemperatuur en dauwpunt',
+      unit: '°C',
+      lines: [
+        ['temp', 'Temperatuur', '#ffbe6e'],
+        ['feels', 'Gevoelstemperatuur', '#79b6ff'],
+        ['dew', 'Dauwpunt', '#64dfb7']
+      ]
+    },
+    wind: {
+      title: 'Wind',
+      desc: 'Gemiddelde wind en maximale windstoten',
+      unit: 'km/u',
+      lines: [
+        ['wind', 'Windsnelheid', '#70c8fb'],
+        ['gust', 'Windstoten', '#ffc37d']
+      ]
+    },
+    rain: {
+      title: 'Neerslag',
+      desc: 'Neerslagintensiteit per meetmoment',
+      unit: 'mm/u',
+      lines: [
+        ['rain', 'Neerslag', '#72caff']
+      ]
+    },
+    pressure: {
+      title: 'Luchtdruk',
+      desc: 'Barometrische luchtdruk',
+      unit: 'hPa',
+      lines: [
+        ['pressure', 'Luchtdruk', '#a7a1fb']
+      ]
+    },
+    humidity: {
+      title: 'Luchtvochtigheid',
+      desc: 'Relatieve luchtvochtigheid',
+      unit: '%',
+      lines: [
+        ['humidity', 'Vochtigheid', '#7de0e6']
+      ]
+    }
+  };
+
+  const themes = {
+    winter: {
+      label: 'Winter',
+      emoji: '❄️',
+      themeColor: '#081320',
+      iconBg: '#1d4f78',
+      iconAccent: '#d9f1ff',
+      iconSun: '#8bd8ff',
+      iconCloud: '#eff8ff'
+    },
+    spring: {
+      label: 'Lente',
+      emoji: '🌸',
+      themeColor: '#13271f',
+      iconBg: '#356649',
+      iconAccent: '#f6c8da',
+      iconSun: '#8de7a1',
+      iconCloud: '#fff5fb'
+    },
+    summer: {
+      label: 'Zomer',
+      emoji: '☀️',
+      themeColor: '#0d2340',
+      iconBg: '#315e86',
+      iconAccent: '#ffd466',
+      iconSun: '#ffd466',
+      iconCloud: '#fefefe'
+    },
+    autumn: {
+      label: 'Herfst',
+      emoji: '🍂',
+      themeColor: '#261710',
+      iconBg: '#6f452e',
+      iconAccent: '#ffae69',
+      iconSun: '#f0c07d',
+      iconCloud: '#fff4eb'
+    }
+  };
+
+  const SEASON_STORAGE_KEY = 'weerstation-theme';
+
+  function nowInNL() {
+    const p = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Europe/Amsterdam',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).formatToParts(new Date()).reduce((acc, part) => {
+      acc[part.type] = part.value;
+      return acc;
+    }, {});
+    return `${p.year}-${p.month}-${p.day}`;
+  }
+
+  function monthInNL() {
+    return Number(new Intl.DateTimeFormat('nl-NL', {
+      timeZone: 'Europe/Amsterdam',
+      month: 'numeric'
+    }).format(new Date()));
+  }
+
+  function autoSeasonByMonth(month) {
+    if ([12,1,2].includes(month)) return 'winter';
+    if ([3,4,5,6].includes(month)) return 'spring';
+    if ([7,8,9].includes(month)) return 'summer';
+    return 'autumn';
+  }
+
+  function selectedThemeMode() {
+    return localStorage.getItem(SEASON_STORAGE_KEY) || 'auto';
+  }
+
+  function activeThemeName() {
+    const mode = selectedThemeMode();
+    return mode === 'auto' ? autoSeasonByMonth(monthInNL()) : mode;
+  }
+
+  function themeDescription(name) {
+    const map = {
+      winter: 'Winterthema actief · december t/m februari',
+      spring: 'Lentethema actief · maart t/m juni',
+      summer: 'Zomerthema actief · juli t/m september',
+      autumn: 'Herfstthema actief · oktober t/m november'
+    };
+    return map[name] || 'Automatisch thema op basis van de maand';
+  }
+
+  function buildFaviconData(themeName) {
+    const t = themes[themeName] || themes.winter;
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="${t.iconBg}"/>
+            <stop offset="100%" stop-color="${t.iconAccent}"/>
+          </linearGradient>
+        </defs>
+        <rect width="64" height="64" rx="16" fill="url(#g)"/>
+        <circle cx="25" cy="25" r="10" fill="${t.iconSun}" opacity="0.95"/>
+        <path d="M41 43H23c-5 0-9-3.2-9-8 0-4.1 2.8-7.1 6.6-7.8 1.7-5.6 6.3-9.2 12.1-9.2 6.8 0 12.3 4.8 13.2 11.2 3.6.8 6.1 3.8 6.1 7.5 0 4.3-3.4 7.3-11 7.3Z" fill="${t.iconCloud}"/>
+      </svg>`;
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+  }
+
+  function applyTheme() {
+    const mode = selectedThemeMode();
+    const active = activeThemeName();
+    const info = themes[active];
+    document.documentElement.setAttribute('data-theme', active);
+    $('themeSelect').value = mode;
+    $('seasonEmoji').textContent = info.emoji;
+    $('brandIcon').textContent = info.emoji;
+    $('seasonText').textContent = mode === 'auto' ? themeDescription(active) : `${info.label} handmatig gekozen`;
+    $('seasonpill').textContent = `${info.emoji} Thema: ${mode === 'auto' ? `${info.label} automatisch` : info.label}`;
+    $('metaThemeColor').setAttribute('content', info.themeColor);
+    $('faviconLink').setAttribute('href', buildFaviconData(active));
+  }
+
+  const dateISO = d => [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
+  const shift = (s, n) => {
+    const d = new Date(s + 'T12:00:00');
+    d.setDate(d.getDate() + n);
+    return dateISO(d);
+  };
+  const number = (x, d=1) => Number.isFinite(x) ? x.toLocaleString('nl-NL', {
+    maximumFractionDigits: d,
+    minimumFractionDigits: d
+  }) : '—';
+  const val = (...candidates) => candidates.find(x => typeof x === 'number' && Number.isFinite(x)) ?? null;
+
+  let selectedDate = nowInNL();
+  let scope = 'day';
+  let category = 'temp';
+  let seriesVisible = {
+    temp: new Set(['temp', 'feels']),
+    wind: new Set(['wind', 'gust']),
+    rain: new Set(['rain']),
+    pressure: new Set(['pressure']),
+    humidity: new Set(['humidity'])
+  };
+  let readings = [];
+  let current = null;
+  let hoverIndex = -1;
+  let loadingVersion = 0;
+
+  $('date').max = nowInNL();
+  $('date').value = selectedDate;
+  $('year').textContent = new Date().getFullYear();
+
+  function normalize(obs) {
+    const m = obs.metric || {};
+    const t = obs.obsTimeLocal || obs.obsTimeUtc || '';
+    const time = String(t).replace(' ', 'T');
+    return {
+      time,
+      label: time.slice(11,16),
+      temp: val(m.temp, m.tempAvg),
+      feels: val(m.windchill, m.windchillAvg, m.heatIndex, m.heatindex, m.heatindexAvg),
+      dew: val(m.dewpt, m.dewptAvg),
+      wind: val(m.windSpeed, m.windspeed, m.windspeedAvg),
+      gust: val(m.windGust, m.windgust, m.windgustHigh, m.windgustAvg),
+      rain: val(m.precipRate),
+      rainTotal: val(m.precipTotal),
+      pressure: val(m.pressure, m.pressureMax, m.pressureMin),
+      humidity: val(obs.humidity, obs.humidityAvg),
+      tempHigh: val(m.tempHigh, m.temp),
+      tempLow: val(m.tempLow, m.temp),
+      pressureMin: val(m.pressureMin, m.pressure),
+      windgustHigh: val(m.windgustHigh, m.windGust)
+    };
+  }
+
+  function showMessage(message) {
+    const el = $('demowarning');
+    el.hidden = !message;
+    el.textContent = message || '';
+  }
+
+  async function getData(params) {
+    const r = await fetch('/api/weather?' + new URLSearchParams(params), { cache: 'no-store' });
+    const data = await r.json();
+    if (!r.ok) throw Error(data.error || 'API onbereikbaar');
+    if (!Array.isArray(data.observations)) throw Error('Ongeldig API-antwoord');
+    return data.observations;
+  }
+
+  async function loadCurrent() {
+    try {
+      const arr = await getData({ scope: 'current' });
+      if (!arr.length) throw Error('Geen recente meting beschikbaar');
+      current = normalize(arr[0]);
+      $('status').textContent = 'Live verbonden';
+      $('status').style.borderColor = '#408e85';
+      $('lastupdate').textContent = current.time.replace('T', ' ').slice(0,16);
+      $('mode').textContent = 'IJUBBE7 · actuele meting';
+      showMessage('');
+    } catch (e) {
+      current = null;
+      $('status').textContent = 'Live niet beschikbaar';
+      $('status').style.borderColor = '';
+      $('lastupdate').textContent = 'Geen actuele meting';
+      $('mode').textContent = 'Historie kan wel beschikbaar zijn';
+      showMessage('Actuele metingen niet beschikbaar: ' + e.message + '. Historische metingen kunnen wel worden bekeken.');
+    }
+    renderTiles();
+  }
+
+  async function load() {
+    const id = ++loadingVersion;
+    $('chartmessage').textContent = 'Historische metingen ophalen…';
+    $('charttip').style.display = 'none';
+    try {
+      const arr = await getData(scope === 'week' ? { scope: 'week' } : { scope: 'day', date: selectedDate });
+      if (id !== loadingVersion) return;
+      readings = arr.map(normalize).filter(x => x.time).sort((a,b) => a.time.localeCompare(b.time));
+      if (!readings.length) throw Error('Geen historische metingen gevonden voor deze periode');
+      $('chartmessage').textContent = `${readings.length} echte meetmomenten van IJUBBE7 · beweeg over de grafiek voor de waarden.`;
+    } catch (e) {
+      if (id !== loadingVersion) return;
+      readings = [];
+      $('chartmessage').textContent = 'Geen gegevens: ' + e.message;
+    }
+    render();
+  }
+
+  function metricValue(k) {
+    return current ? current[k] : null;
+  }
+
+  function renderTiles() {
+    const vals = [
+      ['🌡️', 'Temperatuur', number(metricValue('temp')) + ' °C', 'Buitenlucht'],
+      ['💨', 'Windsnelheid', number(metricValue('wind')) + ' km/u', 'Windstoten: ' + number(metricValue('gust')) + ' km/u'],
+      ['💧', 'Luchtvochtigheid', number(metricValue('humidity'), 0) + ' %', 'Relatieve luchtvochtigheid'],
+      ['🔽', 'Luchtdruk', number(metricValue('pressure')) + ' hPa', 'Barometer'],
+      ['🌧️', 'Neerslagintensiteit', number(metricValue('rain')) + ' mm/u', 'Neerslag per uur'],
+      ['🌡', 'Gevoelstemperatuur', number(metricValue('feels')) + ' °C', 'Berekende / gerapporteerde waarde'],
+      ['🌫️', 'Dauwpunt', number(metricValue('dew')) + ' °C', 'Waterdamp in de lucht'],
+      ['🌬️', 'Windstoten', number(metricValue('gust')) + ' km/u', 'Actuele windstoot']
+    ];
+    $('tiles').innerHTML = vals.map(v => `
+      <article class="tile">
+        <div class="topline"><span>${v[1]}</span><span class="ico">${v[0]}</span></div>
+        <div class="value">${v[2]}</div>
+        <div class="note">${v[3]}</div>
+      </article>`).join('');
+  }
+
+  function renderFacts() {
+    const specs = [
+      ['Maximumtemperatuur', 'tempHigh', 'max', '°C'],
+      ['Minimumtemperatuur', 'tempLow', 'min', '°C'],
+      ['Hoogste windstoot', 'windgustHigh', 'max', 'km/u'],
+      ['Laagste luchtdruk', 'pressureMin', 'min', 'hPa']
+    ];
+    $('facts').innerHTML = specs.map(([name,key,op,unit]) => {
+      const nums = readings.map(r => r[key]).filter(Number.isFinite);
+      return `<div class="fact"><small>${name}</small><strong>${nums.length ? number(op === 'max' ? Math.max(...nums) : Math.min(...nums)) : '—'} ${unit}</strong></div>`;
+    }).join('');
+  }
+
+  function renderChips() {
+    const g = groups[category];
+    $('charttitle').textContent = g.title;
+    $('chartdesc').textContent = g.desc;
+    $('chips').innerHTML = g.lines.map(([k,l,c]) => `
+      <button class="chip ${seriesVisible[category].has(k) ? 'on' : ''}" style="--color:${c}" data-key="${k}" aria-pressed="${seriesVisible[category].has(k)}">
+        <span class="dot"></span>${l}
+      </button>`).join('');
+    $('chips').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
+      const s = seriesVisible[category];
+      const key = btn.dataset.key;
+      if (s.has(key)) s.delete(key); else s.add(key);
+      renderChips();
+      draw();
+    }));
+    $('legend').innerHTML = g.lines.filter(v => seriesVisible[category].has(v[0])).map(v => `<span style="--color:${v[2]}">${v[1]}</span>`).join('');
+  }
+
+  function draw() {
+    const c = $('chart');
+    const rect = c.getBoundingClientRect();
+    const w = Math.max(300, rect.width);
+    const h = rect.height || 310;
+    const ratio = window.devicePixelRatio || 1;
+    c.width = Math.floor(w * ratio);
+    c.height = Math.floor(h * ratio);
+    const ctx = c.getContext('2d');
+    ctx.scale(ratio, ratio);
+    ctx.clearRect(0,0,w,h);
+
+    const g = groups[category];
+    const lines = g.lines.filter(([key]) => seriesVisible[category].has(key));
+    const left = 49, right = 19, top = 22, bottom = 38;
+    const plotW = w - left - right;
+    const plotH = h - top - bottom;
+    const values = lines.flatMap(([k]) => readings.map(r => r[k]).filter(Number.isFinite));
+
+    ctx.font = '12px system-ui';
+    ctx.textBaseline = 'middle';
+
+    if (!values.length) {
+      ctx.fillStyle = '#a5bacf';
+      ctx.fillText(readings.length ? 'Geen meetwaarden voor deze selectie.' : 'Geen historische metingen beschikbaar.', left + 10, h / 2);
+      return;
+    }
+
+    let min = Math.min(...values), max = Math.max(...values);
+    const pad = Math.max((max - min) * .16, .8);
+    min -= pad; max += pad;
+    if (category === 'humidity') {
+      min = Math.max(0, min);
+      max = Math.min(100, max);
+    }
+    if (category === 'rain') min = 0;
+
+    const x = i => left + i * plotW / Math.max(readings.length - 1, 1);
+    const y = v => top + plotH - (v - min) / (max - min) * plotH;
+
+    for (let i = 0; i <= 4; i++) {
+      const yy = top + i * plotH / 4;
+      ctx.strokeStyle = 'rgba(160,185,208,.28)';
+      ctx.setLineDash([3,5]);
+      ctx.beginPath();
+      ctx.moveTo(left, yy);
+      ctx.lineTo(w - right, yy);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#8fa9c0';
+      ctx.textAlign = 'right';
+      ctx.fillText(number(max - (max - min) * i / 4, category === 'humidity' ? 0 : 1), left - 9, yy);
+    }
+
+    ctx.textAlign = 'center';
+    const ticks = Math.min(6, readings.length);
+    for (let i = 0; i < ticks; i++) {
+      const idx = Math.round(i * (readings.length - 1) / Math.max(ticks - 1, 1));
+      const r = readings[idx];
+      const lbl = scope === 'week' ? r.time.slice(5,10) : r.label;
+      ctx.fillStyle = '#8fa9c0';
+      ctx.fillText(lbl, x(idx), h - 17);
+    }
+
+    lines.forEach(([key, , color]) => {
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2.6;
+      ctx.lineJoin = 'round';
+      let started = false;
+      readings.forEach((r, i) => {
+        const v = r[key];
+        if (!Number.isFinite(v)) {
+          started = false;
+          return;
+        }
+        if (!started) {
+          ctx.moveTo(x(i), y(v));
+          started = true;
+        } else {
+          ctx.lineTo(x(i), y(v));
+        }
+      });
+      ctx.stroke();
+    });
+
+    if (hoverIndex >= 0 && hoverIndex < readings.length) {
+      const xx = x(hoverIndex);
+      ctx.strokeStyle = 'rgba(255,255,255,.5)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(xx, top);
+      ctx.lineTo(xx, top + plotH);
+      ctx.stroke();
+      lines.forEach(([key, , color]) => {
+        const v = readings[hoverIndex][key];
+        if (!Number.isFinite(v)) return;
+        ctx.beginPath();
+        ctx.arc(xx, y(v), 4, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.strokeStyle = '#0d1e30';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
+    }
+
+    c._draw = { left, plotW };
+  }
+
+  function render() {
+    renderTiles();
+    renderFacts();
+    renderChips();
+    $('daylabel').textContent = scope === 'week' ? 'Afgelopen 7 dagen' : selectedDate;
+    $('date').value = selectedDate;
+    $('next').disabled = selectedDate >= nowInNL();
+    $('week').classList.toggle('active', scope === 'week');
+    hoverIndex = -1;
+    draw();
+  }
+
+  $('chart').addEventListener('mousemove', e => {
+    const canvas = $('chart');
+    const box = canvas.getBoundingClientRect();
+    const x = e.clientX - box.left;
+    const pos = canvas._draw;
+    if (!pos) return;
+    hoverIndex = Math.max(0, Math.min(readings.length - 1, Math.round((x - pos.left) / pos.plotW * (readings.length - 1))));
+    const r = readings[hoverIndex];
+    if (!r) return;
+    const g = groups[category];
+    const vals = g.lines.filter(v => seriesVisible[category].has(v[0])).map(([key, label]) => `${label}: ${Number.isFinite(r[key]) ? number(r[key]) : '—'} ${g.unit}`);
+    const tip = $('charttip');
+    tip.textContent = (scope === 'week' ? r.time.slice(0,10) + ' ' : '') + r.label + '\n' + vals.join('\n');
+    tip.style.display = 'block';
+    tip.style.left = Math.min(Math.max(5, x + 14), Math.max(5, box.width - 190)) + 'px';
+    tip.style.top = '15px';
+    draw();
+  });
+  $('chart').addEventListener('mouseleave', () => {
+    hoverIndex = -1;
+    $('charttip').style.display = 'none';
+    draw();
+  });
+  window.addEventListener('resize', draw);
+
+  $('category').addEventListener('change', e => {
+    category = e.target.value;
+    hoverIndex = -1;
+    $('charttip').style.display = 'none';
+    renderChips();
+    draw();
+  });
+  $('date').addEventListener('change', e => {
+    if (e.target.value) {
+      selectedDate = e.target.value;
+      scope = 'day';
+      load();
+    }
+  });
+  $('prev').addEventListener('click', () => {
+    selectedDate = shift(selectedDate, -1);
+    scope = 'day';
+    load();
+  });
+  $('next').addEventListener('click', () => {
+    if (selectedDate < nowInNL()) {
+      selectedDate = shift(selectedDate, 1);
+      scope = 'day';
+      load();
+    }
+  });
+  $('today').addEventListener('click', () => {
+    selectedDate = nowInNL();
+    scope = 'day';
+    load();
+  });
+  $('yesterday').addEventListener('click', () => {
+    selectedDate = shift(nowInNL(), -1);
+    scope = 'day';
+    load();
+  });
+  $('week').addEventListener('click', () => {
+    selectedDate = nowInNL();
+    scope = 'week';
+    load();
+  });
+
+  $('themeSelect').addEventListener('change', e => {
+    localStorage.setItem(SEASON_STORAGE_KEY, e.target.value);
+    applyTheme();
+  });
+
+  applyTheme();
+  loadCurrent();
+  load();
+  setInterval(loadCurrent, 5 * 60 * 1000);
+})();
+</script>
+</body>
+</html>
