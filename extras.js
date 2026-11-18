@@ -12,7 +12,6 @@
   const MODE_KEY = 'weerstation-day-night';
   const oneDayMs = 86400000;
   let stationObservation = window.pwsCurrentObservation || null;
-  let regional = null;
   let lastLocalDate = '';
   let lastSeason = '';
   let cachedMoonDate = '';
@@ -145,20 +144,22 @@
     $('moonName').textContent = moon.name;
     $('moonIllumination').textContent = `Ongeveer ${moon.illuminated}% verlicht`;
     $('sunVisible').textContent = isDay ? '☀️ Zon staat boven de horizon' : '🌙 Zon staat onder de horizon';
-    if (cachedMoonDate !== date) { cachedMoonDate = date; cachedMoonTimes = moonHorizonTimes(date); }
-    const moonTimes = cachedMoonTimes;
-    $('moonrise').textContent = moonTimes.rise ? fmtTime(moonTimes.rise) : 'Geen opkomst vandaag';
-    $('moonset').textContent = moonTimes.set ? fmtTime(moonTimes.set) : 'Geen ondergang vandaag';
-    $('moonVisible').textContent = moonAltitude(new Date()) > 0 ? '🌙 Maan staat boven de horizon' : '🌘 Maan staat onder de horizon';
-
-    // Open-Meteo can provide refined calculated sunrise/sunset for the location.
-    if (regional && regional.date === date && regional.sunrise && regional.sunset) {
-      $('sunrise').textContent = regional.sunrise.slice(11, 16);
-      $('sunset').textContent = regional.sunset.slice(11, 16);
-      const startMins = Number(regional.sunrise.slice(11, 13)) * 60 + Number(regional.sunrise.slice(14, 16));
-      const endMins = Number(regional.sunset.slice(11, 13)) * 60 + Number(regional.sunset.slice(14, 16));
-      $('dayLength').textContent = fmtLength(endMins - startMins);
+    // These values are computed locally every new calendar date. No network request is needed.
+    try {
+      if (cachedMoonDate !== date || !cachedMoonTimes) {
+        cachedMoonTimes = moonHorizonTimes(date);
+        cachedMoonDate = date;
+      }
+      $('moonrise').textContent = cachedMoonTimes.rise ? fmtTime(cachedMoonTimes.rise) : 'Geen maanopkomst vandaag';
+      $('moonset').textContent = cachedMoonTimes.set ? fmtTime(cachedMoonTimes.set) : 'Geen maanondergang vandaag';
+      $('moonVisible').textContent = moonAltitude(new Date()) > 0 ?
+        '🌙 Maan staat boven de horizon' : '🌘 Maan staat onder de horizon';
+    } catch (error) {
+      $('moonrise').textContent = 'Niet beschikbaar';
+      $('moonset').textContent = 'Niet beschikbaar';
+      $('moonVisible').textContent = 'Maanpositie tijdelijk niet beschikbaar';
     }
+
     if (chosen === 'day') $('metaThemeColor').setAttribute('content', '#eaf2f8');
     if (chosen === 'auto' && isDay) $('metaThemeColor').setAttribute('content', '#eaf2f8');
     if (chosen === 'night' || (chosen === 'auto' && !isDay)) {
@@ -212,60 +213,105 @@
     return { icon: '🌤️', label: 'Wisselend weer' };
   }
 
-  function setNoRegionalData() {
-    const rate = stationObservation?.metric?.precipRate;
-    if (typeof rate === 'number' && rate > 0) {
-      $('weatherGlyph').textContent = '🌧️';
-      $('conditionName').textContent = 'Neerslag gemeten';
-      $('conditionDetail').textContent = `Eigen station: ${rate.toLocaleString('nl-NL')} mm/u. Regionaal weerbeeld niet beschikbaar.`;
+  // Derive our own short forecast. No news-site text or third-party weather prose.
+  // Daily fields are forecast model values; current observed values come only from IJUBBE7.
+  let forecastData = window.weerstationForecast || null;
+  const finite = x => typeof x === 'number' && Number.isFinite(x);
+  const fmt = (x, digits = 0) => finite(x) ? x.toLocaleString('nl-NL', {
+    maximumFractionDigits:digits, minimumFractionDigits:digits
+  }) : '—';
+  function rangeLabel(values, digits = 0, unit = '') {
+    const numbers = values.filter(finite);
+    if (!numbers.length) return '—';
+    const low = Math.min(...numbers), high = Math.max(...numbers);
+    return `${fmt(low,digits)}${Math.abs(high-low) > (digits ? .1 : .8) ? `–${fmt(high,digits)}` : ''}${unit}`;
+  }
+  function availableDays(index) {
+    if (!forecastData?.models) return [];
+    return ['ecmwf','gfs'].map(key=>forecastData.models[key]?.days?.[index]).filter(Boolean);
+  }
+  function conditionLabel(codes) {
+    const c = codes.filter(finite);
+    if (!c.length) return {icon:'🌦️',label:'Eigen weerbeeld'};
+    const chosen = c.some(code => [95,96,99].includes(code)) ? 95 :
+      c.some(code => [71,73,75,77,85,86].includes(code)) ? 71 :
+      c.some(code => [61,63,65,66,67,80,81,82].includes(code)) ? 61 :
+      c.some(code => [51,53,55,56,57].includes(code)) ? 51 :
+      c.some(code => [45,48].includes(code)) ? 45 :
+      c.some(code => code===3) ? 3 : c.some(code => code===2) ? 2 :
+      c.some(code => code===1) ? 1 : 0;
+    const variant = regionalCondition(chosen,document.documentElement.dataset.time!=='night');
+    if (new Set(c).size > 1) {
+      return {icon:variant.icon,label:variant.label==='Zonnig'?'Wisselend zonnig':variant.label};
+    }
+    return variant;
+  }
+  function renderOutlook() {
+    const metric = stationObservation?.metric || {};
+    const nowTemp = finite(metric.temp) ? metric.temp : null;
+    const observedWind = Number.isFinite(metric.windSpeed) ? metric.windSpeed :
+      Number.isFinite(metric.windspeed) ? metric.windspeed : null;
+    const rainRate = finite(metric.precipRate) ? metric.precipRate : null;
+    const today = availableDays(0);
+    const tomorrow = availableDays(1);
+    const condition = conditionLabel(today.map(d=>d.weatherCode));
+    $('weatherGlyph').textContent = today.length ? condition.icon : (rainRate>0?'🌧️':'🌤️');
+    $('conditionName').textContent = today.length ? condition.label : (rainRate>0?'Neerslag in Jubbega':'Actuele weersituatie');
+    $('conditionDetail').textContent = today.length ?
+      `Eigen verwachting op basis van ${today.length===2?'ECMWF en GFS':'het beschikbare weermodel'}` :
+      'Lokale metingen IJUBBE7';
+    $('outlookNow').textContent = finite(nowTemp) ? `${fmt(nowTemp,1)} °C` : '—';
+    $('outlookMax').textContent = rangeLabel(today.map(d=>d.high),0,' °C');
+    $('outlookRain').textContent = rangeLabel(today.map(d=>d.precipitation),1,' mm');
+    $('outlookTomorrow').textContent = rangeLabel(tomorrow.map(d=>d.high),0,' °C');
+
+    let lines = [];
+    if (finite(nowTemp)) {
+      let station = `IJUBBE7 meet momenteel ${fmt(nowTemp,1)} °C`;
+      if (finite(observedWind)) station += ` en ${fmt(observedWind,0)} km/u wind`;
+      if (finite(rainRate) && rainRate > 0.05) station += `, met ${fmt(rainRate,1)} mm/u neerslag`;
+      lines.push(station + '.');
+    }
+    if (today.length) {
+      const rain = today.map(x=>x.precipitation);
+      const highs = today.map(x=>x.high);
+      const winds = today.map(x=>x.wind);
+      let line = `De modellen verwachten vandaag ${condition.label.toLowerCase()}`;
+      if (highs.some(finite)) line += ` met een maximum van ${rangeLabel(highs,0,' °C')}`;
+      if (rain.some(finite)) line += ` en ${rangeLabel(rain,1,' mm')} neerslag`;
+      if (winds.some(finite)) line += `. De maximale wind ligt rond ${rangeLabel(winds,0,' km/u')}`;
+      lines.push(line + '.');
+      if (tomorrow.length) {
+        const max = tomorrow.map(d=>d.high);
+        const rainTomorrow = tomorrow.map(d=>d.precipitation);
+        let t = 'Morgen';
+        if (max.some(finite)) t += ` wordt het maximaal ${rangeLabel(max,0,' °C')}`;
+        if (rainTomorrow.some(finite)) t += `, met ${rangeLabel(rainTomorrow,1,' mm')} neerslag volgens de modellen`;
+        lines.push(t + '.');
+      }
+      const high = highs.filter(finite), rainAvailable=rain.filter(finite);
+      if (today.length===2 && ((high.length===2 && Math.abs(high[0]-high[1])>=3) ||
+          (rainAvailable.length===2 && Math.abs(rainAvailable[0]-rainAvailable[1])>=4))) {
+        lines.push('ECMWF en GFS lopen uiteen; houd rekening met extra onzekerheid.');
+      }
     } else {
-      $('weatherGlyph').textContent = '🌥️';
-      $('conditionName').textContent = 'Regionaal weerbeeld niet beschikbaar';
-      $('conditionDetail').textContent = 'De actuele PWS-metingen blijven beschikbaar via het dashboard.';
+      lines.push('De regionale modelverwachting is tijdelijk niet beschikbaar. De actuele metingen blijven zichtbaar.');
     }
+    $('outlookNarrative').textContent = lines.join(' ');
   }
-
-  async function fetchRegional() {
-    const url = new URL('https://api.open-meteo.com/v1/forecast');
-    url.searchParams.set('latitude', String(LAT));
-    url.searchParams.set('longitude', String(LON));
-    url.searchParams.set('current', 'weather_code,is_day');
-    url.searchParams.set('daily', 'sunrise,sunset');
-    url.searchParams.set('timezone', ZONE);
-    url.searchParams.set('forecast_days', '1');
-    try {
-      const response = await fetch(url.toString(), { cache: 'no-store' });
-      if (!response.ok) throw new Error(`Regionale API HTTP ${response.status}`);
-      const data = await response.json();
-      const code = Number(data?.current?.weather_code);
-      if (!Number.isFinite(code) || data?.current?.weather_code == null) throw new Error('Geen regionale weerconditie');
-      const isDay = data?.current?.is_day === 1;
-      const condition = regionalCondition(code, isDay);
-      $('weatherGlyph').textContent = condition.icon;
-      $('conditionName').textContent = condition.label;
-      $('conditionDetail').textContent = `Regionale modelindicatie · ${String(data.current.time || '').slice(11,16)} uur`;
-      regional = {
-        date: todayNL(),
-        sunrise: data?.daily?.sunrise?.[0] || null,
-        sunset: data?.daily?.sunset?.[0] || null
-      };
-      timeTheme();
-    } catch (error) {
-      setNoRegionalData();
-    }
-  }
-
   function onCurrent(event) {
     stationObservation = event.detail;
-    if (!regional) setNoRegionalData();
+    renderOutlook();
+  }
+  function onForecast(event) {
+    forecastData = event.detail;
+    renderOutlook();
   }
 
   function tick() {
     const today = todayNL();
     if (lastLocalDate !== today) {
       if (lastLocalDate) {
-        regional = null;
-        fetchRegional();
         // Recompute the automatically selected season when a month changes.
         if ($('themeSelect')?.value === 'auto') $('themeSelect').dispatchEvent(new Event('change'));
       }
@@ -276,6 +322,7 @@
   }
 
   document.addEventListener('weerstation-current', onCurrent);
+  document.addEventListener('weerstation-forecast', onForecast);
   document.addEventListener('weerstation-theme', () => {
     particles();
     timeTheme();
@@ -284,9 +331,7 @@
     localStorage.setItem(MODE_KEY, event.target.value);
     timeTheme();
   });
+  renderOutlook();
   tick();
-  setNoRegionalData();
-  fetchRegional();
   setInterval(tick, 60000);
-  setInterval(fetchRegional, 30 * 60 * 1000);
 })();

@@ -225,6 +225,26 @@
     .forecastSnow strong{color:var(--theme-1)}
     .forecastSnow small{display:block;color:var(--muted);line-height:1.4;margin-top:3px}
     @media(max-width:620px){.displayTrigger{padding:8px 11px}.displayMenuPanel{right:-72px}.headright{gap:8px}.stamp{text-align:left}}
+
+    /* v10 — complete own local outlook and two real forecast rows */
+    .conditionPanel{display:flex;flex-direction:column;gap:0}
+    .conditionPanel .conditionBody{margin:21px 0 13px}
+    .outlookNarrative{font-size:14px;line-height:1.65;color:var(--text);background:color-mix(in srgb,var(--panel2) 45%,transparent);border-radius:14px;padding:14px 16px;margin:0 0 13px}
+    .outlookFacts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:20px}
+    .outlookFact{border-radius:12px;border:1px solid color-mix(in srgb,var(--line) 70%,transparent);padding:11px 13px;min-width:0}
+    .outlookFact span{display:block;color:var(--muted);font-size:12px}
+    .outlookFact strong{display:block;margin-top:3px;font-size:19px;font-variant-numeric:tabular-nums}
+    .conditionPanel .conditionFooter{margin-top:auto}
+    .forecastWeekBlock{scroll-margin-top:112px;margin:16px 0 22px}
+    .forecastWeekBlock+.forecastWeekBlock{border-top:1px solid var(--line);padding-top:20px}
+    .forecastWeekHeading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+    .forecastWeekHeading h3{font-size:19px}
+    .forecastWeekHeading span{font-size:12px;color:var(--muted)}
+    .forecastCards.forecastWeekGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-flow:row;grid-auto-columns:unset;gap:12px;overflow:visible;scroll-snap-type:none;padding:0;max-width:none}
+    .forecastCards.forecastWeekGrid .forecastDay{scroll-snap-align:none}
+    @media(max-width:1100px){.forecastCards.forecastWeekGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:780px){.forecastCards.forecastWeekGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:620px){.forecastCards.forecastWeekGrid{grid-template-columns:1fr}.outlookFacts{gap:8px}.outlookFact{padding:9px 10px}.outlookFact strong{font-size:18px}}
   </style>
 </head>
 <body>
@@ -277,9 +297,16 @@
   </section>
   <section class="section atmosphereGrid" aria-label="Weersituatie en zon en maan">
     <div class="panel conditionPanel">
-      <div class="conditionPanelHead"><div><h2>🌤️ Weerbeeld in Jubbega</h2><p class="hint">Regionale omstandigheden naast de metingen van je eigen station</p></div><span class="timePill" id="dayNightTag">◷ Laden…</span></div>
-      <div class="conditionBody"><span class="weatherGlyph" id="weatherGlyph" aria-hidden="true">🌤️</span><div><div class="conditionName" id="conditionName">Weerbeeld ophalen…</div><div class="hint" id="conditionDetail">Regionaal weerbeeld wordt geladen</div></div></div>
-      <div class="conditionFooter"><span>Live metingen: Weather Underground IJUBBE7</span><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Weerbeeld: Open-Meteo ↗</a></div>
+      <div class="conditionPanelHead"><div><h2>🌤️ Weerbeeld in Jubbega</h2><p class="hint">Onze eigen verwachting, berekend uit IJUBBE7, ECMWF en GFS</p></div><span class="timePill" id="dayNightTag">◷ Laden…</span></div>
+      <div class="conditionBody"><span class="weatherGlyph" id="weatherGlyph" aria-hidden="true">🌤️</span><div><div class="conditionName" id="conditionName">Weerbeeld ophalen…</div><div class="hint" id="conditionDetail">Meetgegevens en modelverwachting worden verwerkt</div></div></div>
+      <div class="outlookNarrative" id="outlookNarrative" aria-live="polite">Onze weersverwachting wordt samengesteld uit de beschikbare metingen en weermodellen.</div>
+      <div class="outlookFacts" aria-label="Eigen weerverwachting in het kort">
+        <div class="outlookFact"><span>🌡️ Nu gemeten</span><strong id="outlookNow">—</strong></div>
+        <div class="outlookFact"><span>🌤️ Maximum vandaag</span><strong id="outlookMax">—</strong></div>
+        <div class="outlookFact"><span>💧 Neerslag vandaag (model)</span><strong id="outlookRain">—</strong></div>
+        <div class="outlookFact"><span>📅 Morgen (maximum)</span><strong id="outlookTomorrow">—</strong></div>
+      </div>
+      <div class="conditionFooter"><span>Eigen analyse · PWS IJUBBE7 + ECMWF/GFS</span><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Modelgegevens: Open-Meteo ↗</a></div>
     </div>
     <div class="panel sunMoonPanel">
       <h2>🌅 Zon en maan</h2>
@@ -359,11 +386,18 @@
       <p id="forecastStatus" class="forecastStatus" role="status">De 14-daagse verwachting wordt opgehaald…</p>
       <div id="forecastError" class="forecastError" role="alert" hidden></div>
       <div class="forecastWeekNav" role="group" aria-label="Spring naar voorspellingsweek">
-        <span>Blader door 14 dagen:</span>
+        <span>Beide weken staan onder elkaar:</span>
         <button type="button" class="btn" id="forecastFirstWeek">Dag 1–7</button>
         <button type="button" class="btn" id="forecastSecondWeek">Dag 8–14</button>
       </div>
-      <div class="forecastCards" id="forecastCards" aria-label="Voorspelling per dag en weermodel"></div>
+      <section class="forecastWeekBlock" id="forecastWeekOne" aria-labelledby="forecastWeekOneHeading">
+        <div class="forecastWeekHeading"><h3 id="forecastWeekOneHeading">Week 1 · dag 1–7</h3><span>Komende zeven dagen</span></div>
+        <div class="forecastCards forecastWeekGrid" id="forecastCards" aria-label="Verwachting week 1 per dag en weermodel"></div>
+      </section>
+      <section class="forecastWeekBlock" id="forecastWeekTwo" aria-labelledby="forecastWeekTwoHeading">
+        <div class="forecastWeekHeading"><h3 id="forecastWeekTwoHeading">Week 2 · dag 8–14</h3><span>Langere termijn · grotere onzekerheid</span></div>
+        <div class="forecastCards forecastWeekGrid" id="forecastCardsNext" aria-label="Verwachting week 2 per dag en weermodel"></div>
+      </section>
       <p class="hint" style="margin:2px 0 0">De langere termijn (vooral dag 8–14) is onzeker. Vergelijk beide modellen voor een indicatie van die onzekerheid.</p>
       <div class="forecastDetails" id="forecastDetails" hidden>
         <div>
@@ -451,7 +485,7 @@ $('category').addEventListener('change',e=>{category=e.target.value;hoverIndex=-
 applyTheme();loadCurrent();load();setInterval(loadCurrent,5*60*1000);setInterval(refreshTodayWind,15*60*1000);
 })();
 </script>
-<script src="/extras.js" defer></script>
-<script src="/forecast.js" defer></script>
+<script src="/extras.js?v=10" defer></script>
+<script src="/forecast.js?v=10" defer></script>
 </body>
 </html>

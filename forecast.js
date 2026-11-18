@@ -58,8 +58,9 @@
   function renderCards() {
     if (!payload) return;
     const keys = visibleKeys();
+    if (!keys.length) return;
     const days = payload.models[keys[0]]?.days.slice(0, DAYS) || [];
-    const cards = days.map((one,i) => {
+    function makeCard(one, i) {
       const first = payload.models.ecmwf?.days?.[i];
       const second = payload.models.gfs?.days?.[i];
       const ref = selected === 'gfs' ? (second || first) : (first || second);
@@ -71,13 +72,14 @@
         if (Number.isFinite(tempDiff) || Number.isFinite(rainDiff)) diff = `<div class="forecastDifference">Modelverschil: ${Number.isFinite(tempDiff)?format(tempDiff,1)+'°C':'—'} max · ${Number.isFinite(rainDiff)?format(rainDiff,1)+' mm':'—'} regen</div>`;
       }
       return `<article class="forecastDay">
-        <div class="forecastDayHeader"><div><div class="forecastDayTitle">${i===0?'Vandaag':toDay(one.date)}${i===7?' · Week 2':''}</div><div class="forecastDate">${one.date.split('-').reverse().join('-')}</div></div><div class="forecastIcon" aria-hidden="true">${w.icon}</div></div>
-        <div class="forecastCondition">${w.name}${selected === 'both' ? ' · indicatie ECMWF' : ''}</div>
-        ${keys.map(k=>createModelBlock(k,payload.models[k].days[i])).join('')}
+        <div class="forecastDayHeader"><div><div class="forecastDayTitle">${i===0?'Vandaag':toDay(one.date)}</div><div class="forecastDate">${one.date.split('-').reverse().join('-')}</div></div><div class="forecastIcon" aria-hidden="true">${w.icon}</div></div>
+        <div class="forecastCondition">${w.name}${selected === 'both' ? ' · ECMWF-indicatie' : ''}</div>
+        ${keys.map(k=>createModelBlock(k,payload.models[k].days[i] || {})).join('')}
         ${diff}
       </article>`;
-    }).join('');
-    $('forecastCards').innerHTML = cards;
+    }
+    $('forecastCards').innerHTML = days.slice(0,7).map((day,i)=>makeCard(day,i)).join('');
+    $('forecastCardsNext').innerHTML = days.slice(7,14).map((day,i)=>makeCard(day,i+7)).join('');
   }
 
   // SVG chart: stable axis, comparison lines, and no third-party chart library.
@@ -173,6 +175,8 @@
       if(!r.ok)throw new Error(data.error||'Voorspelling tijdelijk niet beschikbaar');
       if(!data.models || !Object.keys(data.models).length)throw new Error('Geen weermodelgegevens ontvangen');
       payload=data;
+      window.weerstationForecast=data;
+      document.dispatchEvent(new CustomEvent('weerstation-forecast',{detail:data}));
       render();
     }catch(e){
       $('forecastStatus').textContent='Voorspelling niet beschikbaar';
@@ -184,12 +188,10 @@
   for(const [id,value] of [['forecastBoth','both'],['forecastECMWF','ecmwf'],['forecastGFS','gfs']]){
     $(id).addEventListener('click',()=>{selected=value;sessionStorage.setItem(CHOICE_KEY,value);render();});
   }
-  // In the 14-day row, jump to week 1 or week 2 without changing the data.
-  for(const [buttonId,dayIndex] of [['forecastFirstWeek',0],['forecastSecondWeek',7]]) {
+  // Both weeks are visible on the page, one below the other.
+  for (const [buttonId, sectionId] of [['forecastFirstWeek','forecastWeekOne'],['forecastSecondWeek','forecastWeekTwo']]) {
     $(buttonId)?.addEventListener('click',()=>{
-      const container=$('forecastCards');
-      const item=container.children[dayIndex];
-      if(item) container.scrollTo({left:item.offsetLeft-container.children[0].offsetLeft,behavior:'smooth'});
+      $(sectionId)?.scrollIntoView({behavior:'smooth',block:'start'});
     });
   }
   $('forecastMetric').addEventListener('change',e=>{metric=e.target.value;drawChart()});
