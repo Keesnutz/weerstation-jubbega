@@ -259,15 +259,15 @@
     $('conditionName').textContent = today.length ? condition.label : (rainRate>0?'Neerslag in Jubbega':'Actuele weersituatie');
     $('conditionDetail').textContent = today.length ?
       `Eigen verwachting op basis van ${today.length===2?'ECMWF en GFS':'het beschikbare weermodel'}` :
-      'Lokale metingen IJUBBE7';
+      'Lokale metingen Eigen weerstation';
     $('outlookNow').textContent = finite(nowTemp) ? `${fmt(nowTemp,1)} °C` : '—';
-    $('outlookMax').textContent = rangeLabel(today.map(d=>d.high),0,' °C');
-    $('outlookRain').textContent = rangeLabel(today.map(d=>d.precipitation),1,' mm');
-    $('outlookTomorrow').textContent = rangeLabel(tomorrow.map(d=>d.high),0,' °C');
+    $('outlookMax').textContent = rangeLabel(today.map(d=>d.high),0,' °C')+' / '+rangeLabel(today.map(d=>d.low),0,' °C');
+    $('outlookRain').textContent = rangeLabel(today.map(d=>d.precipitation).filter(finite).map(v=>Math.round(Math.max(0,v)*2)/2),1,' mm');
+    $('outlookTomorrow').textContent = rangeLabel(tomorrow.map(d=>d.high),0,' °C')+' / '+rangeLabel(tomorrow.map(d=>d.low),0,' °C');
 
     let lines = [];
     if (finite(nowTemp)) {
-      let station = `IJUBBE7 meet momenteel ${fmt(nowTemp,1)} °C`;
+      let station = `Het Eigen weerstation meet momenteel ${fmt(nowTemp,1)} °C`;
       if (finite(observedWind)) station += ` en ${fmt(observedWind,0)} km/u wind`;
       if (finite(rainRate) && rainRate > 0.05) station += `, met ${fmt(rainRate,1)} mm/u neerslag`;
       lines.push(station + '.');
@@ -275,10 +275,12 @@
     if (today.length) {
       const rain = today.map(x=>x.precipitation);
       const highs = today.map(x=>x.high);
+      const lows = today.map(x=>x.low);
       const winds = today.map(x=>x.wind);
       let line = `De modellen verwachten vandaag ${condition.label.toLowerCase()}`;
       if (highs.some(finite)) line += ` met een maximum van ${rangeLabel(highs,0,' °C')}`;
-      if (rain.some(finite)) line += ` en ${rangeLabel(rain,1,' mm')} neerslag`;
+      if (lows.some(finite)) line += ` en een minimum van ${rangeLabel(lows,0,' °C')}`;
+      if (rain.some(finite)) line += ` en ${rangeLabel(rain.filter(finite).map(v=>Math.round(Math.max(0,v)*2)/2),1,' mm')} neerslag`;
       if (winds.some(finite)) line += `. De maximale wind ligt rond ${rangeLabel(winds,0,' km/u')}`;
       lines.push(line + '.');
       if (tomorrow.length) {
@@ -286,7 +288,7 @@
         const rainTomorrow = tomorrow.map(d=>d.precipitation);
         let t = 'Morgen';
         if (max.some(finite)) t += ` wordt het maximaal ${rangeLabel(max,0,' °C')}`;
-        if (rainTomorrow.some(finite)) t += `, met ${rangeLabel(rainTomorrow,1,' mm')} neerslag volgens de modellen`;
+        if (rainTomorrow.some(finite)) t += `, met ${rangeLabel(rainTomorrow.filter(finite).map(v=>Math.round(Math.max(0,v)*2)/2),1,' mm')} neerslag volgens de modellen`;
         lines.push(t + '.');
       }
       const high = highs.filter(finite), rainAvailable=rain.filter(finite);

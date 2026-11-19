@@ -43,8 +43,13 @@
     return Number.isFinite(v) ? `${format(v,1)} ${unit}` : '—';
   }
 
-  // Blauw wanneer sneeuw mogelijk/voorspeld is; groen wanneer gegevens geen
-  // sneeuwsignaal aangeven; neutraal wanneer sneeuwgegevens ontbreken.
+  // The winter signal (December-March) does not depend on a manually selected visual theme.
+  // Outside winter: ECMWF has no calibrated thunderstorm estimate in Open-Meteo;
+  // use the WMO thunderstorm code from GFS and label missing evidence honestly.
+  function winterDate(date) {
+    const month=Number(String(date||'').slice(5,7));
+    return [12,1,2,3].includes(month);
+  }
   function snowStatusHtml(day) {
     const signal=String(day.snowSignal || '').trim();
     const modelSnow=Number.isFinite(day.snowfall) && day.snowfall>0.05;
@@ -55,7 +60,18 @@
     const label=alert ? (signal && !/geen sneeuw/i.test(signal) ? signal : 'Sneeuwsignaal') : unknown ? 'Sneeuwgegevens niet beschikbaar' : 'Geen sneeuwsignaal';
     const icon=alert?'❄️':unknown?'○':'✅';
     return `<div class="forecastSnow ${state}">${icon} <strong>${label}</strong>${Number.isFinite(day.snowfall)&&alert ? ` · ${format(day.snowfall,1)} cm model-sneeuw` : ''}
-    ${alert && Number.isFinite(day.snowPrecipChance) ? `<small>Neerslagkans tijdens mogelijke sneeuwuren: ${format(day.snowPrecipChance)}% (niet de sneeuwkans)</small>` : ''}</div>`;
+      ${alert && Number.isFinite(day.snowPrecipChance) ? `<small>Neerslagkans tijdens mogelijke sneeuwuren: ${format(day.snowPrecipChance)}% (niet de sneeuwkans)</small>` : ''}</div>`;
+  }
+  function thunderStatusHtml(key,day) {
+    // ECMWF's weather code is derived without atmospheric instability data.
+    if(key==='ecmwf') return '<div class="forecastSnow snowUnknown">○ <strong>Onweer niet te beoordelen</strong><small>ECMWF biedt hier geen betrouwbare onweersindicatie.</small></div>';
+    const code=day.weatherCode;
+    if(!Number.isFinite(code)) return '<div class="forecastSnow snowUnknown">○ <strong>Onweergegevens ontbreken</strong></div>';
+    if([95,96,99].includes(code)) return '<div class="forecastSnow snowAlert">⛈️ <strong>Onweersignaal</strong><small>GFS berekent onweersweer. Dit is geen kanspercentage.</small></div>';
+    return '<div class="forecastSnow snowClear">✅ <strong>Geen onweersignaal in GFS</strong><small>Dit sluit lokale onweersbuien niet uit.</small></div>';
+  }
+  function seasonSignalHtml(key,day) {
+    return winterDate(day.date) ? snowStatusHtml(day) : thunderStatusHtml(key,day);
   }
 
   function createModelBlock(key, day) {
@@ -65,7 +81,7 @@
       <div class="forecastMeta">💧 Regen/neerslag: ${summaryValue(day.precipitation,'mm')}</div>
       <div class="forecastMeta">💨 Wind: ${summaryValue(day.wind,'km/u')} · stoten ${summaryValue(day.gust,'km/u')}</div>
       <div class="forecastMeta">🌫️ Gem. dauwpunt: ${summaryValue(day.dewPoint,'°C')}</div>
-      ${snowStatusHtml(day)}
+      ${seasonSignalHtml(key,day)}
     </div>`;
   }
 

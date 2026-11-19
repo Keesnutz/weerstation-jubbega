@@ -297,7 +297,7 @@
             <option value="day">Altijd dag</option>
             <option value="night">Altijd nacht</option>
           </select>
-          <span class="displayMenuFoot">Seizoenen: winter dec–feb, lente mrt–jun, zomer jul–sep, herfst okt–nov.</span>
+          <span class="displayMenuFoot">Seizoenen: winter dec–mrt, lente apr–jun, zomer jul–sep, herfst okt–nov.</span>
         </div>
       </details>
       <span class="tag" id="status">Verbinding maken…</span>
@@ -322,7 +322,7 @@
   </section>
   <section class="section atmosphereGrid" aria-label="Weersituatie en zon en maan">
     <div class="panel conditionPanel">
-      <div class="conditionPanelHead"><div><h2>🌤️ Weerbeeld in Jubbega</h2><p class="hint">Onze eigen verwachting, berekend uit IJUBBE7, ECMWF en GFS</p></div><span class="timePill" id="dayNightTag">◷ Laden…</span></div>
+      <div class="conditionPanelHead"><div><h2>🌤️ Weerbeeld in Jubbega</h2><p class="hint">Onze eigen verwachting op basis van het Eigen weerstation, ECMWF en GFS</p></div><span class="timePill" id="dayNightTag">◷ Laden…</span></div>
       <div class="conditionBody"><span class="weatherGlyph" id="weatherGlyph" aria-hidden="true">🌤️</span><div><div class="conditionName" id="conditionName">Weerbeeld ophalen…</div><div class="hint" id="conditionDetail">Meetgegevens en modelverwachting worden verwerkt</div></div></div>
       <div class="outlookNarrative" id="outlookNarrative" aria-live="polite">
         <div class="outlookHeading"><span>📝</span><strong>Onze weersverwachting voor Jubbega</strong></div>
@@ -332,11 +332,11 @@
       </div>
       <div class="outlookFacts" aria-label="Eigen weerverwachting in het kort">
         <div class="outlookFact"><span>🌡️ Nu gemeten</span><strong id="outlookNow">—</strong></div>
-        <div class="outlookFact"><span>🌤️ Maximum vandaag</span><strong id="outlookMax">—</strong></div>
+        <div class="outlookFact"><span>🌤️ Max / min vandaag</span><strong id="outlookMax">—</strong></div>
         <div class="outlookFact"><span>💧 Neerslag vandaag (model)</span><strong id="outlookRain">—</strong></div>
-        <div class="outlookFact"><span>📅 Morgen (maximum)</span><strong id="outlookTomorrow">—</strong></div>
+        <div class="outlookFact"><span>📅 Morgen (max / min)</span><strong id="outlookTomorrow">—</strong></div>
       </div>
-      <div class="conditionFooter"><span>Eigen analyse · PWS IJUBBE7 + ECMWF/GFS</span><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Modelgegevens: Open-Meteo ↗</a></div>
+      <div class="conditionFooter"><span>Eigen analyse · Eigen weerstation + ECMWF/GFS</span><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Modelgegevens: Open-Meteo ↗</a></div>
     </div>
     <div class="panel sunMoonPanel">
       <h2>🌅 Zon en maan</h2>
@@ -352,7 +352,7 @@
   <section class="section twocol">
     <div class="panel">
       <h2>🧭 Windroos</h2>
-      <div class="hint">Actuele wind en daggemiddelde volgens IJUBBE7 · windkracht bij benadering (Beaufort)</div>
+      <div class="hint">Actuele wind en daggemiddelde van het Eigen weerstation · windkracht bij benadering (Beaufort)</div>
       <div class="windroseWrap">
         <div class="windrose" aria-label="Windroos actuele windrichting">
           <div class="diag1"></div><div class="diag2"></div>
@@ -443,7 +443,7 @@
         </div>
         <div class="forecastSummary" id="forecastSummary"></div>
       </div>
-      <div class="forecastSource">Modelverwachtingen zijn <strong>voorspellingen</strong>, geen metingen van IJUBBE7. Sneeuwindicaties zijn afgeleid van voorspelde sneeuwval, dauwpunt en temperatuur. Een dauwpunt onder −5 °C op zichzelf betekent niet dat het gaat sneeuwen. Een kans in procenten verschijnt alleen wanneer het model daar een toepasselijke neerslagkans voor aanlevert; dit is <strong>geen gekalibreerde kans op sneeuw</strong>. Verschillen tussen ECMWF en GFS tonen modelspreiding, geen exacte foutmarge. Bron: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a> · <a href="https://www.ecmwf.int/" target="_blank" rel="noopener noreferrer">ECMWF</a> en <a href="https://www.ncei.noaa.gov/products/weather-climate-models/global-forecast" target="_blank" rel="noopener noreferrer">NOAA GFS</a>. Gebruik voor belangrijke beslissingen ook officiële KNMI-waarschuwingen.</div>
+      <div class="forecastSource">Modelverwachtingen zijn <strong>voorspellingen</strong>, geen metingen van het Eigen weerstation. In de maanden december t/m maart tonen we een sneeuwsignaal op basis van voorspelde sneeuwval en neerslag bij lage temperatuur. In april t/m november tonen we een <strong>onweersindicatie</strong>: GFS kan WMO-onweercodes leveren, maar voor ECMWF is onweer hiermee niet betrouwbaar te beoordelen. Geen signaal sluit lokale buien niet uit; er wordt geen nauwkeurige sneeuw- of onweerskans verzonnen. Vanaf dag 8 neemt de onzekerheid toe. Bron: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a> · <a href="https://www.ecmwf.int/" target="_blank" rel="noopener noreferrer">ECMWF</a> en <a href="https://www.ncei.noaa.gov/products/weather-climate-models/global-forecast" target="_blank" rel="noopener noreferrer">NOAA GFS</a>. Gebruik voor belangrijke beslissingen officiële KNMI-waarschuwingen.</div>
     </div>
   </section>
   <section id="historie" class="section">
@@ -457,7 +457,7 @@
       <p class="hint" id="chartmessage">Beweeg met je muis over de lijnen voor de exacte meetwaarden.</p>
     </div>
   </section>
-  <section class="section"><div class="panel"><h2>Dagoverzicht</h2><div class="hint">Hoogste en laagste waarden van de geselecteerde periode</div><div class="facts" id="facts"></div><p class="hint" style="margin:12px 0 0">Windkracht is afgeleid van gemeten windsnelheid. Het daggemiddelde gebruikt beschikbare meetmomenten.</p></div></section>
+  <section class="section"><div class="panel"><h2>Dagoverzicht</h2><div class="hint">Hoogste en laagste waarden van de geselecteerde periode</div><div class="facts" id="facts"></div><p class="hint" style="margin:12px 0 0">Windkracht is afgeleid van gemeten windsnelheid. Het daggemiddelde gebruikt beschikbare meetmomenten. Beaufort bij windstoten is alleen een snelheidsomrekening: windstoten zijn geen gemiddelde windkracht.</p></div></section>
 </main>
 <footer class="wrap footer"><span>© <span id="year"></span> Weerstation Jubbega · Eigen lokale metingen</span><span>Metingen via Weather Underground · regionaal weerbeeld via <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></span></footer>
 <script>
@@ -469,10 +469,10 @@ const $=id=>document.getElementById(id);
 const partsDate=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Amsterdam',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).reduce((a,p)=>(a[p.type]=p.value,a),{});
 const nowInNL=()=>{const p=partsDate();return `${p.year}-${p.month}-${p.day}`};
 const monthInNL=()=>Number(new Intl.DateTimeFormat('nl-NL',{timeZone:'Europe/Amsterdam',month:'numeric'}).format(new Date()));
-const autoSeasonByMonth=m=>[12,1,2].includes(m)?'winter':[3,4,5,6].includes(m)?'spring':[7,8,9].includes(m)?'summer':'autumn';
+const autoSeasonByMonth=m=>[12,1,2,3].includes(m)?'winter':[4,5,6].includes(m)?'spring':[7,8,9].includes(m)?'summer':'autumn';
 const chosenTheme=()=>localStorage.getItem(STORE)||'auto';
 const activeTheme=()=>chosenTheme()==='auto'?autoSeasonByMonth(monthInNL()):chosenTheme();
-const themeText=n=>({winter:'Winterthema actief · december t/m februari',spring:'Lentethema actief · maart t/m juni',summer:'Zomerthema actief · juli t/m september',autumn:'Herfstthema actief · oktober t/m november'})[n]||'Automatisch thema';
+const themeText=n=>({winter:'Winterthema actief · december t/m maart',spring:'Lentethema actief · april t/m juni',summer:'Zomerthema actief · juli t/m september',autumn:'Herfstthema actief · oktober t/m november'})[n]||'Automatisch thema';
 function faviconData(themeName){const t=themes[themeName]||themes.winter;const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${t.iconBg}"/><stop offset="100%" stop-color="${t.iconAccent}"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#g)"/><circle cx="25" cy="25" r="10" fill="${t.iconSun}" opacity="0.95"/><path d="M41 43H23c-5 0-9-3.2-9-8 0-4.1 2.8-7.1 6.6-7.8 1.7-5.6 6.3-9.2 12.1-9.2 6.8 0 12.3 4.8 13.2 11.2 3.6.8 6.1 3.8 6.1 7.5 0 4.3-3.4 7.3-11 7.3Z" fill="${t.iconCloud}"/></svg>`;return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`}
 function applyTheme(){const mode=chosenTheme();const act=activeTheme();const info=themes[act];document.documentElement.setAttribute('data-theme',act);$('themeSelect').value=mode;$('brandSeasonIcon').textContent=info.emoji;$('seasonText').textContent=mode==='auto'?themeText(act):`${info.label} handmatig gekozen`;$('metaThemeColor').setAttribute('content',info.themeColor);$('faviconLink').setAttribute('href',`/favicon-${act}.svg`);document.dispatchEvent(new Event('weerstation-theme'))}
 const dateISO=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
@@ -492,7 +492,20 @@ async function loadCurrent(){try{const arr=await getData({scope:'current'});if(!
 async function load(){const id=++loadingVersion;$('chartmessage').textContent='Historische metingen ophalen…';$('charttip').style.display='none';try{const arr=await getData(scope==='week'?{scope:'week'}:{scope:'day',date:selectedDate});if(id!==loadingVersion)return;readings=arr.map(normalize).filter(x=>x.time).sort((a,b)=>a.time.localeCompare(b.time));if(scope==='day'&&selectedDate===nowInNL()){todayWindReadings=readings;todayWindDate=selectedDate;}if(!readings.length)throw Error('Geen historische metingen gevonden voor deze periode');$('chartmessage').textContent=`${readings.length} echte meetmomenten van IJUBBE7 · beweeg over de grafiek voor de waarden.`;}catch(e){if(id!==loadingVersion)return;readings=[];$('chartmessage').textContent='Geen gegevens: '+e.message;}render()}
 async function refreshTodayWind(){const date=nowInNL();if(scope==='day'&&selectedDate===date)return;try{const arr=await getData({scope:'day',date});todayWindReadings=arr.map(normalize).filter(x=>x.time);todayWindDate=date;renderWind()}catch{/* leave last known average or blank */}}
 function metricValue(k){return current?current[k]:null}
-function renderTiles(){const vals=[['🌡️','Temperatuur',number(metricValue('temp'))+' °C','Buitenlucht'],['💨','Windsnelheid',number(metricValue('wind'))+' km/u','Windstoten: '+number(metricValue('gust'))+' km/u'],['💧','Luchtvochtigheid',number(metricValue('humidity'),0)+' %','Relatieve luchtvochtigheid'],['🔽','Luchtdruk',number(metricValue('pressure'))+' hPa','Barometer'],['🌧️','Neerslag vandaag',number(metricValue('rainTotal'))+' mm','Totale regen van vandaag'],['🌡','Gevoelstemperatuur',number(metricValue('feels'))+' °C','Berekende / gerapporteerde waarde'],['🌫️','Dauwpunt',number(metricValue('dew'))+' °C','Waterdamp in de lucht'],['🧭','Windrichting',`${compassName(metricValue('winddir'))}${Number.isFinite(metricValue('winddir'))?` · ${number(metricValue('winddir'),0)}°`:''}`,'Actuele windrichting']];$('tiles').innerHTML=vals.map(v=>`<article class="tile"><div class="topline"><span>${v[1]}</span><span class="ico">${v[0]}</span></div><div class="value">${v[2]}</div><div class="note">${v[3]}</div></article>`).join('')}
+function renderTiles(){
+  const wind=metricValue('wind'),gust=metricValue('gust');
+  const vals=[
+    ['🌡️','Temperatuur',number(metricValue('temp'))+' °C','Buitenlucht'],
+    ['💨','Windsnelheid',number(wind)+' km/u',`Windkracht ${bftLabel(wind)} · stoten ${number(gust)} km/u`],
+    ['💧','Luchtvochtigheid',number(metricValue('humidity'),0)+' %','Relatieve luchtvochtigheid'],
+    ['🔽','Luchtdruk',number(metricValue('pressure'))+' hPa','Barometer'],
+    ['🌧️','Neerslag vandaag',number(metricValue('rainTotal'))+' mm','Totale regen van vandaag'],
+    ['🌡','Gevoelstemperatuur',number(metricValue('feels'))+' °C','Berekende / gerapporteerde waarde'],
+    ['🌫️','Dauwpunt',number(metricValue('dew'))+' °C','Waterdamp in de lucht'],
+    ['🌬️','Windstoten',number(gust)+' km/u',`Omgerekend ${bftLabel(gust)} · korte windpiek`]
+  ];
+  $('tiles').innerHTML=vals.map(v=>`<article class="tile"><div class="topline"><span>${v[1]}</span><span class="ico">${v[0]}</span></div><div class="value">${v[2]}</div><div class="note">${v[3]}</div></article>`).join('');
+}
 function totalRainForReadings(){
   const byDay=new Map();
   for(const row of readings){
@@ -515,25 +528,28 @@ $('category').addEventListener('change',e=>{category=e.target.value;hoverIndex=-
 applyTheme();loadCurrent();load();setInterval(loadCurrent,5*60*1000);setInterval(refreshTodayWind,15*60*1000);
 })();
 </script>
-<script src="/extras.js?v=11" defer></script>
-<script src="/forecast.js?v=11" defer></script>
+<script src="/extras.js?v=12" defer></script>
+<script src="/forecast.js?v=12" defer></script>
 
 <script>
-/* v11: Zelfstandig tekstweerbericht. Werkt ook wanneer een oudere extras.js nog in de browsercache zit. */
+/* v12: Zelfstandig tekstweerbericht. Werkt ook wanneer een oudere extras.js nog in de browsercache zit. */
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
   if (!$('outlookNarrative')) return;
   const finite = n => typeof n === 'number' && Number.isFinite(n);
   const number = (n,d=0) => finite(n) ? n.toLocaleString('nl-NL',{maximumFractionDigits:d,minimumFractionDigits:d}) : '—';
+  const halfMM = n => Math.round(Math.max(0,n)*2)/2;
+  const rainNumber = n => halfMM(n).toLocaleString('nl-NL',{maximumFractionDigits:1});
   const getDays = (p,index) => ['ecmwf','gfs'].map(k=>p?.models?.[k]?.days?.[index]).filter(Boolean);
   const valid = (ds,key) => ds.map(d=>d?.[key]).filter(finite);
   const range = (ds,key,digits,unit) => {
-    const nums=valid(ds,key).map(v => key==='precipitation' ? Math.max(0,v) : v);
-    if (!nums.length) return null;
-    const low=Math.min(...nums),high=Math.max(...nums);
-    const tol=digits>0?0.15:0.7;
-    return number(low,digits)+(high-low>tol?' tot '+number(high,digits):'')+' '+unit;
+    const values=valid(ds,key).map(v => key==='precipitation' ? halfMM(v) : v);
+    if (!values.length) return null;
+    const low=Math.min(...values),high=Math.max(...values);
+    const tol=key==='precipitation' ? .001 : digits>0 ? .15 : .7;
+    const fmt=v=>key==='precipitation' ? rainNumber(v) : number(v,digits);
+    return fmt(low)+(high-low>tol?' tot '+fmt(high):'')+' '+unit;
   };
   function codeName(code) {
     if ([95,96,99].includes(code)) return 'kans op onweersbuien';
@@ -568,27 +584,31 @@ applyTheme();loadCurrent();load();setInterval(loadCurrent,5*60*1000);setInterval
     }
     const a=$('outlookTextToday'),b=$('outlookTextTomorrow'),c=$('outlookTextTrend');
     if (!today.length) {
-      a.textContent = finite(stationTemp) ? `IJUBBE7 meet nu ${number(stationTemp,1)} °C. De regionale modelverwachting wordt nog opgehaald.` : 'De regionale modelverwachting wordt opgehaald.';
+      a.textContent = finite(stationTemp) ? `Het Eigen weerstation meet nu ${number(stationTemp,1)} °C. De regionale modelverwachting wordt nog opgehaald.` : 'De regionale modelverwachting wordt opgehaald.';
       b.textContent = 'Zodra ECMWF of GFS beschikbaar is, verschijnt hier de verwachting voor vandaag en morgen.';
-      c.textContent = 'De actuele metingen van IJUBBE7 blijven onafhankelijk van de voorspelling werken.';
+      c.textContent = 'De actuele metingen van het Eigen weerstation blijven onafhankelijk van de voorspelling werken.';
       return;
     }
     let sentence=`Vandaag verwachten we ${weatherDescription(today)}`;
     const high=range(today,'high',0,'°C');
+    const low=range(today,'low',0,'°C');
     const rain=range(today,'precipitation',1,'mm');
     const wind=range(today,'wind',0,'km/u');
     if (high) sentence+=`, met een maximumtemperatuur van ${high}`;
+    if (low) sentence+=` en een minimum van ${low}`;
     if (rain) sentence+=` en ongeveer ${rain} neerslag`;
     sentence+='.';
     if(wind) sentence+=` De maximale windsnelheid komt volgens de modellen uit op ${wind}.`;
-    if(finite(stationTemp)) sentence+=` Ons station meet momenteel ${number(stationTemp,1)} °C.`;
+    if(finite(stationTemp)) sentence+=` Het Eigen weerstation meet momenteel ${number(stationTemp,1)} °C.`;
     a.textContent=sentence;
 
     if (tomorrow.length) {
       let next=`Morgen wordt ${weatherDescription(tomorrow)} verwacht`;
       const max=range(tomorrow,'high',0,'°C');
+      const min=range(tomorrow,'low',0,'°C');
       const rain2=range(tomorrow,'precipitation',1,'mm');
       if (max) next+=`, met maxima rond ${max}`;
+      if (min) next+=` en minima rond ${min}`;
       if (rain2) next+=` en ongeveer ${rain2} neerslag`;
       b.textContent=next+'.';
     } else b.textContent='De verwachting voor morgen is nog niet beschikbaar.';
