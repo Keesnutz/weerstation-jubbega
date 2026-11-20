@@ -259,7 +259,7 @@
     $('conditionName').textContent = today.length ? condition.label : (rainRate>0?'Neerslag in Jubbega':'Actuele weersituatie');
     $('conditionDetail').textContent = today.length ?
       `Eigen verwachting op basis van ${today.length===2?'ECMWF en GFS':'het beschikbare weermodel'}` :
-      'Lokale metingen Eigen weerstation';
+      'Lokale metingen van dit weerstation';
     $('outlookNow').textContent = finite(nowTemp) ? `${fmt(nowTemp,1)} °C` : '—';
     $('outlookMax').textContent = rangeLabel(today.map(d=>d.high),0,' °C')+' / '+rangeLabel(today.map(d=>d.low),0,' °C');
     $('outlookRain').textContent = rangeLabel(today.map(d=>d.precipitation).filter(finite).map(v=>Math.round(Math.max(0,v)*2)/2),1,' mm');
@@ -267,7 +267,7 @@
 
     let lines = [];
     if (finite(nowTemp)) {
-      let station = `Het Eigen weerstation meet momenteel ${fmt(nowTemp,1)} °C`;
+      let station = `Dit weerstation meet momenteel ${fmt(nowTemp,1)} °C`;
       if (finite(observedWind)) station += ` en ${fmt(observedWind,0)} km/u wind`;
       if (finite(rainRate) && rainRate > 0.05) station += `, met ${fmt(rainRate,1)} mm/u neerslag`;
       lines.push(station + '.');

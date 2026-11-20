@@ -322,7 +322,7 @@
   </section>
   <section class="section atmosphereGrid" aria-label="Weersituatie en zon en maan">
     <div class="panel conditionPanel">
-      <div class="conditionPanelHead"><div><h2>🌤️ Weerbeeld in Jubbega</h2><p class="hint">Onze eigen verwachting op basis van het Eigen weerstation, ECMWF en GFS</p></div><span class="timePill" id="dayNightTag">◷ Laden…</span></div>
+      <div class="conditionPanelHead"><div><h2>🌤️ Weerbeeld in Jubbega</h2><p class="hint">Onze eigen verwachting op basis van dit eigen weerstation, ECMWF en GFS</p></div><span class="timePill" id="dayNightTag">◷ Laden…</span></div>
       <div class="conditionBody"><span class="weatherGlyph" id="weatherGlyph" aria-hidden="true">🌤️</span><div><div class="conditionName" id="conditionName">Weerbeeld ophalen…</div><div class="hint" id="conditionDetail">Meetgegevens en modelverwachting worden verwerkt</div></div></div>
       <div class="outlookNarrative" id="outlookNarrative" aria-live="polite">
         <div class="outlookHeading"><span>📝</span><strong>Onze weersverwachting voor Jubbega</strong></div>
@@ -336,7 +336,7 @@
         <div class="outlookFact"><span>💧 Neerslag vandaag (model)</span><strong id="outlookRain">—</strong></div>
         <div class="outlookFact"><span>📅 Morgen (max / min)</span><strong id="outlookTomorrow">—</strong></div>
       </div>
-      <div class="conditionFooter"><span>Eigen analyse · Eigen weerstation + ECMWF/GFS</span><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Modelgegevens: Open-Meteo ↗</a></div>
+      <div class="conditionFooter"><span>Eigen analyse · dit weerstation + ECMWF/GFS</span><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Modelgegevens: Open-Meteo ↗</a></div>
     </div>
     <div class="panel sunMoonPanel">
       <h2>🌅 Zon en maan</h2>
@@ -352,7 +352,7 @@
   <section class="section twocol">
     <div class="panel">
       <h2>🧭 Windroos</h2>
-      <div class="hint">Actuele wind en daggemiddelde van het Eigen weerstation · windkracht bij benadering (Beaufort)</div>
+      <div class="hint">Actuele wind en daggemiddelde van dit weerstation · windkracht bij benadering (Beaufort)</div>
       <div class="windroseWrap">
         <div class="windrose" aria-label="Windroos actuele windrichting">
           <div class="diag1"></div><div class="diag2"></div>
@@ -386,7 +386,7 @@
           <div class="miniFact"><span>Hoogste neerslagintensiteit</span><strong id="rainPeak">—</strong></div>
         </div>
         <div class="rainbar" aria-hidden="true"><span id="rainFill"></span></div>
-        <p class="hint rainNote">De balk toont neerslag tot 10 mm (en meer); de waarden hierboven zijn gemeten door IJUBBE7.</p>
+        <p class="hint rainNote">De balk toont neerslag tot 10 mm (en meer); de waarden hierboven komen van dit weerstation.</p>
         <div class="radarActions"><a class="radarButton" href="https://www.buienradar.nl/nederland/neerslag/buienradar/" target="_blank" rel="noopener noreferrer">🌧️ Open Buienradar <span aria-hidden="true">↗</span></a><a class="radarSecondary" href="https://www.weeronline.nl/regenradar/Jubbega/4056828" target="_blank" rel="noopener noreferrer">Regenradar Jubbega ↗</a></div>
       </div>
       <div class="panel" id="over">
@@ -432,10 +432,10 @@
       <div class="forecastDetails" id="forecastDetails" hidden>
         <div>
           <div class="forecastMetricBar">
-            <h3 id="forecastChartTitle">Maximumtemperatuur per model</h3>
+            <h3 id="forecastChartTitle">Maximum- en minimumtemperatuur per model</h3>
             <select id="forecastMetric" class="select" aria-label="Selecteer voorspellingsgrafiek">
-              <option value="temp">🌡️ Maximumtemperatuur</option>
-              <option value="rain">🌧️ Neerslag per dag</option><option value="wind">💨 Wind</option><option value="dew">🌫️ Dauwpunt</option>
+              <option value="temp">🌡️ Maximum + minimum</option>
+              <option value="rain">🌧️ Neerslag per dag</option><option value="wind">💨 Wind</option><option value="dew">🌫️ Dauwpunt</option><option value="snow" id="snowMetricOption">❄️ Sneeuwval per model</option>
             </select>
           </div>
           <div class="forecastChartShell"><svg id="forecastChart" viewBox="0 0 650 220" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Grafiek van de voorspelde waarden per model"></svg></div>
@@ -443,7 +443,7 @@
         </div>
         <div class="forecastSummary" id="forecastSummary"></div>
       </div>
-      <div class="forecastSource">Modelverwachtingen zijn <strong>voorspellingen</strong>, geen metingen van het Eigen weerstation. In de maanden december t/m maart tonen we een sneeuwsignaal op basis van voorspelde sneeuwval en neerslag bij lage temperatuur. In april t/m november tonen we een <strong>onweersindicatie</strong>: GFS kan WMO-onweercodes leveren, maar voor ECMWF is onweer hiermee niet betrouwbaar te beoordelen. Geen signaal sluit lokale buien niet uit; er wordt geen nauwkeurige sneeuw- of onweerskans verzonnen. Vanaf dag 8 neemt de onzekerheid toe. Bron: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a> · <a href="https://www.ecmwf.int/" target="_blank" rel="noopener noreferrer">ECMWF</a> en <a href="https://www.ncei.noaa.gov/products/weather-climate-models/global-forecast" target="_blank" rel="noopener noreferrer">NOAA GFS</a>. Gebruik voor belangrijke beslissingen officiële KNMI-waarschuwingen.</div>
+      <div class="forecastSource">Modelverwachtingen zijn <strong>voorspellingen</strong>, geen metingen van dit weerstation. In het winterthema (standaard december t/m maart) tonen we alleen een sneeuwsignaal: ja, nee of onbekend. In het lente-, zomer- en herfstthema tonen we een <strong>onweersindicatie</strong>: GFS kan WMO-onweercodes leveren, maar voor ECMWF is onweer hiermee niet betrouwbaar te beoordelen. Geen signaal sluit lokale buien niet uit; er wordt geen nauwkeurige sneeuw- of onweerskans verzonnen. Vanaf dag 8 neemt de onzekerheid toe. Bron: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a> · <a href="https://www.ecmwf.int/" target="_blank" rel="noopener noreferrer">ECMWF</a> en <a href="https://www.ncei.noaa.gov/products/weather-climate-models/global-forecast" target="_blank" rel="noopener noreferrer">NOAA GFS</a>. Gebruik voor belangrijke beslissingen officiële KNMI-waarschuwingen.</div>
     </div>
   </section>
   <section id="historie" class="section">
@@ -478,6 +478,20 @@ function applyTheme(){const mode=chosenTheme();const act=activeTheme();const inf
 const dateISO=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
 const shift=(s,n)=>{const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return dateISO(d)};
 const number=(x,d=1)=>Number.isFinite(x)?x.toLocaleString('nl-NL',{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
+const MONTH_NAMES=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+function formatMeasurementTime(raw){
+  const match=String(raw?.obsTimeLocal||'').match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+  if(match){
+    const [,year,month,day,hour,minute]=match;
+    return `${Number(day)} ${MONTH_NAMES[Number(month)-1]} ${year} ${hour}.${minute}`;
+  }
+  const instant=new Date(raw?.obsTimeUtc||'');
+  if(!Number.isNaN(instant.getTime())){
+    const parts=new Intl.DateTimeFormat('nl-NL',{timeZone:'Europe/Amsterdam',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(instant).reduce((a,p)=>(a[p.type]=p.value,a),{});
+    return `${parts.day} ${parts.month} ${parts.year} ${parts.hour}.${parts.minute}`;
+  }
+  return 'Datum niet beschikbaar';
+}
 const val=(...candidates)=>candidates.find(x=>typeof x==='number'&&Number.isFinite(x))??null;
 const beaufort=kmh=>{if(!Number.isFinite(kmh))return null;const limits=[1,6,12,20,29,39,50,62,75,89,103,118];return limits.findIndex(bound=>kmh<bound)===-1?12:limits.findIndex(bound=>kmh<bound)};
 const bftLabel=kmh=>Number.isFinite(kmh)?`${beaufort(kmh)} Bft`:'—';
@@ -487,10 +501,38 @@ let selectedDate=nowInNL(),scope='day',category='temp',seriesVisible={temp:new S
 $('date').max=nowInNL();$('date').value=selectedDate;$('year').textContent=new Date().getFullYear();
 function normalize(obs){const m=obs.metric||{},t=obs.obsTimeLocal||obs.obsTimeUtc||'';const time=String(t).replace(' ','T');return {time,label:time.slice(11,16),temp:val(m.temp,m.tempAvg),feels:val(m.windchill,m.windchillAvg,m.heatIndex,m.heatindex,m.heatindexAvg),dew:val(m.dewpt,m.dewptAvg),wind:val(m.windSpeed,m.windspeed,m.windspeedAvg),gust:val(m.windGust,m.windgust,m.windgustHigh,m.windgustAvg),rain:val(m.precipRate),rainTotal:val(m.precipTotal),pressure:val(m.pressure,m.pressureMax,m.pressureMin),humidity:val(obs.humidity,obs.humidityAvg),winddir:val(obs.winddir,obs.winddirAvg,m.winddir,m.winddirAvg),tempHigh:val(m.tempHigh,m.temp),tempLow:val(m.tempLow,m.temp),pressureMin:val(m.pressureMin,m.pressure),windgustHigh:val(m.windgustHigh,m.windGust)}}
 function showMessage(message){const el=$('demowarning');el.hidden=!message;el.textContent=message||''}
-async function getData(params){const r=await fetch('/api/weather?'+new URLSearchParams(params),{cache:'no-store'});const data=await r.json();if(!r.ok)throw Error(data.error||'API onbereikbaar');if(!Array.isArray(data.observations))throw Error('Ongeldig API-antwoord');return data.observations}
-async function loadCurrent(){try{const arr=await getData({scope:'current'});if(!arr.length)throw Error('Geen recente meting beschikbaar');current=normalize(arr[0]);window.pwsCurrentObservation=arr[0];document.dispatchEvent(new CustomEvent('weerstation-current',{detail:arr[0]}));$('status').textContent='Live verbonden';$('status').style.borderColor='#408e85';$('lastupdate').textContent=current.time.replace('T',' ').slice(0,16);$('mode').textContent='IJUBBE7 · actuele meting';showMessage('')}catch(e){current=null;$('status').textContent='Live niet beschikbaar';$('status').style.borderColor='';$('lastupdate').textContent='Geen actuele meting';$('mode').textContent='Historie kan wel beschikbaar zijn';showMessage('Actuele metingen niet beschikbaar: '+e.message+'. Historische metingen kunnen wel worden bekeken.')}renderTiles();renderWind();renderRainPanel()}
-async function load(){const id=++loadingVersion;$('chartmessage').textContent='Historische metingen ophalen…';$('charttip').style.display='none';try{const arr=await getData(scope==='week'?{scope:'week'}:{scope:'day',date:selectedDate});if(id!==loadingVersion)return;readings=arr.map(normalize).filter(x=>x.time).sort((a,b)=>a.time.localeCompare(b.time));if(scope==='day'&&selectedDate===nowInNL()){todayWindReadings=readings;todayWindDate=selectedDate;}if(!readings.length)throw Error('Geen historische metingen gevonden voor deze periode');$('chartmessage').textContent=`${readings.length} echte meetmomenten van IJUBBE7 · beweeg over de grafiek voor de waarden.`;}catch(e){if(id!==loadingVersion)return;readings=[];$('chartmessage').textContent='Geen gegevens: '+e.message;}render()}
-async function refreshTodayWind(){const date=nowInNL();if(scope==='day'&&selectedDate===date)return;try{const arr=await getData({scope:'day',date});todayWindReadings=arr.map(normalize).filter(x=>x.time);todayWindDate=date;renderWind()}catch{/* leave last known average or blank */}}
+async function getWeatherResponse(params){const r=await fetch('/api/weather?'+new URLSearchParams(params),{cache:'no-store'});const data=await r.json();if(!r.ok)throw Error(data.error||'API onbereikbaar');if(!Array.isArray(data.observations))throw Error('Ongeldig API-antwoord');return data}
+async function getData(params){return (await getWeatherResponse(params)).observations}
+function appendLiveMeasurement(){
+  if(scope!=='day'||selectedDate!==nowInNL()||!current||current.time.slice(0,10)!==selectedDate)return false;
+  const last=readings[readings.length-1];
+  if(last&&last.time>=current.time)return false;
+  readings.push(current);
+  todayWindReadings=readings;
+  todayWindDate=selectedDate;
+  // The history request may finish before /scope=current; also refresh its
+  // status line when a newer live observation is added afterwards.
+  const msg=$('chartmessage').textContent;
+  if(!msg.includes('ophalen')){
+    const lag=msg.includes('historische metingen kunnen achterlopen')?' · historische bron loopt mogelijk achter':'';
+    $('chartmessage').textContent=`${readings.length} meetmomenten van dit weerstation · laatste meetpunt ${current.label} (live)${lag} · beweeg over de grafiek voor de waarden.`;
+  }
+  return true;
+}
+async function loadCurrent(){try{const arr=await getData({scope:'current'});if(!arr.length)throw Error('Geen recente meting beschikbaar');current=normalize(arr[0]);window.pwsCurrentObservation=arr[0];document.dispatchEvent(new CustomEvent('weerstation-current',{detail:arr[0]}));$('status').textContent='Live verbonden';$('status').style.borderColor='#408e85';$('lastupdate').textContent=formatMeasurementTime(arr[0]);$('mode').textContent='dit weerstation · actuele meting';showMessage('')}catch(e){current=null;$('status').textContent='Live niet beschikbaar';$('status').style.borderColor='';$('lastupdate').textContent='Geen actuele meting';$('mode').textContent='Historie kan wel beschikbaar zijn';showMessage('Actuele metingen niet beschikbaar: '+e.message+'. Historische metingen kunnen wel worden bekeken.')}if(appendLiveMeasurement()){renderFacts();renderWind();renderRainPanel();draw()}renderTiles();renderWind();renderRainPanel()}
+async function load(){const id=++loadingVersion;$('chartmessage').textContent='Historische metingen ophalen…';$('charttip').style.display='none';try{
+  const isToday=scope==='day'&&selectedDate===nowInNL();
+  const result=await getWeatherResponse(scope==='week'?{scope:'week'}:isToday?{scope:'today'}:{scope:'day',date:selectedDate});
+  if(id!==loadingVersion)return;
+  readings=result.observations.map(normalize).filter(x=>x.time).sort((a,b)=>a.time.localeCompare(b.time));
+  if(isToday){todayWindReadings=readings;todayWindDate=selectedDate;appendLiveMeasurement()}
+  if(!readings.length)throw Error('Geen meetgegevens gevonden voor deze periode');
+  const latest=readings[readings.length-1];
+  const newest=latest?` · laatste meetpunt ${latest.label}`:'';
+  const lag=result.source==='history-fallback'?' · recente bron niet beschikbaar, historische metingen kunnen achterlopen':'';
+  $('chartmessage').textContent=`${readings.length} meetmomenten van dit weerstation${newest}${lag} · beweeg over de grafiek voor de waarden.`;
+}catch(e){if(id!==loadingVersion)return;readings=[];$('chartmessage').textContent='Geen gegevens: '+e.message;}render()}
+async function refreshTodayWind(){const date=nowInNL();if(scope==='day'&&selectedDate===date)return;try{const arr=await getData({scope:'today'});todayWindReadings=arr.map(normalize).filter(x=>x.time);todayWindDate=date;renderWind()}catch{/* leave last known average or blank */}}
 function metricValue(k){return current?current[k]:null}
 function renderTiles(){
   const wind=metricValue('wind'),gust=metricValue('gust');
@@ -525,14 +567,17 @@ function draw(){const c=$('chart'),rect=c.getBoundingClientRect(),w=Math.max(300
 function render(){renderTiles();renderFacts();renderWind();renderRainPanel();renderChips();$('daylabel').textContent=scope==='week'?'Afgelopen 7 dagen':selectedDate;$('date').value=selectedDate;$('next').disabled=selectedDate>=nowInNL();$('week').classList.toggle('active',scope==='week');hoverIndex=-1;draw()}
 $('chart').addEventListener('mousemove',e=>{const canvas=$('chart'),box=canvas.getBoundingClientRect(),x=e.clientX-box.left,pos=canvas._draw;if(!pos)return;hoverIndex=Math.max(0,Math.min(readings.length-1,Math.round((x-pos.left)/pos.plotW*(readings.length-1))));const r=readings[hoverIndex];if(!r)return;const g=groups[category],vals=g.lines.filter(v=>seriesVisible[category].has(v[0])).map(([key,label])=>`${label}: ${Number.isFinite(r[key])?number(r[key]):'—'} ${g.unit}`);const tip=$('charttip');tip.textContent=(scope==='week'?r.time.slice(0,10)+' ':'')+r.label+'\n'+vals.join('\n');tip.style.display='block';tip.style.left=Math.min(Math.max(5,x+14),Math.max(5,box.width-190))+'px';tip.style.top='15px';draw()});$('chart').addEventListener('mouseleave',()=>{hoverIndex=-1;$('charttip').style.display='none';draw()});window.addEventListener('resize',draw);
 $('category').addEventListener('change',e=>{category=e.target.value;hoverIndex=-1;$('charttip').style.display='none';renderChips();draw()});$('date').addEventListener('change',e=>{if(e.target.value){selectedDate=e.target.value;scope='day';load()}});$('prev').addEventListener('click',()=>{selectedDate=shift(selectedDate,-1);scope='day';load()});$('next').addEventListener('click',()=>{if(selectedDate<nowInNL()){selectedDate=shift(selectedDate,1);scope='day';load()}});$('today').addEventListener('click',()=>{selectedDate=nowInNL();scope='day';load()});$('yesterday').addEventListener('click',()=>{selectedDate=shift(nowInNL(),-1);scope='day';load()});$('week').addEventListener('click',()=>{selectedDate=nowInNL();scope='week';load()});$('themeSelect').addEventListener('change',e=>{localStorage.setItem(STORE,e.target.value);applyTheme()});document.addEventListener('click',e=>{if(!$('displayMenu').contains(e.target))$('displayMenu').open=false});document.addEventListener('keydown',e=>{if(e.key==='Escape')$('displayMenu').open=false});
-applyTheme();loadCurrent();load();setInterval(loadCurrent,5*60*1000);setInterval(refreshTodayWind,15*60*1000);
+applyTheme();loadCurrent();load();
+setInterval(loadCurrent,5*60*1000);
+setInterval(()=>{if(!document.hidden){if(scope==='day'&&selectedDate===nowInNL())load();else refreshTodayWind()}},5*60*1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&scope==='day'&&selectedDate===nowInNL()){loadCurrent();load()}});
 })();
 </script>
-<script src="/extras.js?v=12" defer></script>
-<script src="/forecast.js?v=12" defer></script>
+<script src="/extras.js?v=13" defer></script>
+<script src="/forecast.js?v=13" defer></script>
 
 <script>
-/* v12: Zelfstandig tekstweerbericht. Werkt ook wanneer een oudere extras.js nog in de browsercache zit. */
+/* v13: Zelfstandig tekstweerbericht. Werkt ook wanneer een oudere extras.js nog in de browsercache zit. */
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
@@ -584,9 +629,9 @@ applyTheme();loadCurrent();load();setInterval(loadCurrent,5*60*1000);setInterval
     }
     const a=$('outlookTextToday'),b=$('outlookTextTomorrow'),c=$('outlookTextTrend');
     if (!today.length) {
-      a.textContent = finite(stationTemp) ? `Het Eigen weerstation meet nu ${number(stationTemp,1)} °C. De regionale modelverwachting wordt nog opgehaald.` : 'De regionale modelverwachting wordt opgehaald.';
+      a.textContent = finite(stationTemp) ? `Dit weerstation meet nu ${number(stationTemp,1)} °C. De regionale modelverwachting wordt nog opgehaald.` : 'De regionale modelverwachting wordt opgehaald.';
       b.textContent = 'Zodra ECMWF of GFS beschikbaar is, verschijnt hier de verwachting voor vandaag en morgen.';
-      c.textContent = 'De actuele metingen van het Eigen weerstation blijven onafhankelijk van de voorspelling werken.';
+      c.textContent = 'De actuele metingen van dit weerstation blijven onafhankelijk van de voorspelling werken.';
       return;
     }
     let sentence=`Vandaag verwachten we ${weatherDescription(today)}`;
@@ -599,27 +644,32 @@ applyTheme();loadCurrent();load();setInterval(loadCurrent,5*60*1000);setInterval
     if (rain) sentence+=` en ongeveer ${rain} neerslag`;
     sentence+='.';
     if(wind) sentence+=` De maximale windsnelheid komt volgens de modellen uit op ${wind}.`;
-    if(finite(stationTemp)) sentence+=` Het Eigen weerstation meet momenteel ${number(stationTemp,1)} °C.`;
+    if(finite(stationTemp)) sentence+=` Dit weerstation meet momenteel ${number(stationTemp,1)} °C.`;
     a.textContent=sentence;
 
     if (tomorrow.length) {
-      let next=`Morgen wordt ${weatherDescription(tomorrow)} verwacht`;
+      let next=`Morgen verwachten we ${weatherDescription(tomorrow)}`;
       const max=range(tomorrow,'high',0,'°C');
       const min=range(tomorrow,'low',0,'°C');
       const rain2=range(tomorrow,'precipitation',1,'mm');
       if (max) next+=`, met maxima rond ${max}`;
       if (min) next+=` en minima rond ${min}`;
       if (rain2) next+=` en ongeveer ${rain2} neerslag`;
+      const minimums=valid(tomorrow,'low');
+      if(minimums.some(v=>v<=0)) next+='; in de nacht is vorst mogelijk en kunnen autoruiten bevriezen';
       b.textContent=next+'.';
     } else b.textContent='De verwachting voor morgen is nog niet beschikbaar.';
 
     let nextThree=[];
     for(let i=2;i<5;i++) nextThree.push(...getDays(p,i));
     const restHigh=range(nextThree,'high',0,'°C');
+    const restLow=range(nextThree,'low',0,'°C');
     const restRain=range(nextThree,'precipitation',1,'mm per dag');
-    let outlook=restHigh ? `In de dagen daarna (dag 3–5) liggen de maxima volgens ECMWF/GFS tussen ${restHigh}` : 'Voor de dagen daarna zijn nog onvoldoende gegevens beschikbaar';
-    if(restRain) outlook+=`, met ${restRain} aan verwachte neerslag`;
+    let outlook=restHigh ? `Voor dag 3–5 verwachten ECMWF en GFS maxima van ${restHigh}` : 'Voor de dagen daarna zijn nog onvoldoende gegevens beschikbaar';
+    if(restLow)outlook+=` en minima van ${restLow}`;
+    if(restRain)outlook+=`, met ${restRain} aan verwachte neerslag`;
     outlook+='.';
+    if(valid(nextThree,'low').some(v=>v<=0))outlook+=' Bij deze minima is nachtvorst mogelijk; houd rekening met autoruiten krabben in de ochtend.';
     const first=today[0],second=today[1];
     if(first&&second&&((finite(first.high)&&finite(second.high)&&Math.abs(first.high-second.high)>=3)||(finite(first.precipitation)&&finite(second.precipitation)&&Math.abs(first.precipitation-second.precipitation)>=4))) {
       outlook+=' De modellen verschillen behoorlijk; de verwachting is daardoor minder zeker.';

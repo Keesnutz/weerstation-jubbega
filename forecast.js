@@ -1,4 +1,4 @@
-/* Weerstation Jubbega v8 — fourteen-day ECMWF/GFS model comparison.
+/* Weerstation Jubbega v13 — ECMWF/GFS 14 days, min/max + seasonal signals.
  * Fetches normalized public data from /api/forecast; never uses the secret PWS key.
  */
 (() => {
@@ -43,12 +43,11 @@
     return Number.isFinite(v) ? `${format(v,1)} ${unit}` : '—';
   }
 
-  // The winter signal (December-March) does not depend on a manually selected visual theme.
-  // Outside winter: ECMWF has no calibrated thunderstorm estimate in Open-Meteo;
-  // use the WMO thunderstorm code from GFS and label missing evidence honestly.
-  function winterDate(date) {
-    const month=Number(String(date||'').slice(5,7));
-    return [12,1,2,3].includes(month);
+  // Follow the active *display theme* for the entire 14-day forecast.
+  // In November an autumn display should not switch its last days to a
+  // snow signal just because the forecast crosses into December.
+  function winterView(){
+    return document.documentElement.getAttribute('data-theme') === 'winter';
   }
   function snowStatusHtml(day) {
     const signal=String(day.snowSignal || '').trim();
@@ -57,13 +56,12 @@
     const alert=modelSnow || snowCode || /sneeuw mogelijk|sneeuw voorspeld/i.test(signal);
     const unknown=!alert && (!signal || /niet beschikbaar/i.test(signal));
     const state=alert?'snowAlert':unknown?'snowUnknown':'snowClear';
-    const label=alert ? (signal && !/geen sneeuw/i.test(signal) ? signal : 'Sneeuwsignaal') : unknown ? 'Sneeuwgegevens niet beschikbaar' : 'Geen sneeuwsignaal';
+    const label=alert?'Sneeuwsignaal: ja':unknown?'Sneeuwsignaal: onbekend':'Sneeuwsignaal: nee';
     const icon=alert?'❄️':unknown?'○':'✅';
-    return `<div class="forecastSnow ${state}">${icon} <strong>${label}</strong>${Number.isFinite(day.snowfall)&&alert ? ` · ${format(day.snowfall,1)} cm model-sneeuw` : ''}
-      ${alert && Number.isFinite(day.snowPrecipChance) ? `<small>Neerslagkans tijdens mogelijke sneeuwuren: ${format(day.snowPrecipChance)}% (niet de sneeuwkans)</small>` : ''}</div>`;
+    const amount=Number.isFinite(day.snowfall)?` · ${format(day.snowfall,1)} cm voorspeld`:'';
+    return `<div class="forecastSnow ${state}">${icon} <strong>${label}</strong>${amount}</div>`;
   }
   function thunderStatusHtml(key,day) {
-    // ECMWF's weather code is derived without atmospheric instability data.
     if(key==='ecmwf') return '<div class="forecastSnow snowUnknown">○ <strong>Onweer niet te beoordelen</strong><small>ECMWF biedt hier geen betrouwbare onweersindicatie.</small></div>';
     const code=day.weatherCode;
     if(!Number.isFinite(code)) return '<div class="forecastSnow snowUnknown">○ <strong>Onweergegevens ontbreken</strong></div>';
@@ -71,7 +69,7 @@
     return '<div class="forecastSnow snowClear">✅ <strong>Geen onweersignaal in GFS</strong><small>Dit sluit lokale onweersbuien niet uit.</small></div>';
   }
   function seasonSignalHtml(key,day) {
-    return winterDate(day.date) ? snowStatusHtml(day) : thunderStatusHtml(key,day);
+    return winterView() ? snowStatusHtml(day) : thunderStatusHtml(key,day);
   }
 
   function createModelBlock(key, day) {
@@ -112,28 +110,36 @@
     $('forecastCardsNext').innerHTML = days.slice(7,14).map((day,i)=>makeCard(day,i+7)).join('');
   }
 
-  // SVG chart: stable axis, comparison lines, and no third-party chart library.
+  // The temperature graph deliberately shows two curves per model:
+  // solid = daily maximum and dashed = daily minimum.
+  // Snowfall (centimetres) is offered as a separate graph only in winter view.
   function drawChart() {
     if (!payload) return;
     const svg = $('forecastChart');
     const ns='http://www.w3.org/2000/svg';
     svg.replaceChildren();
     const keys = visibleKeys();
+    if (!keys.length) return;
     const daily = payload.models[keys[0]].days.slice(0, DAYS);
-    const field = ({rain:'precipitation',wind:'wind',dew:'dewPoint',temp:'high'})[metric]||'high';
-    const units = metric==='rain'?'mm':metric==='wind'?'km/u':'°C';
-    const metricTitles = {rain:'Neerslag per model',wind:'Maximale windsnelheid per model',dew:'Gemiddeld dauwpunt per model',temp:'Maximumtemperatuur per model'};
-    const allValues = finite(keys.flatMap(key => payload.models[key].days.map(d=>d[field])));
+    const fields = metric==='temp' ? ['high','low'] : [({rain:'precipitation',wind:'wind',dew:'dewPoint',snow:'snowfall'})[metric]||'high'];
+    const units = metric==='rain'?'mm':metric==='wind'?'km/u':metric==='snow'?'cm':'°C';
+    const metricTitles = {rain:'Neerslag per model',wind:'Maximale windsnelheid per model',dew:'Gemiddeld dauwpunt per model',temp:'Maximum- en minimumtemperatuur per model',snow:'Voorspelde sneeuwval per model'};
+    const allValues = finite(keys.flatMap(key => payload.models[key].days.flatMap(d=>fields.map(field=>d[field]))));
+    $('forecastChartTitle').textContent=metricTitles[metric]||metricTitles.temp;
     if (!allValues.length) {
-      svg.textContent='Geen voorspelde waarden beschikbaar voor deze grafiek.';
-      $('forecastChartTitle').textContent=metricTitles[metric]||metricTitles.temp;
+      const msg=document.createElementNS(ns,'text');
+      msg.setAttribute('x','20');msg.setAttribute('y','110');
+      msg.setAttribute('fill','currentColor');
+      msg.textContent='Geen voorspelde waarden beschikbaar voor deze grafiek.';
+      svg.appendChild(msg);
       $('forecastLegend').innerHTML='';
       return;
     }
-    const lo = ['rain','wind'].includes(metric) ? 0 : Math.floor((Math.min(...allValues)-2)/2)*2;
-    const hi = ['rain','wind'].includes(metric) ? Math.max(2,Math.ceil(Math.max(...allValues)+1)) : Math.ceil((Math.max(...allValues)+2)/2)*2;
+    const startZero = ['rain','wind','snow'].includes(metric);
+    const lo = startZero ? 0 : Math.floor((Math.min(...allValues)-2)/2)*2;
+    const hi = startZero ? Math.max(metric==='snow'?0.5:2,Math.ceil((Math.max(...allValues)+.4)*2)/2) : Math.ceil((Math.max(...allValues)+2)/2)*2;
     const [left,right,top,bottom]=[54,20,22,43];
-    const width=1040,height=240,plotW=width-left-right,plotH=height-top-bottom;
+    const width=1040,height=250,plotW=width-left-right,plotH=height-top-bottom;
     svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
     const xp = i=>left+i*plotW/Math.max(daily.length-1,1);
     const yp = v=> top+(hi-v)/(hi-lo)*plotH;
@@ -148,31 +154,47 @@
       const value=hi-(hi-lo)*i/4;
       const y=top+i*plotH/4;
       make('line',{x1:left,y1:y,x2:width-right,y2:y,stroke:'currentColor','stroke-opacity':.12,'stroke-dasharray':'3 5'});
-      make('text',{x:left-9,y:y+4,'text-anchor':'end',fill:'currentColor','fill-opacity':.64,'font-size':12},format(value,metric==='rain'?1:0));
+      make('text',{x:left-9,y:y+4,'text-anchor':'end',fill:'currentColor','fill-opacity':.64,'font-size':12},format(value,['rain','snow'].includes(metric)?1:0));
     }
     daily.forEach((day,i)=>make('text',{x:xp(i),y:height-15,'text-anchor':'middle',fill:'currentColor','fill-opacity':.7,'font-size':12},toDay(day.date).split(' ').slice(0,2).join(' ')));
     keys.forEach(key=>{
-      const valid=payload.models[key].days.map((day,i)=>({i,v:day[field]})).filter(d=>Number.isFinite(d.v));
-      if(!valid.length)return;
-      const points=valid.map(d=>`${xp(d.i)},${yp(d.v)}`).join(' ');
-      if(valid.length>1)make('polyline',{points,fill:'none',stroke:COLORS[key],'stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'});
-      valid.forEach(d=>{
-        make('circle',{cx:xp(d.i),cy:yp(d.v),r:5,fill:COLORS[key],stroke:'var(--panel)','stroke-width':2});
-        const label=make('text',{x:xp(d.i),y:yp(d.v)-12,'text-anchor':'middle',fill:COLORS[key],'font-size':12,'font-weight':700},`${format(d.v,metric==='rain'?1:0)}${metric==='rain'?'':metric==='wind'?'':'°'}`);
-        const title=document.createElementNS(ns,'title');title.textContent=`${LABELS[key]} ${daily[d.i].date}: ${format(d.v,1)} ${units}`;label.appendChild(title);
+      fields.forEach(field=>{
+        const isMinimum=field==='low';
+        const valid=payload.models[key].days.slice(0,DAYS).map((day,i)=>({i,v:day[field]})).filter(d=>Number.isFinite(d.v));
+        if(!valid.length)return;
+        const points=valid.map(d=>`${xp(d.i)},${yp(d.v)}`).join(' ');
+        if(valid.length>1)make('polyline',{points,fill:'none',stroke:COLORS[key],
+          'stroke-width':isMinimum?2.3:3,'stroke-dasharray':isMinimum?'7 5':'none','stroke-linecap':'round','stroke-linejoin':'round'});
+        valid.forEach(d=>{
+          const circle=make('circle',{cx:xp(d.i),cy:yp(d.v),r:isMinimum?3.5:4.5,fill:isMinimum?'var(--panel)':COLORS[key],stroke:COLORS[key],'stroke-width':2});
+          const tip=document.createElementNS(ns,'title');
+          tip.textContent=`${LABELS[key]} ${daily[d.i].date} ${isMinimum?'min.':field==='high'?'max.':''}: ${format(d.v,1)} ${units}`;
+          circle.appendChild(tip);
+          // Temperature graphs already have 4 curves: avoid 56 overlapping labels.
+          // Snow graphs show small amounts precisely via labels and hover titles.
+          if(metric==='temp')return;
+          const label=make('text',{x:xp(d.i),y:yp(d.v)-12,'text-anchor':'middle',fill:COLORS[key],'font-size':12,'font-weight':700},`${format(d.v,['rain','snow'].includes(metric)?1:0)}${metric==='rain'||metric==='snow'||metric==='wind'?'':'°'}`);
+          const labelTip=document.createElementNS(ns,'title');labelTip.textContent=tip.textContent;label.appendChild(labelTip);
+        });
       });
     });
-    $('forecastChartTitle').textContent=metricTitles[metric]||metricTitles.temp;
-    $('forecastLegend').innerHTML=keys.map(key=>`<span><b style="background:${COLORS[key]}"></b>${LABELS[key]}</span>`).join('');
+    $('forecastLegend').innerHTML = keys.flatMap(key => metric==='temp' ? [
+      `<span><b style="background:${COLORS[key]}"></b>${LABELS[key]} maximum (doorgetrokken)</span>`,
+      `<span><b style="background:transparent;border-top:2px dashed ${COLORS[key]};height:0"></b>${LABELS[key]} minimum (streepjes)</span>`
+    ] : [`<span><b style="background:${COLORS[key]}"></b>${LABELS[key]}</span>`]).join('');
   }
 
   function renderSummary(){
     const keys=visibleKeys();
     $('forecastSummary').innerHTML=keys.map(key=>{
-      const days=payload.models[key].days.slice(0, DAYS);
+      const days=payload.models[key].days.slice(0,DAYS);
       const sumRain=sum(days.map(d=>d.precipitation));
       const peakWind=maxOf(finite(days.map(d=>d.gust)));
-      return `<div class="forecastSummaryUnit"><div class="forecastSummaryLabel">${LABELS[key]} · komende ${DAYS} dagen</div><div class="forecastSummaryValue">${summaryValue(sumRain,'mm')} regen</div><div class="forecastSummaryLabel">Max. windstoot: ${summaryValue(peakWind,'km/u')}</div></div>`;
+      const minima=finite(days.map(d=>d.low));
+      const minTemp=minima.length?Math.min(...minima):null;
+      const snow= sum(days.map(d=>d.snowfall));
+      const snowText=winterView()?`<div class="forecastSummaryLabel">❄️ Voorspelde sneeuw: ${summaryValue(snow,'cm')}</div>`:'';
+      return `<div class="forecastSummaryUnit"><div class="forecastSummaryLabel">${LABELS[key]} · komende ${DAYS} dagen</div><div class="forecastSummaryValue">${summaryValue(sumRain,'mm')} neerslag</div><div class="forecastSummaryLabel">Laagste minimum: ${summaryValue(minTemp,'°C')}</div>${snowText}<div class="forecastSummaryLabel">Max. windstoot: ${summaryValue(peakWind,'km/u')}</div></div>`;
     }).join('');
   }
 
@@ -186,6 +208,11 @@
     $('forecastECMWF').disabled=!isAvailable('ecmwf');
     $('forecastGFS').disabled=!isAvailable('gfs');
     $('forecastBoth').disabled=available.length<2;
+    // Only show snow forecasts and the snowfall graph in the winter theme.
+    // Other themes show thunderstorms as requested by the site owner.
+    const snowOption=$('snowMetricOption');
+    if(snowOption)snowOption.hidden=!winterView();
+    if(!winterView() && metric==='snow')metric='temp';
     $('forecastMetric').value=metric;
     renderCards();drawChart();renderSummary();
     $('forecastDetails').hidden=false;
@@ -226,6 +253,7 @@
   }
   $('forecastMetric').addEventListener('change',e=>{metric=e.target.value;drawChart()});
   $('forecastRefresh').addEventListener('click',loadForecast);
+  document.addEventListener('weerstation-theme',()=>{if(payload)render()});
   loadForecast();
   // Updates on page revisit as model runs become available; server caches for 30 min.
   window.setInterval(()=>{if(!document.hidden)loadForecast()},60*60*1000);
