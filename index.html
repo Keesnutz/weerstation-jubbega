@@ -270,7 +270,24 @@
     :root[data-time="night"] .forecastSnow.snowAlert{background:#123455;border-color:#2f78b4;color:#b5ddff}
     :root[data-time="night"] .forecastSnow.snowAlert strong,:root[data-time="night"] .forecastSnow.snowAlert small{color:#b5ddff}
     @media(max-width:620px){.conditionPanel .outlookNarrative{min-height:0;padding:15px;gap:8px}.outlookNarrative p{font-size:13px}}
-  </style>
+    .archiveNotice{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;
+    background:color-mix(in srgb,var(--panel2) 65%,transparent);border:1px solid var(--line);
+    border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--muted)}
+  .archiveNotice a{color:var(--theme-1);font-weight:650;text-decoration:none}
+  .archiveNotice a:hover{text-decoration:underline}
+
+    /* v15 – independently calculated hourly outlook and per-model data freshness. */
+    .daypartGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:13px 0 14px}
+    .daypartBox{background:color-mix(in srgb,var(--panel2) 55%,transparent);border:1px solid var(--line);border-radius:13px;padding:12px;min-width:0}
+    .daypartBox strong{display:flex;gap:5px;flex-direction:column;font-size:13px;line-height:1.4}
+    .daypartBox strong small{font-size:11px;color:var(--muted);font-weight:500}
+    .daypartBox p{font-size:12px;line-height:1.55;color:var(--text);margin:9px 0 0}
+    .forecastModelTimes{display:flex;flex-wrap:wrap;gap:9px;margin:11px 0 14px}
+    .modelFetchTag{display:inline-flex;align-items:center;gap:7px;font-size:12px;line-height:1.45;border-radius:12px;padding:9px 12px;background:color-mix(in srgb,var(--panel2) 55%,transparent);border:1px solid var(--line)}
+    .modelFetchTag strong{color:var(--theme-1)}
+    .modelFetchNote{font-size:11px;color:var(--muted);align-self:center}
+    @media(max-width:750px){.daypartGrid{grid-template-columns:1fr}.daypartBox strong{flex-direction:row;align-items:center;justify-content:space-between}}
+</style>
 </head>
 <body>
 <header>
@@ -326,7 +343,12 @@
       <div class="conditionBody"><span class="weatherGlyph" id="weatherGlyph" aria-hidden="true">🌤️</span><div><div class="conditionName" id="conditionName">Weerbeeld ophalen…</div><div class="hint" id="conditionDetail">Meetgegevens en modelverwachting worden verwerkt</div></div></div>
       <div class="outlookNarrative" id="outlookNarrative" aria-live="polite">
         <div class="outlookHeading"><span>📝</span><strong>Onze weersverwachting voor Jubbega</strong></div>
-        <p id="outlookTextToday">De verwachting voor vandaag wordt berekend uit ECMWF en GFS…</p>
+        <div class="daypartGrid" id="daypartGrid" aria-label="Voorspelling voor drie dagdelen">
+          <div class="daypartBox"><strong>🌅 Ochtend <small>06–12 uur</small></strong><p id="daypartMorning">Modelgegevens ophalen…</p></div>
+          <div class="daypartBox"><strong>☀️ Middag <small>12–18 uur</small></strong><p id="daypartAfternoon">Modelgegevens ophalen…</p></div>
+          <div class="daypartBox"><strong>🌙 Avond <small>18–24 uur</small></strong><p id="daypartEvening">Modelgegevens ophalen…</p></div>
+        </div>
+        <p id="outlookTextToday">Dagoverzicht wordt berekend uit ECMWF en GFS…</p>
         <p id="outlookTextTomorrow">De verwachting voor morgen wordt geladen…</p>
         <p id="outlookTextTrend">De vooruitblik voor de komende dagen wordt geladen…</p>
       </div>
@@ -414,6 +436,7 @@
     </div>
     <div class="panel" aria-live="off">
       <p id="forecastStatus" class="forecastStatus" role="status">De 14-daagse verwachting wordt opgehaald…</p>
+      <div id="forecastModelTimes" class="forecastModelTimes" role="status" aria-live="polite">Ophaaltijden van ECMWF en GFS worden geladen…</div>
       <div id="forecastError" class="forecastError" role="alert" hidden></div>
       <div class="forecastWeekNav" role="group" aria-label="Spring naar voorspellingsweek">
         <span>Beide weken staan onder elkaar:</span>
@@ -449,6 +472,10 @@
   <section id="historie" class="section">
     <div class="sectiontitle"><div><h2>📈 Historische meetgegevens</h2><div class="hint">Kies een dag en selecteer de lijnen die je wilt vergelijken. Actuele metingen blijven bovenaan staan.</div></div><span class="hint" id="daylabel"></span></div>
     <div class="panel">
+      <div id="archiveNotice" class="archiveNotice" hidden>
+        <span id="archiveStatusText">Eigen weerarchief controleren…</span>
+        <a id="archiveExportLink" href="/api/archive-export" download>⬇ Download CSV-back-up (laatste 7 dagen)</a>
+      </div>
       <div class="historybar"><div class="dategroup"><button class="btn" id="prev" title="Vorige dag">❮</button><input class="dateinput" type="date" id="date"><button class="btn" id="next" title="Volgende dag">❯</button></div><div class="quick"><button class="btn" id="today">Vandaag</button><button class="btn" id="yesterday">Gisteren</button><button class="btn" id="week">7 dagen</button></div></div>
       <div class="chartheader"><div><h3 id="charttitle">Temperatuur</h3><div class="hint" id="chartdesc">Temperatuur, gevoelstemperatuur en dauwpunt</div></div><select class="select" id="category" aria-label="Kies grafiektype"><option value="temp">🌡 Temperatuur</option><option value="wind">💨 Wind</option><option value="rain">💧 Neerslag</option><option value="pressure">📊 Luchtdruk</option><option value="humidity">☁ Vochtigheid</option></select></div>
       <div class="chips" id="chips"></div>
@@ -497,14 +524,14 @@ const beaufort=kmh=>{if(!Number.isFinite(kmh))return null;const limits=[1,6,12,2
 const bftLabel=kmh=>Number.isFinite(kmh)?`${beaufort(kmh)} Bft`:'—';
 function averageWind(rows){const speeds=rows.map(r=>r.wind).filter(Number.isFinite);return speeds.length?speeds.reduce((a,b)=>a+b,0)/speeds.length:null}
 const compassName=deg=>{if(!Number.isFinite(deg))return '—';const dirs=['N','NO','O','ZO','Z','ZW','W','NW'];return dirs[Math.round((((deg%360)+360)%360)/45)%8]};
-let selectedDate=nowInNL(),scope='day',category='temp',seriesVisible={temp:new Set(['temp','feels']),wind:new Set(['wind','gust']),rain:new Set(['rain']),pressure:new Set(['pressure']),humidity:new Set(['humidity'])},readings=[],current=null,hoverIndex=-1,loadingVersion=0,todayWindReadings=[],todayWindDate='';
+let currentFromArchive=false;let selectedDate=nowInNL(),scope='day',category='temp',seriesVisible={temp:new Set(['temp','feels']),wind:new Set(['wind','gust']),rain:new Set(['rain']),pressure:new Set(['pressure']),humidity:new Set(['humidity'])},readings=[],current=null,hoverIndex=-1,loadingVersion=0,todayWindReadings=[],todayWindDate='';
 $('date').max=nowInNL();$('date').value=selectedDate;$('year').textContent=new Date().getFullYear();
 function normalize(obs){const m=obs.metric||{},t=obs.obsTimeLocal||obs.obsTimeUtc||'';const time=String(t).replace(' ','T');return {time,label:time.slice(11,16),temp:val(m.temp,m.tempAvg),feels:val(m.windchill,m.windchillAvg,m.heatIndex,m.heatindex,m.heatindexAvg),dew:val(m.dewpt,m.dewptAvg),wind:val(m.windSpeed,m.windspeed,m.windspeedAvg),gust:val(m.windGust,m.windgust,m.windgustHigh,m.windgustAvg),rain:val(m.precipRate),rainTotal:val(m.precipTotal),pressure:val(m.pressure,m.pressureMax,m.pressureMin),humidity:val(obs.humidity,obs.humidityAvg),winddir:val(obs.winddir,obs.winddirAvg,m.winddir,m.winddirAvg),tempHigh:val(m.tempHigh,m.temp),tempLow:val(m.tempLow,m.temp),pressureMin:val(m.pressureMin,m.pressure),windgustHigh:val(m.windgustHigh,m.windGust)}}
 function showMessage(message){const el=$('demowarning');el.hidden=!message;el.textContent=message||''}
 async function getWeatherResponse(params){const r=await fetch('/api/weather?'+new URLSearchParams(params),{cache:'no-store'});const data=await r.json();if(!r.ok)throw Error(data.error||'API onbereikbaar');if(!Array.isArray(data.observations))throw Error('Ongeldig API-antwoord');return data}
 async function getData(params){return (await getWeatherResponse(params)).observations}
 function appendLiveMeasurement(){
-  if(scope!=='day'||selectedDate!==nowInNL()||!current||current.time.slice(0,10)!==selectedDate)return false;
+  if(scope!=='day'||selectedDate!==nowInNL()||!current||currentFromArchive||current.time.slice(0,10)!==selectedDate)return false;
   const last=readings[readings.length-1];
   if(last&&last.time>=current.time)return false;
   readings.push(current);
@@ -519,7 +546,20 @@ function appendLiveMeasurement(){
   }
   return true;
 }
-async function loadCurrent(){try{const arr=await getData({scope:'current'});if(!arr.length)throw Error('Geen recente meting beschikbaar');current=normalize(arr[0]);window.pwsCurrentObservation=arr[0];document.dispatchEvent(new CustomEvent('weerstation-current',{detail:arr[0]}));$('status').textContent='Live verbonden';$('status').style.borderColor='#408e85';$('lastupdate').textContent=formatMeasurementTime(arr[0]);$('mode').textContent='dit weerstation · actuele meting';showMessage('')}catch(e){current=null;$('status').textContent='Live niet beschikbaar';$('status').style.borderColor='';$('lastupdate').textContent='Geen actuele meting';$('mode').textContent='Historie kan wel beschikbaar zijn';showMessage('Actuele metingen niet beschikbaar: '+e.message+'. Historische metingen kunnen wel worden bekeken.')}if(appendLiveMeasurement()){renderFacts();renderWind();renderRainPanel();draw()}renderTiles();renderWind();renderRainPanel()}
+async function loadCurrent(){try{
+const result=await getWeatherResponse({scope:'current'}),arr=result.observations;
+if(!arr.length)throw Error('Geen recente meting beschikbaar');
+current=normalize(arr[0]);window.pwsCurrentObservation=arr[0];
+document.dispatchEvent(new CustomEvent('weerstation-current',{detail:arr[0]}));
+const savedOnly=result.source==='local-archive';currentFromArchive=savedOnly;
+$('status').textContent=savedOnly?'Archief · niet live':'Live verbonden';
+$('status').style.borderColor=savedOnly?'#caa05f':'#408e85';
+$('lastupdate').textContent=formatMeasurementTime(arr[0]);
+$('mode').textContent=savedOnly?'dit weerstation · laatst opgeslagen':'dit weerstation · actuele meting';
+showMessage(savedOnly?'Weather Underground is niet bereikbaar. Je ziet de laatst opgeslagen meting uit het eigen archief.':'');
+}catch(e){current=null;currentFromArchive=false;$('status').textContent='Live niet beschikbaar';$('status').style.borderColor='';$('lastupdate').textContent='Geen actuele meting';$('mode').textContent='Historie kan wel beschikbaar zijn';showMessage('Actuele metingen niet beschikbaar: '+e.message+'. Historische metingen kunnen wel worden bekeken.')}
+if(appendLiveMeasurement()){renderFacts();renderWind();renderRainPanel();draw()}
+renderTiles();renderWind();renderRainPanel()}
 async function load(){const id=++loadingVersion;$('chartmessage').textContent='Historische metingen ophalen…';$('charttip').style.display='none';try{
   const isToday=scope==='day'&&selectedDate===nowInNL();
   const result=await getWeatherResponse(scope==='week'?{scope:'week'}:isToday?{scope:'today'}:{scope:'day',date:selectedDate});
@@ -529,7 +569,7 @@ async function load(){const id=++loadingVersion;$('chartmessage').textContent='H
   if(!readings.length)throw Error('Geen meetgegevens gevonden voor deze periode');
   const latest=readings[readings.length-1];
   const newest=latest?` · laatste meetpunt ${latest.label}`:'';
-  const lag=result.source==='history-fallback'?' · recente bron niet beschikbaar, historische metingen kunnen achterlopen':'';
+  const lag=result.source==='local-archive'?' · gegevens uit eigen archief (WU niet bereikbaar)':result.source.startsWith('history-fallback')?' · recente bron niet beschikbaar, historische metingen kunnen achterlopen':'';
   $('chartmessage').textContent=`${readings.length} meetmomenten van dit weerstation${newest}${lag} · beweeg over de grafiek voor de waarden.`;
 }catch(e){if(id!==loadingVersion)return;readings=[];$('chartmessage').textContent='Geen gegevens: '+e.message;}render()}
 async function refreshTodayWind(){const date=nowInNL();if(scope==='day'&&selectedDate===date)return;try{const arr=await getData({scope:'today'});todayWindReadings=arr.map(normalize).filter(x=>x.time);todayWindDate=date;renderWind()}catch{/* leave last known average or blank */}}
@@ -567,17 +607,29 @@ function draw(){const c=$('chart'),rect=c.getBoundingClientRect(),w=Math.max(300
 function render(){renderTiles();renderFacts();renderWind();renderRainPanel();renderChips();$('daylabel').textContent=scope==='week'?'Afgelopen 7 dagen':selectedDate;$('date').value=selectedDate;$('next').disabled=selectedDate>=nowInNL();$('week').classList.toggle('active',scope==='week');hoverIndex=-1;draw()}
 $('chart').addEventListener('mousemove',e=>{const canvas=$('chart'),box=canvas.getBoundingClientRect(),x=e.clientX-box.left,pos=canvas._draw;if(!pos)return;hoverIndex=Math.max(0,Math.min(readings.length-1,Math.round((x-pos.left)/pos.plotW*(readings.length-1))));const r=readings[hoverIndex];if(!r)return;const g=groups[category],vals=g.lines.filter(v=>seriesVisible[category].has(v[0])).map(([key,label])=>`${label}: ${Number.isFinite(r[key])?number(r[key]):'—'} ${g.unit}`);const tip=$('charttip');tip.textContent=(scope==='week'?r.time.slice(0,10)+' ':'')+r.label+'\n'+vals.join('\n');tip.style.display='block';tip.style.left=Math.min(Math.max(5,x+14),Math.max(5,box.width-190))+'px';tip.style.top='15px';draw()});$('chart').addEventListener('mouseleave',()=>{hoverIndex=-1;$('charttip').style.display='none';draw()});window.addEventListener('resize',draw);
 $('category').addEventListener('change',e=>{category=e.target.value;hoverIndex=-1;$('charttip').style.display='none';renderChips();draw()});$('date').addEventListener('change',e=>{if(e.target.value){selectedDate=e.target.value;scope='day';load()}});$('prev').addEventListener('click',()=>{selectedDate=shift(selectedDate,-1);scope='day';load()});$('next').addEventListener('click',()=>{if(selectedDate<nowInNL()){selectedDate=shift(selectedDate,1);scope='day';load()}});$('today').addEventListener('click',()=>{selectedDate=nowInNL();scope='day';load()});$('yesterday').addEventListener('click',()=>{selectedDate=shift(nowInNL(),-1);scope='day';load()});$('week').addEventListener('click',()=>{selectedDate=nowInNL();scope='week';load()});$('themeSelect').addEventListener('change',e=>{localStorage.setItem(STORE,e.target.value);applyTheme()});document.addEventListener('click',e=>{if(!$('displayMenu').contains(e.target))$('displayMenu').open=false});document.addEventListener('keydown',e=>{if(e.key==='Escape')$('displayMenu').open=false});
-applyTheme();loadCurrent();load();
+async function loadArchiveStatus(){
+try{
+const res=await fetch('/api/archive-status',{cache:'no-store'});
+if(!res.ok)return;
+const data=await res.json();
+if(!data.enabled)return;
+$('archiveNotice').hidden=false;
+$('archiveStatusText').textContent=data.hasData?
+  `💾 Eigen weerarchief actief · opgeslagen sinds ${data.oldest} · laatste dag ${data.newest}`:
+  '💾 Eigen weerarchief gekoppeld · eerste metingen worden nog opgeslagen';
+}catch{/* Keep the normal history view when archive setup is incomplete. */}
+}
+applyTheme();loadCurrent();load();loadArchiveStatus();
 setInterval(loadCurrent,5*60*1000);
 setInterval(()=>{if(!document.hidden){if(scope==='day'&&selectedDate===nowInNL())load();else refreshTodayWind()}},5*60*1000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&scope==='day'&&selectedDate===nowInNL()){loadCurrent();load()}});
 })();
 </script>
-<script src="/extras.js?v=13" defer></script>
-<script src="/forecast.js?v=13" defer></script>
+<script src="/extras.js?v=15" defer></script>
+<script src="/forecast.js?v=15" defer></script>
 
 <script>
-/* v13: Zelfstandig tekstweerbericht. Werkt ook wanneer een oudere extras.js nog in de browsercache zit. */
+/* v15: Zelfstandig tekstweerbericht. Werkt ook wanneer een oudere extras.js nog in de browsercache zit. */
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
@@ -617,6 +669,26 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&scope==='
     if (new Set(codes).size>1) return 'een afwisseling van zon en wolken';
     return codeName(codes[0]);
   }
+  const DAYPARTS=[['morning','daypartMorning'],['afternoon','daypartAfternoon'],['evening','daypartEvening']];
+  function partText(partName) {
+    const p=window.weerstationForecast;
+    const parts=['ecmwf','gfs'].map(key=>p?.models?.[key]?.days?.[0]?.dayparts?.[partName]).filter(part=>part && part.hours>0);
+    if (!parts.length) return 'Voor dit dagdeel zijn nog geen uurlijkse modelgegevens beschikbaar.';
+    const lows=valid(parts,'low'),highs=valid(parts,'high'),rain=valid(parts,'precipitation'),winds=valid(parts,'wind');
+    const codes=valid(parts,'weatherCode');
+    const bits=[];
+    if(codes.length)bits.push(weatherDescription(parts));
+    if(lows.length || highs.length){
+      const measures=[...lows,...highs];
+      bits.push(`temperatuur ${number(Math.min(...measures),0)}–${number(Math.max(...measures),0)} °C`);
+    }
+    if (rain.length){
+      const lo=Math.min(...rain.map(halfMM)), hi=Math.max(...rain.map(halfMM));
+      bits.push(hi<=0?'droog volgens de modellen':`neerslag ${rainNumber(lo)}${hi>lo?'–'+rainNumber(hi):''} mm`);
+    }
+    if(winds.length)bits.push(`wind tot ${number(Math.max(...winds),0)} km/u`);
+    return bits.length?bits.join(' · ')+'.':'De modelgegevens voor dit dagdeel zijn nog onvolledig.';
+  }
   function render() {
     const p=window.weerstationForecast;
     const current=window.pwsCurrentObservation;
@@ -628,13 +700,14 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&scope==='
       $('outlookNarrative').innerHTML='<div class="outlookHeading"><span>📝</span><strong>Onze weersverwachting voor Jubbega</strong></div><p id="outlookTextToday"></p><p id="outlookTextTomorrow"></p><p id="outlookTextTrend"></p>';
     }
     const a=$('outlookTextToday'),b=$('outlookTextTomorrow'),c=$('outlookTextTrend');
+    for(const [period,id] of DAYPARTS)$(id).textContent=partText(period);
     if (!today.length) {
       a.textContent = finite(stationTemp) ? `Dit weerstation meet nu ${number(stationTemp,1)} °C. De regionale modelverwachting wordt nog opgehaald.` : 'De regionale modelverwachting wordt opgehaald.';
       b.textContent = 'Zodra ECMWF of GFS beschikbaar is, verschijnt hier de verwachting voor vandaag en morgen.';
       c.textContent = 'De actuele metingen van dit weerstation blijven onafhankelijk van de voorspelling werken.';
       return;
     }
-    let sentence=`Vandaag verwachten we ${weatherDescription(today)}`;
+    let sentence=`Vandaag als geheel verwachten we ${weatherDescription(today)}`;
     const high=range(today,'high',0,'°C');
     const low=range(today,'low',0,'°C');
     const rain=range(today,'precipitation',1,'mm');

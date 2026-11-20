@@ -1,0 +1,28 @@
+WEERSTATION JUBBEGA v15 — DAGDELEN + EIGEN D1-ARCHIEF
+
+Bundelt v14 (D1 archief als Weather Underground niet bereikbaar is) met:
+- Een eigen verwachting uitgesplitst in ochtend 06:00-12:00, middag 12:00-18:00 en avond 18:00-24:00.
+- Gegevens gebaseerd op werkelijk beschikbare uurlijkse ECMWF/GFS modellen, geen fictieve uurlijke verdeling van dagtotals.
+- Apart aangegeven ophaaltijd voor ECMWF en GFS, Nederlandse tijd.
+- Alle eerdere 14-daagse voorspellingen, windroos, historie, seizoenen en iconen blijven.
+
+UPLOAD IN ÉÉN KEER
+1. Pak de ZIP uit.
+2. GitHub > repository weerstation-jubbega > Add file > Upload files.
+3. Zet ALLE bestanden in de overeenkomende paden, inclusief map functions/api.
+4. Commit changes.
+5. Controleer de nieuwe Cloudflare Pages deployment en vernieuw met Ctrl+Shift+R.
+
+VERPLICHTE CLOUDFLARE INSTELLINGEN VOOR ARCHIEF
+- Pages project weerstation-jubbega > Settings > Bindings:
+  D1 binding variable WEATHER_DB, database weerstation-jubbega-archief.
+- De tabel weather_observations moet al bestaan (deze heb je aangemaakt).
+- De aparte Worker draait al iedere vijf minuten en vult de database; laat die ongemoeid.
+- De bestaande Pages secret WU_API_KEY blijft ingesteld.
+- Na aanpassen van de Pages D1-binding moet een nieuwe deployment actief zijn.
+
+De archieffuncties zijn: /api/weather, /api/archive-status en /api/archive-export.
+De modelverwachting is: /api/forecast.
+De tijdsaanduiding is de tijd waarop Open-Meteo-gegevens door onze API werden opgehaald.
+De werkelijke initialisatietijd van de afzonderlijke modelrun wordt niet door de forecast-endpoint doorgegeven.
+Als uurlijkse data ontbreken, wordt dat duidelijk weergegeven; we leiden dan geen fictieve dagdeelverwachting uit dagwaarden af.
