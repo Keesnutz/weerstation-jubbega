@@ -10,6 +10,7 @@ const DAYS = 14;
 const TIMEZONE = 'Europe/Amsterdam';
 const DAILY = 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max,snowfall_sum';
 const HOURLY = 'temperature_2m,dew_point_2m,precipitation,snowfall,precipitation_probability';
+const HOURLY_EXTENDED = HOURLY + ',weather_code,wind_speed_10m';
 const DAILY_BASIC = 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max';
 const MODELS = {
   // Keep the same ECMWF IFS 0.25° model as v7.
@@ -40,12 +41,33 @@ function normalize(payload, key) {
       dailyHourly.get(date).push({
         dew:numeric(h.dew_point_2m?.[i]),temp:numeric(h.temperature_2m?.[i]),
         precip:numeric(h.precipitation?.[i]), snow:numeric(h.snowfall?.[i]),
-        precipProbability:numeric(h.precipitation_probability?.[i])
+        precipProbability:numeric(h.precipitation_probability?.[i]),
+        hour:Number(String(h.time[i]).slice(11,13)),
+        weatherCode:numeric(h.weather_code?.[i]),
+        wind:numeric(h.wind_speed_10m?.[i])
       });
     }
   }
   const avg = values => {const v=values.filter(Number.isFinite);return v.length?v.reduce((s,x)=>s+x,0)/v.length:null};
   const maximum = values => {const v=values.filter(Number.isFinite);return v.length?Math.max(...v):null};
+  const minimum = values => {const v=values.filter(Number.isFinite);return v.length?Math.min(...v):null};
+  const sum = values => {const v=values.filter(Number.isFinite);return v.length?v.reduce((a,b)=>a+b,0):null};
+  const severity = code => ([95,96,99].includes(code)?8:[71,73,75,77,85,86].includes(code)?7:[80,81,82].includes(code)?6:[61,63,65,66,67].includes(code)?5:[51,53,55,56,57].includes(code)?4:[45,48].includes(code)?3:code===3?2:code===2?1:0);
+  function dayparts(hours) {
+    const periods={morning:[6,12],afternoon:[12,18],evening:[18,24]};
+    const result={};
+    for (const [key,[start,end]] of Object.entries(periods)) {
+      const selected=hours.filter(h=>h.hour>=start && h.hour<end);
+      const coded=selected.filter(h=>Number.isFinite(h.weatherCode)).sort((a,b)=>severity(b.weatherCode)-severity(a.weatherCode));
+      result[key]={
+        low:minimum(selected.map(h=>h.temp)), high:maximum(selected.map(h=>h.temp)),
+        precipitation:sum(selected.map(h=>h.precip)), wind:maximum(selected.map(h=>h.wind)),
+        weatherCode:coded.length?coded[0].weatherCode:null,
+        hours: selected.filter(h=>Number.isFinite(h.temp)||Number.isFinite(h.precip)).length
+      };
+    }
+    return result;
+  }
   function snowIndicator(hours,snowfall,weatherCode) {
     // Deterministic models do not give a calibrated probability of snow.
     // Flag predicted snow or temperature/dew-point conditions during precipitation.
@@ -78,6 +100,7 @@ function normalize(payload, key) {
       gust:numeric(d.wind_gusts_10m_max?.[i]),
       dewPoint:avg(hours.map(x=>x.dew)),
       snowfall,
+      dayparts:dayparts(hours),
       ...snowIndicator(hours,snowfall,code)
     };
   });
@@ -86,19 +109,19 @@ function normalize(payload, key) {
   }
   return { model: MODELS[key].name, days };
 }
-function modelUrl(key, fallback = false, basic = false) {
+function modelUrl(key, fallback = false, basic = false, extended = true) {
   const item = MODELS[key];
   // Fallback to generic forecast endpoint with the SAME explicit model selection.
   const url = new URL(`https://api.open-meteo.com${fallback ? '/v1/forecast' : item.endpoint}`);
   for (const [name,value] of Object.entries({
-    latitude:LAT, longitude:LON, daily:basic?DAILY_BASIC:DAILY, ...(basic?{}:{hourly:HOURLY}), timezone:TIMEZONE,
+    latitude:LAT, longitude:LON, daily:basic?DAILY_BASIC:DAILY, ...(basic?{}:{hourly:extended?HOURLY_EXTENDED:HOURLY}), timezone:TIMEZONE,
     forecast_days:String(DAYS), models:item.name,
     temperature_unit:'celsius', wind_speed_unit:'kmh', precipitation_unit:'mm'
   })) url.searchParams.set(name, value);
   return url;
 }
-async function fetchModel(key, fallback = false, basic = false) {
-  const response = await fetch(modelUrl(key, fallback, basic), {
+async function fetchModel(key, fallback = false, basic = false, extended = true) {
+  const response = await fetch(modelUrl(key, fallback, basic, extended), {
     headers: { Accept:'application/json' },
     signal: AbortSignal.timeout(15000)
   });
@@ -114,12 +137,13 @@ async function fetchModel(key, fallback = false, basic = false) {
   if (payload.error) throw new Error(String(payload.reason || 'Model tijdelijk niet beschikbaar').slice(0,120));
   const normalized=normalize(payload, key);
   normalized.enriched=!basic;
+  normalized.fetchedAt=new Date().toISOString();
   return normalized;
 }
 async function getModel(key) {
   const reasons=[];
-  for (const [generic,basic] of [[false,false],[true,false],[false,true],[true,true]]) {
-    try { return await fetchModel(key,generic,basic); }
+  for (const [generic,basic,extended] of [[false,false,true],[true,false,true],[false,false,false],[true,false,false],[false,true,false],[true,true,false]]) {
+    try { return await fetchModel(key,generic,basic,extended); }
     catch(e) { reasons.push(e.message); }
   }
   throw new Error(reasons.slice(-2).join(' / '));
@@ -127,7 +151,7 @@ async function getModel(key) {
 export async function onRequestGet({ request, context }) {
   const cache = typeof caches !== 'undefined' ? caches.default : null;
   // Versioned key bypasses any cached v7 response with only ECMWF.
-  const cacheKey = new Request(new URL('/api/forecast?version=9', request.url).toString(), {method:'GET'});
+  const cacheKey = new Request(new URL('/api/forecast?version=15', request.url).toString(), {method:'GET'});
   if (cache) {
     try { const hit = await cache.match(cacheKey); if (hit) return hit; }
     catch { /* Cache failure must not affect data delivery */ }
