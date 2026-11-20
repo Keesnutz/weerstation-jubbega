@@ -436,7 +436,7 @@
     </div>
     <div class="panel" aria-live="off">
       <p id="forecastStatus" class="forecastStatus" role="status">De 14-daagse verwachting wordt opgehaald…</p>
-      <div id="forecastModelTimes" class="forecastModelTimes" role="status" aria-live="polite">Ophaaltijden van ECMWF en GFS worden geladen…</div>
+      <div id="forecastModelTimes" class="forecastModelTimes" role="status" aria-live="polite">Laatste ECMWF- en GFS-modelruns worden geladen…</div>
       <div id="forecastError" class="forecastError" role="alert" hidden></div>
       <div class="forecastWeekNav" role="group" aria-label="Spring naar voorspellingsweek">
         <span>Beide weken staan onder elkaar:</span>
@@ -625,8 +625,8 @@ setInterval(()=>{if(!document.hidden){if(scope==='day'&&selectedDate===nowInNL()
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&scope==='day'&&selectedDate===nowInNL()){loadCurrent();load()}});
 })();
 </script>
-<script src="/extras.js?v=15" defer></script>
-<script src="/forecast.js?v=15" defer></script>
+<script src="/extras.js?v=16" defer></script>
+<script src="/forecast.js?v=16" defer></script>
 
 <script>
 /* v15: Zelfstandig tekstweerbericht. Werkt ook wanneer een oudere extras.js nog in de browsercache zit. */
@@ -673,7 +673,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&scope==='
   function partText(partName) {
     const p=window.weerstationForecast;
     const parts=['ecmwf','gfs'].map(key=>p?.models?.[key]?.days?.[0]?.dayparts?.[partName]).filter(part=>part && part.hours>0);
-    if (!parts.length) return 'Voor dit dagdeel zijn nog geen uurlijkse modelgegevens beschikbaar.';
+    if (!parts.length) return 'Nog geen uitsplitsing per dagdeel; de dagelijkse modelverwachting staat hieronder.';
     const lows=valid(parts,'low'),highs=valid(parts,'high'),rain=valid(parts,'precipitation'),winds=valid(parts,'wind');
     const codes=valid(parts,'weatherCode');
     const bits=[];

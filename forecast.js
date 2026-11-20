@@ -219,18 +219,31 @@
     const last=new Date(payload.updatedAt);
     const stamp=Number.isNaN(last.getTime())?'':new Intl.DateTimeFormat('nl-NL',{hour:'2-digit',minute:'2-digit',day:'numeric',month:'short',timeZone:'Europe/Amsterdam'}).format(last);
     const message=payload.warnings?.length?` · ${payload.warnings.join(', ')}`:'';
-    $('forecastStatus').textContent=`Modelverwachting voor Jubbega · ${stamp?'opgehaald '+stamp+' · ':''}${available.map(k=>LABELS[k]).join(' + ')}${message}`;
+    $('forecastStatus').textContent=`Modelverwachting voor Jubbega · ${available.map(k=>LABELS[k]).join(' + ')}${message}`;
     const fetchInfo=$('forecastModelTimes');
     if(fetchInfo){
-      const stamps=available.map(k=>{
-        const model=payload.models[k];
-        // This is when the data was fetched from Open-Meteo, NOT the model's init/run time.
-        const instant=new Date(model.fetchedAt || payload.updatedAt);
-        const valid=!Number.isNaN(instant.getTime());
-        const formatted=valid?new Intl.DateTimeFormat('nl-NL',{timeZone:'Europe/Amsterdam',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}).format(instant):'onbekend';
-        return `<span class="modelFetchTag"><strong>${LABELS[k]}</strong> · opgehaald ${formatted}</span>`;
-      });
-      fetchInfo.innerHTML=stamps.join('')+'<span class="modelFetchNote">Ophaaltijd van de gegevens; niet het tijdstip waarop de modelrun is gestart.</span>';
+      const dutch=iso=>{
+        if(!iso)return null;
+        const date=new Date(iso);
+        return Number.isNaN(date.getTime())?null:new Intl.DateTimeFormat('nl-NL',{
+          timeZone:'Europe/Amsterdam',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'
+        }).format(date);
+      };
+      const utcRun=iso=>{
+        if(!iso)return null;
+        const date=new Date(iso);
+        if(Number.isNaN(date.getTime()))return null;
+        return new Intl.DateTimeFormat('nl-NL',{
+          timeZone:'UTC',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'
+        }).format(date)+' UTC';
+      };
+      fetchInfo.innerHTML=available.map(k=>{
+        const run=payload.models[k].run;
+        const init=utcRun(run?.initialisedAt);
+        const availability=dutch(run?.availableAt);
+        if(!init)return `<span class="modelFetchTag"><strong>${LABELS[k]}</strong> · modelrun-tijd onbekend</span>`;
+        return `<span class="modelFetchTag"><strong>${LABELS[k]}</strong> · run ${init}${availability?' · beschikbaar '+availability:''}</span>`;
+      }).join('')+'<span class="modelFetchNote">Run = starttijd van de berekening in UTC; beschikbaar = publicatietijd bij Open-Meteo, niet de ophaaltijd van deze website.</span>';
     }
 
     $('forecastError').hidden=true;
@@ -239,7 +252,7 @@
   async function loadForecast(){
     $('forecastRefresh').disabled=true;
     $('forecastStatus').textContent='De ECMWF- en GFS-verwachting wordt opgehaald…';
-    if($('forecastModelTimes'))$('forecastModelTimes').textContent='Ophaaltijden controleren…';
+    if($('forecastModelTimes'))$('forecastModelTimes').textContent='Laatste ECMWF- en GFS-modelruns controleren…';
     try {
       const r=await fetch('/api/forecast',{cache:'no-store'});
       const data=await r.json();

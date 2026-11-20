@@ -1,0 +1,21 @@
+WEERSTATION JUBBEGA V16 — MODELRUN-TIJDEN EN DAGDELEN
+
+Wijzigingen:
+- De 14-daagse verwachting vermeldt de officiële ECMWF/GFS modelrun starttijd
+  en het tijdstip waarop de run bij Open-Meteo beschikbaar is gemaakt.
+- De ophaaltijd van de eigen website is niet langer de modeltijd.
+- Bij ontbrekende uurlijkse data wordt een aparte, kleinere aanvraag
+  voor ochtend, middag en avond gedaan.
+- De pagina toont geen verzonnen dagdeelcijfers als de bron toch alleen
+  dagelijkse gegevens levert.
+- V15 API cache is omzeild met versie 16.
+- Het eigen weerarchief en de archive-Worker worden niet gewijzigd.
+
+Upload in GitHub op dezelfde plekken:
+index.html, forecast.js en functions/api/forecast.js.
+Bestaande API-sleutel en D1-database blijven ongemoeid.
+
+Let op: bij de Open-Meteo-modelinfo kan informatie ontbreken of tijdelijk
+achterlopen ten opzichte van de daadwerkelijke voorspelling door
+meerdere modelservers. Tijdstempels zijn dus metadata van de
+laatst gepubliceerde run, geen bewijs van exacte herkomst van elk punt.
