@@ -190,22 +190,39 @@ async function addDaypartsFromHourly(key, model) {
 // this website happened to fetch the JSON forecast.
 async function fetchRunMetadata(key) {
   const model=key==='ecmwf'?'ecmwf_ifs025':'ncep_gfs013';
-  try {
-    const r=await fetch(`https://api.open-meteo.com/data/${model}/static/meta.json`,{
-      headers:{Accept:'application/json'},signal:AbortSignal.timeout(5000)
-    });
-    if(!r.ok)return null;
-    const m=await r.json();
-    const parse=field=>{
-      const v=m[field];
-      if(typeof v!=='number'||!Number.isFinite(v)||v<1000000000)return null;
-      const date=new Date(v*1000);
-      return Number.isNaN(date.getTime())?null:date.toISOString();
-    };
-    const initialisedAt=parse('last_run_initialisation_time');
-    const availableAt=parse('last_run_availability_time');
-    return initialisedAt?{initialisedAt,availableAt,metadataModel:model}:null;
-  } catch {return null;}
+  const path=`/data/${model}/static/meta.json`;
+  // The regular API host may occasionally return 404 for metadata depending on
+  // which Open-Meteo API server a request reaches. The public Open-Meteo AWS
+  // data bucket mirrors the same metadata and serves as the official fallback.
+  const sources=[
+    {url:`https://api.open-meteo.com${path}`, label:'Open-Meteo API'},
+    {url:`https://openmeteo.s3.amazonaws.com${path}`, label:'Open-Meteo open data'}
+  ];
+  for(const source of sources) {
+    try {
+      const r=await fetch(source.url,{
+        headers:{Accept:'application/json'},signal:AbortSignal.timeout(5500)
+      });
+      if(!r.ok)continue;
+      const m=await r.json();
+      const parse=field=>{
+        const v=m?.[field];
+        if(typeof v!=='number'||!Number.isFinite(v)||v<1000000000)return null;
+        const date=new Date(v*1000);
+        if(Number.isNaN(date.getTime())||date.getTime()>Date.now()+86400000)return null;
+        return date.toISOString();
+      };
+      const initialisedAt=parse('last_run_initialisation_time');
+      const processedAt=parse('last_run_modification_time');
+      const availableAt=parse('last_run_availability_time');
+      if(!initialisedAt)continue;
+      return {
+        initialisedAt, processedAt, availableAt,
+        metadataModel:model, metadataSource:source.label
+      };
+    } catch { /* Try the other public Open-Meteo metadata source. */ }
+  }
+  return null; // Never invent a run time from the website's fetch time.
 }
 async function getModel(key) {
   const reasons=[];
@@ -226,7 +243,7 @@ async function getModel(key) {
 export async function onRequestGet({ request, context }) {
   const cache = typeof caches !== 'undefined' ? caches.default : null;
   // Versioned key bypasses any cached v7 response with only ECMWF.
-  const cacheKey = new Request(new URL('/api/forecast?version=16', request.url).toString(), {method:'GET'});
+  const cacheKey = new Request(new URL('/api/forecast?version=17', request.url).toString(), {method:'GET'});
   if (cache) {
     try { const hit = await cache.match(cacheKey); if (hit) return hit; }
     catch { /* Cache failure must not affect data delivery */ }
