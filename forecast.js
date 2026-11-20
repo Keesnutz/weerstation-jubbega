@@ -240,10 +240,11 @@
       fetchInfo.innerHTML=available.map(k=>{
         const run=payload.models[k].run;
         const init=utcRun(run?.initialisedAt);
+        const processing=dutch(run?.processedAt);
         const availability=dutch(run?.availableAt);
-        if(!init)return `<span class="modelFetchTag"><strong>${LABELS[k]}</strong> · modelrun-tijd onbekend</span>`;
-        return `<span class="modelFetchTag"><strong>${LABELS[k]}</strong> · run ${init}${availability?' · beschikbaar '+availability:''}</span>`;
-      }).join('')+'<span class="modelFetchNote">Run = starttijd van de berekening in UTC; beschikbaar = publicatietijd bij Open-Meteo, niet de ophaaltijd van deze website.</span>';
+        if(!init)return `<span class="modelFetchTag"><strong>${LABELS[k]}</strong> · rungegevens tijdelijk niet beschikbaar</span>`;
+        return `<span class="modelFetchTag"><strong>${LABELS[k]}</strong> · run ${init}${processing?' · verwerking klaar '+processing:''}${availability?' · beschikbaar '+availability:''}</span>`;
+      }).join('')+'<span class="modelFetchNote">Run = referentietijd (UTC); verwerking klaar = Open-Meteo klaar met downloaden/verwerken; beschikbaar = gegevens gepubliceerd. Geen van deze tijden is het ophaalmoment van deze website.</span>';
     }
 
     $('forecastError').hidden=true;

@@ -1,0 +1,24 @@
+WEERSTATION JUBBEGA V17 — MODELRUN-TIJDEN EN MAANFASEN
+
+Wat is nieuw:
+- Per ECMWF/GFS-model toont de site de starttijd van de run (UTC),
+  wanneer Open-Meteo klaar was met de verwerking, en wanneer data beschikbaar werd.
+- Metadata komt eerst van de Open-Meteo API, met terugval op de publieke
+  Open-Meteo-dataopslag wanneer de API-server metadata met 404 weigert.
+- Bij Zon en maan staat nu de eerstvolgende nieuwe maan en volle maan,
+  met een benaderd tijdstip in Nederlandse tijd. De berekening gebeurt lokaal.
+- Bestaande PWS-, D1-, weerbeeld- en archieffuncties blijven ongewijzigd.
+
+Vervang in GitHub deze vier bestanden:
+- index.html
+- extras.js
+- forecast.js
+- functions/api/forecast.js
+
+Klik op Commit changes en controleer de Cloudflare Pages-deployment.
+Na een geslaagde deployment, gebruik Ctrl+F5 om de nieuwe scripts te laden.
+
+Let op: verwerking klaar = Open-Meteo heeft modelgegevens binnengehaald
+ en geconverteerd. Het is niet noodzakelijk het einde van de numerieke
+ berekening bij ECMWF of NOAA zelf. Bij ontbrekende bronmetadata wordt
+ geen modeltijd geschat of verzonnen.

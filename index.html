@@ -138,6 +138,12 @@
     .moonGlyph{font-size:45px;line-height:1}
     .moonRow strong{display:block;font-size:16px}.moonRow span:not(.moonGlyph){display:block;color:var(--muted);font-size:13px;margin-top:2px}
     .moonNote{font-size:11px;color:var(--muted);margin:13px 0 0}
+    .moonNextPhases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+    .moonPhaseTile{min-width:0;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--panel2) 68%,transparent)}
+    .moonPhaseTile span{display:block;color:var(--muted);font-size:12px}
+    .moonPhaseTile strong{display:block;margin-top:5px;font-size:15px;line-height:1.4;font-weight:750;font-variant-numeric:tabular-nums}
+    @media(max-width:520px){.moonNextPhases{grid-template-columns:1fr 1fr}.moonPhaseTile{padding:11px 10px}.moonPhaseTile strong{font-size:13px}}
+
     .radarActions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:17px}
     .radarButton{display:inline-flex;gap:10px;align-items:center;justify-content:center;background:var(--theme-1);color:var(--bg)!important;text-decoration:none;border-radius:12px;padding:11px 16px;font-weight:780;font-size:13px}
     .radarSecondary{color:var(--theme-1);text-decoration:none;font-size:13px}
@@ -368,7 +374,11 @@
       <div class="moonRow"><span class="moonGlyph" id="moonGlyph" aria-hidden="true">🌙</span><div><strong id="moonName">Maanfase berekenen…</strong><span id="moonIllumination">—</span></div></div>
       <div class="sunTimes moonTimes"><div class="sunTime"><span>🌙 Maanopkomst</span><strong id="moonrise">—</strong></div><div class="sunTime"><span>🌘 Maanondergang</span><strong id="moonset">—</strong></div></div>
       <div class="visibilityStatus" id="moonVisible" role="status">🌙 Stand van de maan berekenen…</div>
-      <p class="moonNote">Astronomische tijden zijn benaderingen. “Boven de horizon” houdt geen rekening met bewolking, mist of obstakels.</p>
+      <div class="moonNextPhases" aria-label="Komende maanfasen">
+        <div class="moonPhaseTile"><span>🌑 Volgende nieuwe maan</span><strong id="nextNewMoon">Berekenen…</strong></div>
+        <div class="moonPhaseTile"><span>🌕 Volgende volle maan</span><strong id="nextFullMoon">Berekenen…</strong></div>
+      </div>
+      <p class="moonNote">Maanfasetijden zijn astronomische benaderingen (Nederlandse tijd). “Boven de horizon” houdt geen rekening met bewolking, mist of obstakels.</p>
     </div>
   </section>
   <section class="section twocol">
@@ -625,8 +635,8 @@ setInterval(()=>{if(!document.hidden){if(scope==='day'&&selectedDate===nowInNL()
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&scope==='day'&&selectedDate===nowInNL()){loadCurrent();load()}});
 })();
 </script>
-<script src="/extras.js?v=16" defer></script>
-<script src="/forecast.js?v=16" defer></script>
+<script src="/extras.js?v=17" defer></script>
+<script src="/forecast.js?v=17" defer></script>
 
 <script>
 /* v15: Zelfstandig tekstweerbericht. Werkt ook wanneer een oudere extras.js nog in de browsercache zit. */

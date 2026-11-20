@@ -63,6 +63,76 @@
     return `Daglicht: ${hours} uur en ${String(mins).padStart(2, '0')} minuten`;
   }
 
+  // True lunar conjunction/opposition, Jean Meeus, Astronomical Algorithms,
+  // chapter 49. Gives the next new/full Moon in local Dutch calendar time.
+  // All timestamps are approximate (TT -> UTC correction ~ 1–2 minutes).
+  function lunarPhaseInstant(k, full) {
+    const phaseK=k+(full?0.5:0);
+    const T=phaseK/1236.85;
+    const E=1-.002516*T-.0000074*T*T;
+    const rad=Math.PI/180;
+    const sin=v=>Math.sin(v*rad);
+    const M=2.5534+29.10535670*phaseK-.0000014*T*T-.00000011*T*T*T;
+    const Mp=201.5643+385.81693528*phaseK+.0107582*T*T+.00001238*T*T*T-.000000058*T**4;
+    const F=160.7108+390.67050284*phaseK-.0016118*T*T-.00000227*T*T*T+.000000011*T**4;
+    const O=124.7746-1.56375588*phaseK+.0020672*T*T+.00000215*T*T*T;
+    let jde=2451550.09766+29.530588861*phaseK+.00015437*T*T-.000000150*T**3+.00000000073*T**4;
+    jde+=(full?-.40614:-.40720)*sin(Mp)
+      +(full?.17302:.17241)*E*sin(M)
+      +(full?.01614:.01608)*sin(2*Mp)
+      +(full?.01043:.01039)*sin(2*F)
+      +(full?.00734:.00739)*E*sin(Mp-M)
+      +(full?-.00515:-.00514)*E*sin(Mp+M)
+      +(full?.00209:.00208)*E*E*sin(2*M)
+      -.00111*sin(Mp-2*F)-.00057*sin(Mp+2*F)
+      +.00056*E*sin(2*Mp+M)-.00042*sin(3*Mp)
+      +.00042*E*sin(M+2*F)+.00038*E*sin(M-2*F)
+      -.00024*E*sin(2*Mp-M)-.00017*sin(O)
+      -.00007*sin(Mp+2*M)+.00004*sin(2*Mp-2*F)
+      +.00004*sin(3*M)+.00003*sin(Mp+M-2*F)
+      +.00003*sin(2*Mp+2*F)-.00003*sin(Mp+M+2*F)
+      +.00003*sin(Mp-M+2*F)-.00002*sin(Mp-M-2*F)
+      -.00002*sin(3*Mp+M)+.00002*sin(4*Mp);
+    const angles=[
+      [299.77+.107408*phaseK-.009173*T*T,.000325],
+      [251.88+.016321*phaseK,.000165],
+      [251.83+26.651886*phaseK,.000164],
+      [349.42+36.412478*phaseK,.000126],
+      [84.66+18.206239*phaseK,.000110],
+      [141.74+53.303771*phaseK,.000062],
+      [207.14+2.453732*phaseK,.000060],
+      [154.84+7.306860*phaseK,.000056],
+      [34.52+27.261239*phaseK,.000047],
+      [207.19+.121824*phaseK,.000042],
+      [291.34+1.844379*phaseK,.000040],
+      [161.72+24.198154*phaseK,.000037],
+      [239.56+25.513099*phaseK,.000035],
+      [331.55+3.592518*phaseK,.000023]
+    ];
+    for(const [angle,amplitude] of angles)jde+=amplitude*sin(angle);
+    // Delta-T is about 75s in 2026. Date is shown with '~' to reflect this approximation.
+    return new Date((jde-2440587.5)*86400000-75000);
+  }
+
+  function nextMoonPhases(now) {
+    const lunation=Math.floor(((now.getTime()/86400000+2440587.5)-2451550.09766)/29.530588861);
+    const upcoming={new:null,full:null};
+    for(let k=lunation-1;k<=lunation+4;k++) {
+      for(const [name,isFull] of [['new',false],['full',true]]) {
+        const instant=lunarPhaseInstant(k,isFull);
+        if(instant>now && (!upcoming[name]||instant<upcoming[name]))upcoming[name]=instant;
+      }
+    }
+    return upcoming;
+  }
+
+  function fmtMoonPhase(date) {
+    if(!date)return 'Niet beschikbaar';
+    return new Intl.DateTimeFormat('nl-NL',{
+      timeZone:ZONE,day:'numeric',month:'long',hour:'2-digit',minute:'2-digit',hour12:false
+    }).format(new Date(Math.round(date.getTime()/60000)*60000));
+  }
+
   function moonData(now) {
     // Known new moon close to 2000-01-06 18:14 UTC; approximate synodic month.
     const origin = Date.parse('2000-01-06T18:14:00Z');
@@ -143,6 +213,10 @@
     $('moonGlyph').textContent = moon.symbol;
     $('moonName').textContent = moon.name;
     $('moonIllumination').textContent = `Ongeveer ${moon.illuminated}% verlicht`;
+    const nextPhases=nextMoonPhases(new Date());
+    $('nextNewMoon').textContent=fmtMoonPhase(nextPhases.new);
+    $('nextFullMoon').textContent=fmtMoonPhase(nextPhases.full);
+
     $('sunVisible').textContent = isDay ? '☀️ Zon staat boven de horizon' : '🌙 Zon staat onder de horizon';
     // These values are computed locally every new calendar date. No network request is needed.
     try {
