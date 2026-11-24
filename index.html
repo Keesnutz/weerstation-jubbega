@@ -287,6 +287,9 @@
       padding:12px 15px;margin:16px 0 18px;border:1px solid var(--line);border-radius:14px;
       background:color-mix(in srgb,var(--panel2) 65%,transparent)}
     .forecastBottomToolbar .hint{margin:0}
+    .forecastBottomIntro{display:flex;flex-direction:column;gap:2px}
+    .forecastBottomIntro small{font-size:11px;color:var(--muted)}
+    .forecastBottomToolbar{scroll-margin-top:85px;scroll-margin-bottom:25px}
     @media(max-width:620px){.forecastBottomToolbar{align-items:flex-start;flex-direction:column}}
 
     /* v15 – independently calculated hourly outlook and per-model data freshness. */
@@ -562,7 +565,7 @@
         <div class="forecastCards forecastWeekGrid" id="forecastCardsNext" aria-label="Verwachting week 2 per dag en weermodel"></div>
       </section>
       <div class="forecastBottomToolbar">
-        <span class="hint">Weermodel voor het volledige 14-daagse overzicht</span>
+        <div class="forecastBottomIntro"><span class="hint">Weermodel voor het volledige 14-daagse overzicht</span><small id="forecastBottomStatus" role="status">Geselecteerd: Beide</small></div>
         <div class="forecastFilter" role="group" aria-label="Weermodel selecteren onder het 14-daagse overzicht">
           <button type="button" id="forecastBothBottom" aria-pressed="true">Beide</button>
           <button type="button" id="forecastECMWFBottom" aria-pressed="false">ECMWF</button>
@@ -604,7 +607,7 @@
   </section>
   <section class="section"><div class="panel"><h2>Dagoverzicht</h2><div class="hint">Hoogste en laagste waarden van de geselecteerde periode</div><div class="facts" id="facts"></div><p class="hint" style="margin:12px 0 0">Windkracht is afgeleid van gemeten windsnelheid. Het daggemiddelde gebruikt beschikbare meetmomenten. Beaufort bij windstoten is alleen een snelheidsomrekening: windstoten zijn geen gemiddelde windkracht.</p></div></section>
 </main>
-<footer class="wrap footer"><span>© <span id="year"></span> Weerstation Jubbega · Eigen lokale metingen</span><span>Metingen via Weather Underground · regionaal weerbeeld via <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></span></footer>
+<footer class="wrap footer"><span>© <span id="year"></span> Weerstation Jubbega · Eigen lokale metingen <span class="siteVersion" aria-label="Websiteversie">· Versie 17.3</span></span><span>Metingen via Weather Underground · regionaal weerbeeld via <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></span></footer>
 <script>
 (()=>{'use strict';
 const groups={temp:{title:'Temperatuur',desc:'Vergelijk temperatuur, gevoelstemperatuur en dauwpunt',unit:'°C',lines:[['temp','Temperatuur','#ffbe6e'],['feels','Gevoelstemperatuur','#79b6ff'],['dew','Dauwpunt','#64dfb7']]},wind:{title:'Wind',desc:'Gemiddelde wind en maximale windstoten',unit:'km/u',lines:[['wind','Windsnelheid','#70c8fb'],['gust','Windstoten','#ffc37d']]},rain:{title:'Neerslag',desc:'Neerslagintensiteit per meetmoment',unit:'mm/u',lines:[['rain','Neerslag','#72caff']]},pressure:{title:'Luchtdruk',desc:'Barometrische luchtdruk',unit:'hPa',lines:[['pressure','Luchtdruk','#a7a1fb']]},humidity:{title:'Luchtvochtigheid',desc:'Relatieve luchtvochtigheid',unit:'%',lines:[['humidity','Vochtigheid','#7de0e6']]}};
@@ -881,79 +884,98 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&scope==='
 })();
 </script>
 <script>
-/* v17.2: ongewijzigde v17-bronnen, alleen de gevraagde presentatiewijzigingen. */
+/* Weerstation Jubbega v17.3: max/min, modelselectie en datumgrenzen. */
 (() => {
   'use strict';
+  const $ = id => document.getElementById(id);
 
-  // Het minteken van een negatieve waarde mag nooit voor een bereik-streepje
-  // worden aangezien. Dit verandert alleen de twee max/min-weergavevelden.
-  function formatTemperatureRange(id) {
-    const element = document.getElementById(id);
-    if (!element) return;
-    const raw = element.textContent || '';
-    const match = raw.match(/^\s*([−-]?\d+(?:[.,]\d+)?)\s*(?:°\s*C)?\s*[–—-]\s*([−-]?\d+(?:[.,]\d+)?)\s*(?:°\s*C)?\s*$/u);
-    if (!match) return;
-    const result = `${match[1]} tot ${match[2]} °C`;
-    if (raw !== result) element.textContent = result;
-  }
-  for (const id of ['outlookMax','outlookTomorrow']) {
-    const element = document.getElementById(id);
-    if (!element) continue;
-    const refresh = () => formatTemperatureRange(id);
-    new MutationObserver(refresh).observe(element, {childList:true,subtree:true,characterData:true});
-    refresh();
+  function temperatureRange(value) {
+    if (!value || !/\d/.test(value) || !/[°\u2013\u2014\/\-]|max|min/i.test(value)) return null;
+    // Een losse streep tussen twee waarden is geen minteken. Zowel
+    // '2 - -3 °C' als '2°/-3°' en '2–3 °C' worden correct herkend.
+    const cleaned = value
+      .replace(/(\d)(\s*(?:°\s*C)?\s*)-(?=\s*[+\-\u2212]?\d)/gu, '$1$2 tot ')
+      .replace(/\u2212/g, '-');
+    const values = cleaned.match(/[+\-]?\d+(?:[.,]\d+)?/gu) || [];
+    if (values.length !== 2) return null;
+    return values[0] + ' tot ' + values[1] + ' °C';
   }
 
-  // De tweede knoppenbalk stuurt dezelfde knoppen aan als de bestaande
-  // selecties bovenaan. Geen tweede modelstatus of extra API-aanroepen.
+  function installTemperatureFormatter(id) {
+    const el = $(id);
+    if (!el) return;
+    const format = () => {
+      const result = temperatureRange(el.textContent);
+      if (result && result !== el.textContent.trim()) el.textContent = result;
+    };
+    new MutationObserver(format).observe(el,{subtree:true,childList:true,characterData:true});
+    format();
+  }
+  installTemperatureFormatter('outlookMax');
+  installTemperatureFormatter('outlookTomorrow');
+
+  const bar = document.querySelector('.forecastBottomToolbar');
+  const status = $('forecastBottomStatus');
   const pairs = [
-    ['forecastBoth','forecastBothBottom'],
-    ['forecastECMWF','forecastECMWFBottom'],
-    ['forecastGFS','forecastGFSBottom']
-  ].map(([originalId,mirrorId])=>({
-    original:document.getElementById(originalId),
-    mirror:document.getElementById(mirrorId)
-  })).filter(pair=>pair.original && pair.mirror);
+    ['forecastBoth','forecastBothBottom','Beide'],
+    ['forecastECMWF','forecastECMWFBottom','ECMWF'],
+    ['forecastGFS','forecastGFSBottom','GFS']
+  ].map(([top,bottom,name])=>({top:$(top),bottom:$(bottom),name}))
+    .filter(x=>x.top && x.bottom);
 
-  const sync = () => {
-    for (const {original,mirror} of pairs) {
-      const pressed = original.getAttribute('aria-pressed') === 'true';
-      mirror.setAttribute('aria-pressed',String(pressed));
-      mirror.disabled = original.disabled;
+  function syncControls() {
+    let active = 'Beide';
+    for (const pair of pairs) {
+      const isActive = pair.top.getAttribute('aria-pressed') === 'true';
+      pair.bottom.setAttribute('aria-pressed', String(isActive));
+      pair.bottom.disabled = pair.top.disabled;
+      if (isActive) active=pair.name;
     }
-  };
-  for (const {original,mirror} of pairs) {
-    mirror.addEventListener('click',()=>original.click());
-    new MutationObserver(sync).observe(original,{attributes:true,attributeFilter:['aria-pressed','disabled']});
+    if (status) status.textContent='Geselecteerd: '+active;
   }
-  sync();
 
-  // Als het dashboard open blijft staan op een datumgrens, laat het
-  // automatische thema dan ook overspringen zonder de pagina te verversen.
-  const updateAtSeasonBoundary = () => {
+  for (const pair of pairs) {
+    pair.bottom.addEventListener('click',() => {
+      if (pair.top.disabled) return;
+      // forecast.js blijft de enige eigenaar van de modelkeuze.
+      pair.top.click();
+      syncControls();
+      // De dagkaarten worden korter bij één model. Daardoor verschuift de
+      // knoprij zelf soms buiten het beeld; zet die terug op dezelfde plek.
+      requestAnimationFrame(()=>requestAnimationFrame(()=> {
+        syncControls();
+        if (bar && document.contains(bar)) {
+          const rect=bar.getBoundingClientRect();
+          if (rect.top < 80 || rect.bottom > window.innerHeight - 14)
+            bar.scrollIntoView({block:'center',behavior:'instant'});
+        }
+      }));
+    });
+    new MutationObserver(syncControls).observe(pair.top,{
+      attributes:true,attributeFilter:['aria-pressed','disabled']
+    });
+  }
+  syncControls();
+
+  function seasonalBoundaryCheck() {
     try {
-      const select = document.getElementById('themeSelect');
+      const select=$('themeSelect');
       if (!select || select.value !== 'auto') return;
-      const fields = new Intl.DateTimeFormat('en-GB',{
+      const d=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{
         timeZone:'Europe/Amsterdam',month:'numeric',day:'numeric'
-      }).formatToParts(new Date());
-      const m = Number(fields.find(p=>p.type==='month')?.value);
-      const d = Number(fields.find(p=>p.type==='day')?.value);
-      const target =
-        m===11&&d>=15 || m===12 || m<=2 || m===3&&d<=14 ? 'winter' :
-        m===3&&d>=15 || m===4 || m===5 || m===6&&d<=14 ? 'spring' :
-        m===6&&d>=15 || m===7 || m===8 || m===9&&d<=14 ? 'summer' : 'autumn';
-      if (document.documentElement.dataset.theme !== target) {
+      }).formatToParts(new Date()).map(p=>[p.type,p.value]));
+      const m=Number(d.month), day=Number(d.day);
+      const season=(m===11&&day>=15 || m===12 || m<=2 || m===3&&day<=14)?'winter':
+        (m===3&&day>=15 || m===4 || m===5 || m===6&&day<=14)?'spring':
+        (m===6&&day>=15 || m===7 || m===8 || m===9&&day<=14)?'summer':'autumn';
+      if (document.documentElement.dataset.theme !== season)
         select.dispatchEvent(new Event('change',{bubbles:true}));
-      }
-    } catch (error) {
-      console.warn('Automatisch thema kon niet bijgewerkt worden:',error);
-    }
-  };
+    } catch(e) { console.warn('Seizoenswissel mislukt:',e); }
+  }
   document.addEventListener('visibilitychange',()=>{
-    if (!document.hidden) updateAtSeasonBoundary();
+    if(!document.hidden)seasonalBoundaryCheck();
   });
-  window.setInterval(updateAtSeasonBoundary,5*60*1000);
+  window.setInterval(seasonalBoundaryCheck,300000);
 })();
 </script>
 </body>
