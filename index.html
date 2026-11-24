@@ -607,7 +607,7 @@
   </section>
   <section class="section"><div class="panel"><h2>Dagoverzicht</h2><div class="hint">Hoogste en laagste waarden van de geselecteerde periode</div><div class="facts" id="facts"></div><p class="hint" style="margin:12px 0 0">Windkracht is afgeleid van gemeten windsnelheid. Het daggemiddelde gebruikt beschikbare meetmomenten. Beaufort bij windstoten is alleen een snelheidsomrekening: windstoten zijn geen gemiddelde windkracht.</p></div></section>
 </main>
-<footer class="wrap footer"><span>© <span id="year"></span> Weerstation Jubbega · Eigen lokale metingen <span class="siteVersion" aria-label="Websiteversie">· Versie 17.3</span></span><span>Metingen via Weather Underground · regionaal weerbeeld via <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></span></footer>
+<footer class="wrap footer"><span>© <span id="year"></span> Weerstation Jubbega · Eigen lokale metingen <span class="siteVersion" aria-label="Websiteversie">· Versie 17.4</span></span><span>Metingen via Weather Underground · regionaal weerbeeld via <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></span></footer>
 <script>
 (()=>{'use strict';
 const groups={temp:{title:'Temperatuur',desc:'Vergelijk temperatuur, gevoelstemperatuur en dauwpunt',unit:'°C',lines:[['temp','Temperatuur','#ffbe6e'],['feels','Gevoelstemperatuur','#79b6ff'],['dew','Dauwpunt','#64dfb7']]},wind:{title:'Wind',desc:'Gemiddelde wind en maximale windstoten',unit:'km/u',lines:[['wind','Windsnelheid','#70c8fb'],['gust','Windstoten','#ffc37d']]},rain:{title:'Neerslag',desc:'Neerslagintensiteit per meetmoment',unit:'mm/u',lines:[['rain','Neerslag','#72caff']]},pressure:{title:'Luchtdruk',desc:'Barometrische luchtdruk',unit:'hPa',lines:[['pressure','Luchtdruk','#a7a1fb']]},humidity:{title:'Luchtvochtigheid',desc:'Relatieve luchtvochtigheid',unit:'%',lines:[['humidity','Vochtigheid','#7de0e6']]}};
@@ -884,35 +884,61 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&scope==='
 })();
 </script>
 <script>
-/* Weerstation Jubbega v17.3: max/min, modelselectie en datumgrenzen. */
+/* Weerstation Jubbega v17.4: max/min, modelselectie en datumgrenzen. */
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
 
+  // Formatteer de twee waarden rechtstreeks in de vakken Max/min vandaag
+  // en Morgen. Dit werkt voor positieve en negatieve temperaturen, met
+  // normale streepjes, lange streepjes en schuine strepen als scheiding.
   function temperatureRange(value) {
-    if (!value || !/\d/.test(value) || !/[°\u2013\u2014\/\-]|max|min/i.test(value)) return null;
-    // Een losse streep tussen twee waarden is geen minteken. Zowel
-    // '2 - -3 °C' als '2°/-3°' en '2–3 °C' worden correct herkend.
-    const cleaned = value
-      .replace(/(\d)(\s*(?:°\s*C)?\s*)-(?=\s*[+\-\u2212]?\d)/gu, '$1$2 tot ')
-      .replace(/\u2212/g, '-');
-    const values = cleaned.match(/[+\-]?\d+(?:[.,]\d+)?/gu) || [];
-    if (values.length !== 2) return null;
-    return values[0] + ' tot ' + values[1] + ' °C';
+    const input = String(value || '').replace(/\u00a0/g, ' ').replace(/[\u2212\ufe63]/g, '-').trim();
+    if (!input || !/\d/.test(input)) return null;
+
+    // De waarde in deze twee vakken bevat precies een maximum en minimum.
+    // Verwerk uitsluitend een echt bereik; een minteken voor de tweede
+    // temperatuur wordt dus niet ten onrechte als scheiding gezien.
+    const match = input.match(/^([+-]?\d+(?:[.,]\d+)?)\s*(?:°\s*C)?\s*(?:[-\u2013\u2014/|]|\btot\b)\s*([+-]?\d+(?:[.,]\d+)?)\s*(?:°\s*C)?\s*$/iu);
+    if (match) return `${match[1]} tot ${match[2]} °C`;
+
+    // Ook varianten zoals "Max: 2 °C; min: -3 °C".
+    const labelled = input.match(/^max(?:imum)?\s*:?\s*([+-]?\d+(?:[.,]\d+)?)\s*(?:°\s*C)?\s*[,;\-/\u2013\u2014]*\s*min(?:imum)?\s*:?\s*([+-]?\d+(?:[.,]\d+)?)\s*(?:°\s*C)?$/iu);
+    if (labelled) return `${labelled[1]} tot ${labelled[2]} °C`;
+    return null;
   }
 
-  function installTemperatureFormatter(id) {
-    const el = $(id);
-    if (!el) return;
+  function installTemperatureFormatters() {
+    const ids = ['outlookMax','outlookTomorrow'];
+    const panel = document.querySelector('.outlookFacts') || document.querySelector('.conditionPanel');
+    if (!panel) return;
+
+    let scheduled = false;
     const format = () => {
-      const result = temperatureRange(el.textContent);
-      if (result && result !== el.textContent.trim()) el.textContent = result;
+      scheduled = false;
+      for (const id of ids) {
+        const el = $(id);
+        if (!el) continue;
+        const original = el.textContent;
+        const updated = temperatureRange(original);
+        if (updated && updated !== original.trim()) el.textContent = updated;
+      }
     };
-    new MutationObserver(format).observe(el,{subtree:true,childList:true,characterData:true});
+    const queue = () => {
+      if (scheduled) return;
+      scheduled = true;
+      queueMicrotask(format);
+    };
+    // Observeer het gehele overzicht in plaats van de afzonderlijke
+    // <strong>-elementen; dit werkt ook als de weercode die vervangt.
+    new MutationObserver(queue).observe(panel, {
+      subtree:true, childList:true, characterData:true
+    });
     format();
+    document.addEventListener('weerstation-forecast',queue);
+    document.addEventListener('weerstation-current',queue);
   }
-  installTemperatureFormatter('outlookMax');
-  installTemperatureFormatter('outlookTomorrow');
+  installTemperatureFormatters();
 
   const bar = document.querySelector('.forecastBottomToolbar');
   const status = $('forecastBottomStatus');
