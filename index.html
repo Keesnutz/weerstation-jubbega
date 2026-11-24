@@ -607,7 +607,7 @@
   </section>
   <section class="section"><div class="panel"><h2>Dagoverzicht</h2><div class="hint">Hoogste en laagste waarden van de geselecteerde periode</div><div class="facts" id="facts"></div><p class="hint" style="margin:12px 0 0">Windkracht is afgeleid van gemeten windsnelheid. Het daggemiddelde gebruikt beschikbare meetmomenten. Beaufort bij windstoten is alleen een snelheidsomrekening: windstoten zijn geen gemiddelde windkracht.</p></div></section>
 </main>
-<footer class="wrap footer"><span>© <span id="year"></span> Weerstation Jubbega · Eigen lokale metingen <span class="siteVersion" aria-label="Websiteversie">· Versie 17.5</span></span><span>Metingen via Weather Underground · regionaal weerbeeld via <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></span></footer>
+<footer class="wrap footer"><span>© <span id="year"></span> Weerstation Jubbega · Eigen lokale metingen <span class="siteVersion" aria-label="Websiteversie">· Versie 17.6</span></span><span>Metingen via Weather Underground · regionaal weerbeeld via <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></span></footer>
 <script>
 (()=>{'use strict';
 const groups={temp:{title:'Temperatuur',desc:'Vergelijk temperatuur, gevoelstemperatuur en dauwpunt',unit:'°C',lines:[['temp','Temperatuur','#ffbe6e'],['feels','Gevoelstemperatuur','#79b6ff'],['dew','Dauwpunt','#64dfb7']]},wind:{title:'Wind',desc:'Gemiddelde wind en maximale windstoten',unit:'km/u',lines:[['wind','Windsnelheid','#70c8fb'],['gust','Windstoten','#ffc37d']]},rain:{title:'Neerslag',desc:'Neerslagintensiteit per meetmoment',unit:'mm/u',lines:[['rain','Neerslag','#72caff']]},pressure:{title:'Luchtdruk',desc:'Barometrische luchtdruk',unit:'hPa',lines:[['pressure','Luchtdruk','#a7a1fb']]},humidity:{title:'Luchtvochtigheid',desc:'Relatieve luchtvochtigheid',unit:'%',lines:[['humidity','Vochtigheid','#7de0e6']]}};
@@ -884,35 +884,25 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&scope==='
 })();
 </script>
 <script>
-/* Weerstation Jubbega v17.5: robuuste max/min-formaatcorrectie. */
+/* Weerstation Jubbega v17.6: beide temperatuurreeksen per vak corrigeren. */
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
 
-  // Formatteer de twee waarden rechtstreeks in de vakken Max/min vandaag
-  // en Morgen. Dit werkt voor positieve en negatieve temperaturen, met
-  // normale streepjes, lange streepjes en schuine strepen als scheiding.
+  // Ieder vak bevat TWEE modelreeksen: bijvoorbeeld
+  // '3–4 °C / -3–-1 °C'. Vervang uitsluitend het bereikstreepje
+  // binnen iedere reeks. Laat het scheidingsteken '/' staan en raak
+  // de mintekens van negatieve temperaturen niet aan.
   function temperatureRange(value) {
-    const input = String(value ?? '')
-      .replace(/[\u00a0\u202f]/g,' ')
-      .replace(/[\u2212\ufe63]/g,'-')
-      .trim();
-    if (!input || !/\d/.test(input)) return null;
+    const input=String(value ?? '').replace(/[\u00a0\u202f]/g,' ');
+    if (!/[°º]/u.test(input)) return null;
 
-    // Ook temperaturen met een los °-teken (zonder C) herkennen.
-    // Denk aan 2°–-3°, -2–-3 °C en 2 °C / -3 °C.
-    const n = '([+\\-]?\\d+(?:[.,]\\d+)?)';
-    const unit = '(?:\\s*[°º]\\s*[CF]?)?';
-    const sep = '\\s*(?:–|—|\\/|\\||-|\\btot\\b)\\s*';
-    const exact = new RegExp('^\\s*'+n+unit+sep+n+unit+'\\s*$','iu');
-    const match = input.match(exact);
-    if (match) return `${match[1]} tot ${match[2]} °C`;
-
-    // De twee doelvakken bevatten uitsluitend een temperatuurpaar.
-    // Ook de opmaak "Max: 2 °C; Min: -3 °C" ondersteunen.
-    const values = [...input.matchAll(/[+\-]?\d+(?:[.,]\d+)?/g)].map(m => m[0]);
-    if (values.length !== 2 || !/[°º]|\b(?:max|minimum|min)\b/iu.test(input)) return null;
-    return `${values[0]} tot ${values[1]} °C`;
+    // Lees een volledige waarde aan BEIDE zijden van het bereikstreepje.
+    // Geaccepteerd: 3–4 °C, -3–-1 °C, 2--3 °C en 3—4 °C.
+    // De lookahead voorkomt vervanging van losse '-' tekens.
+    const regex=/([+\-\u2212]?\d+(?:[.,]\d+)?)\s*[–—-]\s*([+\-\u2212]?\d+(?:[.,]\d+)?)(?=\s*(?:°|º|C|F|\/|$))/gu;
+    const result=input.replace(regex,(_whole,a,b)=>`${a} tot ${b}`);
+    return result===input ? null : result;
   }
 
   function installTemperatureFormatters() {
